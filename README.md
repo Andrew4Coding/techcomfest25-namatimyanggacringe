@@ -1,3 +1,10 @@
+## 🧑‍💻 Our Team
+1. Andrew Devito Aryo [Software Engineer]
+2. Carleano Ravelza Wongso [Software Engineer]
+3. Clara Aurelia Setiady [UI/UX]
+
+
+
 ## ⚙️ How to Setup Laravel for Development
 1. Clone repository by using `git clone https://github.com/Econspace-Batch-2/ecospace-web.git`
 2. Install all Laravel dependencies by using `composer install`
