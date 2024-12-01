@@ -20,6 +20,11 @@ class RegisterController extends Controller
         return view('auth.register.register_student');
     }
 
+    public function showTeacherRegistrationForm()
+    {
+        return view('auth.register.register_teacher');
+    }
+
     public function selectRole(Request $request)
     {
         // Validate the role input
@@ -40,16 +45,20 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
+        $role = $request->query('role');
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role' => ['required', 'in:student,teacher'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $role,
         ]);
 
         Auth::login($user);

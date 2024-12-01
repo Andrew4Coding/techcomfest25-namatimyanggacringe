@@ -5,13 +5,14 @@ use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ChatController;
 
+// Register
 Route::get('/register', [ RegisterController::class, 'showPickRole'])->name('role.select');
 Route::post('/register', [RegisterController::class, 'selectRole']);
 
 Route::get('/register/student', [RegisterController::class, 'showStudentRegistrationForm'])->name('register.student');
 Route::post('/register/student', [RegisterController::class, 'register']);
 
-Route::get('/register/teacher', [RegisterController::class, 'showStudentRegistrationForm'])->name('register.teacher');
+Route::get('/register/teacher', [RegisterController::class, 'showTeacherRegistrationForm'])->name('register.teacher');
 Route::post('/register/teacher', [RegisterController::class, 'register']);
 
 // Login

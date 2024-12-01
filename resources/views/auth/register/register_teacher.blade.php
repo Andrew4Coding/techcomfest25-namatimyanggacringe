@@ -1,9 +1,9 @@
 @extends('layout.layout')
 @section('content')
     <div class="min-h-screen flex items-center justify-center">
-        <form action="/register/student?role=student" method="POST" class="w-full max-w-sm">
+        <form action="/register/student?role=teacher" method="POST" class="w-full max-w-sm">
             @csrf
-            <h1 class="text-2xl font-bold mb-6">Register as Student</h1>
+            <h1 class="text-2xl font-bold mb-6">Register as Teacher</h1>
 
             <!-- Name -->
             <label for="name" class="block text-sm">Name</label>
