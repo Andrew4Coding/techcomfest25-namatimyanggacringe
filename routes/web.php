@@ -23,12 +23,18 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/', function () {
         return view('home');
     });
     Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
     Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
+
+    Route::get('/profile', function () {
+        return view('profile');
+    });
 });
 
 Route::middleware(['auth'])->group(function () {
