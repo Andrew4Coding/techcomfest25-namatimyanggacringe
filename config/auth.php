@@ -40,7 +40,25 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'student' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'teacher' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
+
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+    ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -58,18 +76,6 @@ return [
     | Supported: "database", "eloquent"
     |
     */
-
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
-    ],
 
     /*
     |--------------------------------------------------------------------------

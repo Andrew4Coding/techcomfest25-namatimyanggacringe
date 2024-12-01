@@ -11,7 +11,9 @@
         </ul>
         @auth
             <div class="text-white flex gap-4">
-                Welcome, {{ Auth::user()->name }}!
+                <a href="{{ route('profile') }}"">
+                    Welcome, {{ Auth::user()->name }}!
+                </a>
                 <x-buk-logout class="text-gray-500" />
 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -21,7 +23,7 @@
         @else
             <div>
                 <a href="{{ route('login') }}" class="text-gray-300 hover:text-white">Login</a>
-                <a href="{{ route('register') }}" class="text-gray-300 hover:text-white">Register</a>
+                <a href="{{ route('role.select') }}" class="text-gray-300 hover:text-white">Register</a>
             </div>
         @endauth
     </div>
