@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profile', function () {
         return view('profile');
-    });
+    })->name('profile');
 });
 
 Route::middleware(['auth'])->group(function () {

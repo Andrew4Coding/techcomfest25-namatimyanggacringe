@@ -11,7 +11,9 @@
         </ul>
         @auth
             <div class="text-white flex gap-4">
-                Welcome, {{ Auth::user()->name }}!
+                <a href="{{ route('profile') }}"">
+                    Welcome, {{ Auth::user()->name }}!
+                </a>
                 <x-buk-logout class="text-gray-500" />
 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
