@@ -22,6 +22,14 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
+
+            // Check if the authenticated user is a student or teacher and redirect accordingly
+            if (Auth::user()->role === 'student') {
+                return redirect()->intended('/');
+            } elseif (Auth::user()->role === 'teacher') {
+                return redirect()->intended('/');
+            }
+
             return redirect()->intended('/');
         }
 

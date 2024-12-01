@@ -10,9 +10,32 @@ use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
-    public function showRegisterForm()
+    public function showPickRole()
     {
-        return view('auth.register');
+        return view('auth.register.pick_role');
+    }
+
+    public function showStudentRegistrationForm()
+    {
+        return view('auth.register.register_student');
+    }
+
+    public function selectRole(Request $request)
+    {
+        // Validate the role input
+        $validated = $request->validate([
+            'role' => ['required', 'in:student,teacher'],
+        ]);
+
+        // Redirect based on the selected role
+        if ($validated['role'] == 'student') {
+            return redirect()->route('register.student');
+        } elseif ($validated['role'] == 'teacher') {
+            return redirect()->route('register.teacher');
+        }
+
+        // Default fallback (if role is not valid)
+        return redirect()->route('role.select')->withErrors(['role' => 'Invalid role selected']);
     }
 
     public function register(Request $request)

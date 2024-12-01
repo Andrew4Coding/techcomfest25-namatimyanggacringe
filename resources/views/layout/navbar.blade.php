@@ -21,7 +21,7 @@
         @else
             <div>
                 <a href="{{ route('login') }}" class="text-gray-300 hover:text-white">Login</a>
-                <a href="{{ route('register') }}" class="text-gray-300 hover:text-white">Register</a>
+                <a href="{{ route('role.select') }}" class="text-gray-300 hover:text-white">Register</a>
             </div>
         @endauth
     </div>

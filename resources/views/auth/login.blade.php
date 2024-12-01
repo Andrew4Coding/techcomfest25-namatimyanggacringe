@@ -24,7 +24,7 @@
 
             {{-- to Register --}}
             <div class="mt-4">
-                <a href="{{ route('register') }}" class="text-blue-500">Register</a>
+                <a href="{{ route('role.select') }}" class="text-blue-500">Register</a>
             </div>
         </form>
     </div>
