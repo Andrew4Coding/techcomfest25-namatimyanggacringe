@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>ClassAI</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -20,6 +20,10 @@
         @endif
     </head>
     <body class="font-sans antialiased">
-        <@yield('content') />
+        @include('layout.navbar')
+        <main>
+            @yield('content')
+        </main>
+        @include('layout.footer')
     </body>
 </html>
