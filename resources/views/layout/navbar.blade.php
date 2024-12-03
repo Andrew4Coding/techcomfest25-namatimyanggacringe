@@ -1,4 +1,4 @@
-<nav class="bg-gray-800 p-4 py-6 fixed w-full">
+<nav class="bg-gray-800 p-4 py-6 fixed w-full z-50">
     <div class="container mx-auto flex justify-between items-center">
         <div class="text-white text-lg font-bold">
             <a href="/">Mindora</a>

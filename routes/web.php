@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ChatController;
 use App\Http\Controllers\Auth\CourseController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UploadFileController;
 
 // Register
@@ -42,4 +43,11 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::post('/upload/{courseId}', [UploadFileController::class, 'uploadFile'])->name('course.upload.file');
+});
+
+
+
+// Quiz
+Route::middleware(['auth'])->group(function () {
+    Route::get('/quiz/{id}', [QuizController::class, 'showQuiz'])->name('quiz.show');
 });
