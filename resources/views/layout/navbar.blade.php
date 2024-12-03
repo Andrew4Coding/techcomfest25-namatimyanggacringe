@@ -1,11 +1,11 @@
 <nav class="bg-gray-800 p-4 py-6 fixed w-full">
     <div class="container mx-auto flex justify-between items-center">
         <div class="text-white text-lg font-bold">
-            <a href="/">ClassAI</a>
+            <a href="/">Mindora</a>
         </div>
         <ul class="flex space-x-4">
             <li><a href="/" class="text-gray-300 hover:text-white">Home</a></li>
-            <li><a href="/about" class="text-gray-300 hover:text-white">About</a></li>
+            <li><a href="/courses" class="text-gray-300 hover:text-white">Courses</a></li>
             <li><a href="/services" class="text-gray-300 hover:text-white">Services</a></li>
             <li><a href="/posts" class="text-gray-300 hover:text-white">Blog</a></li>
         </ul>
