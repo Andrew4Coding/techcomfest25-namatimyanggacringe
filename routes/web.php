@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ChatController;
 use App\Http\Controllers\Auth\CourseController;
+use App\Http\Controllers\UploadFileController;
 
 // Register
 Route::get('/register', [ RegisterController::class, 'showPickRole'])->name('role.select');
@@ -38,10 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', function () {
         return view('profile');
     })->name('profile');
+
+
+    Route::post('/upload/{courseId}', [UploadFileController::class, 'uploadFile'])->name('course.upload.file');
 });
-
-Route::middleware(['auth'])->group(function () {
-
-});
-
-// Main
