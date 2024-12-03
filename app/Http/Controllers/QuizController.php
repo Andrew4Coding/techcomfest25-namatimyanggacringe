@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
-    public function showQuiz(int $id, Request $request)
+    public function showQuizSession(string $courseId, string $id, Request $request)
     {
         $page = $request->get('page', 1);
         $questionCount = 20;
@@ -16,5 +16,15 @@ class QuizController extends Controller
         }
 
         return view('quiz.quiz', ['id' => $id, 'page' => $page, 'questionCount' => $questionCount]);
+    }
+
+    public function showQuizCreation(string $courseId, Request $request)
+    {
+        return view('quiz.quiz_create');
+    }
+
+    public function showQuizAlteration(string $courseId, string $id, Request $request)
+    {
+        return view('quiz.quiz_alter', ['id' => $id]);
     }
 }
