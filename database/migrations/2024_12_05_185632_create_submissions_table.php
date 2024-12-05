@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('materials', function (Blueprint $table) {
-            $table->string('file_url');
-
+        Schema::create('submissions', function (Blueprint $table) {
             $table->uuid('id')->primary();
+
+            $table->string('content');
+            $table->timestampTz('opened_at');
+            $table->timestampTz('due_date');
+            $table->string('file_types');
 
             $table->foreign('id')->references('id')
                 ->on('course_items')->onDelete('cascade');
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('materials');
+        Schema::dropIfExists('submissions');
     }
 };

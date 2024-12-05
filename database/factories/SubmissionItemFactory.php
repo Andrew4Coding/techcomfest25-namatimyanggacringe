@@ -2,13 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\CourseItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Material>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SubmissionItem>
  */
-class MaterialFactory extends Factory
+class SubmissionItemFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,7 +18,6 @@ class MaterialFactory extends Factory
     {
         return [
             //
-            'id' => CourseItem::factory(),
         ];
     }
 }

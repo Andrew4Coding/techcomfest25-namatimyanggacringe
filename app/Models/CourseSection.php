@@ -40,8 +40,16 @@ class CourseSection extends Model
     /**
      * @return HasManyThrough
      */
-    public function material(): HasManyThrough
+    public function materials(): HasManyThrough
     {
         return $this->hasManyThrough(Material::class, CourseItem::class);
+    }
+
+    /**
+     * @return HasManyThrough
+     */
+    public function submissions(): HasManyThrough
+    {
+        return $this->hasManyThrough(Submission::class, CourseItem::class);
     }
 }

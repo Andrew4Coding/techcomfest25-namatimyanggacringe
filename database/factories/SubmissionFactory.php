@@ -6,9 +6,9 @@ use App\Models\CourseItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Material>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Submission>
  */
-class MaterialFactory extends Factory
+class SubmissionFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +18,11 @@ class MaterialFactory extends Factory
     public function definition(): array
     {
         return [
-            //
             'id' => CourseItem::factory(),
+            'content' => $this->faker->realText(),
+            'due_date' => $this->faker->date(),
+            'opened_at' => $this->faker->date(),
+            'file_type' => $this->faker->mimeType(),
         ];
     }
 }
