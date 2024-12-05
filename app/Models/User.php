@@ -60,12 +60,21 @@ class User extends Authenticatable
     }
 
     /**
-     * Get student related to the user
+     * Get related student
      *
      * @return HasOne
      */
     public function student(): HasOne {
-        return $this->hasOne(Student::class);
+        return $this->hasOne(Student::class, 'id');
+    }
+
+    /**
+     * Get related teacher
+     *
+     * @return HasOne
+     */
+    public function teacher(): HasOne {
+        return $this->hasOne(Teacher::class, 'id');
     }
 
     public function isStudent(): bool {

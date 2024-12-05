@@ -19,7 +19,7 @@ class TeacherFactory extends Factory
     {
         return [
             //
-            'user_id' => User::factory(),
+            'id' => User::factory(),
         ];
     }
 }

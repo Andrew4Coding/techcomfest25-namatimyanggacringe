@@ -18,6 +18,7 @@ class MaterialFactory extends Factory
     {
         return [
             //
+            'id' => CourseItemFactory::class,
         ];
     }
 }

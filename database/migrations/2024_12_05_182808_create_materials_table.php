@@ -12,13 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('materials', function (Blueprint $table) {
-            $table->id();
-
             $table->string('file_url');
 
-            $table->uuid('course_item_id');
+            $table->uuid('id');
 
-            $table->foreign('course_item_id')->references('id')
+            $table->foreign('id')->references('id')
                 ->on('course_items')->onDelete('cascade');
 
             $table->timestamps();
