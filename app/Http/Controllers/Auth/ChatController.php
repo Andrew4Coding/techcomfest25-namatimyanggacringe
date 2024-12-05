@@ -5,16 +5,17 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use Illuminate\View\View;
 use OpenAI\Laravel\Facades\OpenAI;
 
 class ChatController extends Controller
 {
-    public function showChat()
+    public function showChat(): View
     {
         return view('testing.chat');
     }
 
-    public function sendMessage(Request $request)
+    public function sendMessage(Request $request): View
     {
         $request->validate([
             'message' => ['required', 'string'],

@@ -3,32 +3,30 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Student;
+use App\Models\User;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class LoginController extends Controller
 {
-    public function showLoginForm()
+    public function showLoginForm(): View
     {
-        return view('auth.login');
+        return view('auth.login', ['users' => Student::with('courses')->get()]);
     }
 
-    public function login(Request $request)
+    public function login(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials, $request->remember)) {
+        if (Auth::attempt($credentials, $request->input('remember'))) {
             $request->session()->regenerate();
-
-            // Check if the authenticated user is a student or teacher and redirect accordingly
-            if (Auth::user()->role === 'student') {
-                return redirect()->intended('/');
-            } elseif (Auth::user()->role === 'teacher') {
-                return redirect()->intended('/');
-            }
 
             return redirect()->intended('/');
         }

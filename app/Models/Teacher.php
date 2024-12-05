@@ -2,23 +2,28 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Teacher extends Model
 {
-    use HasFactory;
+    //
+    use HasUuids, HasFactory;
 
-    // Fillable attributes
-    protected $fillable = [
-        'name',
-        'email',
-        'experience_years',
-    ];
+    /**
+     * @var string
+     */
+    public $keyType = 'string';
 
-    // Relationship: A teacher can teach many subjects
-    public function subjects()
+    public $incrementing = false;
+
+    /**
+     * @return HasMany
+     */
+    public function courses(): HasMany
     {
-        return $this->hasMany(Subject::class);
+        return $this->hasMany(Course::class);
     }
 }

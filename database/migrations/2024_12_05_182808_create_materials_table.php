@@ -9,23 +9,27 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('subjects', function (Blueprint $table) {
+        Schema::create('materials', function (Blueprint $table) {
             $table->id();
-            $table->string('subject_name');
-            $table->text('description')->nullable();
-            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade'); // Teacher who teaches the subject
+
+            $table->string('file_url');
+
+            $table->uuid('course_item_id');
+
+            $table->foreign('course_item_id')->references('id')
+                ->on('course_items')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('subjects');
+        Schema::dropIfExists('materials');
     }
 };

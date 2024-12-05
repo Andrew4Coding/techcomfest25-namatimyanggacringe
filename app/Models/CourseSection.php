@@ -5,25 +5,33 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CourseSection extends Model
 {
-    use HasFactory, HasUuids;
+    //
+    use HasUuids, HasFactory;
 
-    public $incrementing = false; // UUID is not auto-incrementing
-    protected $keyType = 'string';
+    /**
+     * @var string
+     */
+    public $keyType = 'string';
 
-    protected $fillable = [
-        'name',
-        'description',
-    ];
+    public $incrementing = false;
 
-    public function course()
+    /**
+     * @return BelongsTo
+     */
+    public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
     }
 
-    public function items()
+    /**
+     * @return HasMany
+     */
+    public function courseItems(): HasMany
     {
         return $this->hasMany(CourseItem::class);
     }

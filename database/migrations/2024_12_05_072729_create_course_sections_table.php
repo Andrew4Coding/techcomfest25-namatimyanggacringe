@@ -9,23 +9,22 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('teachers', function (Blueprint $table) {
-            $table->id();
+        Schema::create('course_sections', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('course_id');
             $table->string('name');
-            $table->string('email')->unique();
-            $table->integer('experience_years'); // Number of years of teaching experience
+            $table->string('description');
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('teachers');
+        Schema::dropIfExists('course_sections');
     }
 };

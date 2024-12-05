@@ -19,6 +19,7 @@
                 <label for="remember" class="text-sm">Remember Me</label>
             </div>
 
+            <div>{{ $users }}</div>
             <!-- Submit Button -->
             <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded">Login</button>
 
