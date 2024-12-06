@@ -45,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/upload/{courseId}', [UploadFileController::class, 'uploadFile'])->name('course.upload.file');
 });
 
+Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->name('course.create');
 
 
 // Quiz
@@ -52,4 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/quiz/{courseId}/session/{id}', [QuizController::class, 'showQuizSession'])->name('quiz.show');
     Route::get('/quiz/{courseId}/create', [QuizController::class, 'showQuizCreation'])->name('quiz.alter');
     Route::get('/quiz/{courseId}/edit/{id}', [QuizController::class, 'showQuizAlteration'])->name('quiz.alter');
+
+    Route::post('/quiz/generate', [QuizController::class, 'generateQuestionsFromPDF'])->name('quiz.generate');
+    Route::post('/quiz/parse', [QuizController::class, 'parseQuestionsFromCSV'])->name('quiz.parse');
 });

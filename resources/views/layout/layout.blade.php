@@ -5,19 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>ClassAI</title>
+    <title>Mindora</title>
 
-    <link rel="icon" type="image/jpg" sizes="16x16" href="{{ asset('logo.jpg') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('logo.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-----------------------------------------------------------
--- animate.min.css by Daniel Eden (https://animate.style)
--- is required for the animation of notifications and slide out panels
--- you can ignore this step if you already have this file in your project
---------------------------------------------------------------------------->
 
     <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
@@ -26,7 +20,7 @@
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/css/ds.css', 'resources/js/app.js'])
     @else
         <style>
             /* ! tailwindcss v3.4.1 | MIT License | https://tailwindcss.com */
@@ -921,7 +915,7 @@
 
 <body class="font-sans antialiased">
     @include('layout.navbar')
-    <main>
+    <main class="max-w-[100vw] overflow-x-hidden mb-52">
         @yield('content')
     </main>
     @include('layout.footer')
