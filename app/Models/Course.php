@@ -24,6 +24,12 @@ class Course extends Model
         'pivot'
     ];
 
+    protected $fillable = [
+        'teacher_id',
+        'name',
+        'description',
+    ];
+
     /**
      * @return BelongsToMany
      */

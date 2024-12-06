@@ -16,6 +16,13 @@ class Submission extends Model
     public $keyType = 'string';
     public $incrementing = false;
 
+    protected $fillable = [
+        'content',
+        'opened_at',
+        'due_date',
+        'file_types',
+    ];
+
     /**
      * @return BelongsTo
      */

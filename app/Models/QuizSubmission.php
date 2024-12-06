@@ -16,6 +16,11 @@ class QuizSubmission extends Model
     public $keyType = 'string';
     public $incrementing = false;
 
+    protected $fillable = [
+        'quiz_id',
+        'student_id',
+    ];
+
     /**
      * @return BelongsTo
      */

@@ -15,6 +15,12 @@ class CourseItem extends Model
     public $keyType = 'string';
     public $incrementing = false;
 
+    public $fillable = [
+        'name',
+        'description',
+        'course_section_id',
+    ];
+
     /**
      * @return BelongsTo
      */

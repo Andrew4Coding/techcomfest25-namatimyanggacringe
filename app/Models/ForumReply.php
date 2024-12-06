@@ -16,6 +16,15 @@ class ForumReply extends Model
     public $keyType = 'string';
     public $incrementing = false;
 
+    protected $fillable = [
+        'content',
+        'upvote',
+        'downvote',
+        'forum_discussion_id',
+        'sender_id',
+        'reply_to_id',
+    ];
+
     /**
      * @return BelongsTo
      */

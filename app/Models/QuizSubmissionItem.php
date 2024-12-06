@@ -15,6 +15,12 @@ class QuizSubmissionItem extends Model
     public $keyType = 'string';
     public $incrementing = false;
 
+    protected $fillable = [
+        'answer',
+        'score',
+        'quiz_submission_id',
+    ];
+
     /**
      * @return BelongsTo
      */

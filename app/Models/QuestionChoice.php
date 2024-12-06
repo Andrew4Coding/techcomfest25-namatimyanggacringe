@@ -18,6 +18,12 @@ class QuestionChoice extends Model
     /**
      * @return BelongsTo
      */
+
+     protected $fillable = [
+        'content',
+        'question_id',
+    ];
+
     public function question(): BelongsTo
     {
         return $this->belongsTo(Question::class);

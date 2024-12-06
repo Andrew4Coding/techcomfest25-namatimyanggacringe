@@ -16,6 +16,12 @@ class Quiz extends Model
     public $keyType = 'string';
     public $incrementing = false;
 
+    protected $fillable = [
+        'start',
+        'finish',
+        'duration',
+    ];
+
     /**
      * @return BelongsTo
      */

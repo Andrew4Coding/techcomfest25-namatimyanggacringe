@@ -20,6 +20,14 @@ class Question extends Model
     /**
      * @return array<string, string>
      */
+
+    protected $fillable = [
+        'content',
+        'answer',
+        'question_type',
+        'quiz_id',
+    ];
+
     protected function casts(): array
     {
         return [

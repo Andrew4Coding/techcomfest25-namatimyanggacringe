@@ -15,6 +15,14 @@ class SubmissionItem extends Model
     public $keyType = 'string';
     public $incrementing = false;
 
+    protected $fillable = [
+        'grade',
+        'comment',
+        'submission_urls',
+        'student_id',
+        'submission_id'
+    ];
+
     /**
      * @return BelongsTo
      */

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -16,12 +15,12 @@ class RegisterController extends Controller
         return view('auth.register.pick_role');
     }
 
-    public function showStudentRegistrationForm(): Application
+    public function showStudentRegistrationForm()
     {
         return view('auth.register.register_student');
     }
 
-    public function showTeacherRegistrationForm(): Application
+    public function showTeacherRegistrationForm()
     {
         return view('auth.register.register_teacher');
     }
@@ -44,26 +43,40 @@ class RegisterController extends Controller
         return redirect()->route('role.select')->withErrors(['role' => 'Invalid role selected']);
     }
 
-    public function register(Request $request): Application
+    public function register(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone_number' => ['required', 'string', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        try {
+            $role = $request->input('role');
 
-        $user = new User([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone_number' => $request->input('phone_number'),
-            'password' => Hash::make($request->input('password')),
-        ]);
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'phone_number' => ['required', 'string', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+            ]);
 
-        $user->save();
+            $user = new User([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'verified'=> 1,
+                'phone_number' => $request->input('phone_number'),
+                'password' => Hash::make($request->input('password')),
+            ]);
 
-        Auth::login($user);
+            $user->save();
 
-        return redirect('/');
+            // Make new teachers and students
+            if ($role == 'teacher') {
+                $user->teacher()->create();
+            } elseif ($role == 'student') {
+                $user->student()->create();
+            }
+
+            Auth::login($user);
+            return redirect('/');
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->withErrors(['error' => 'Registration failed. Please try again.']);
+        }
     }
 }

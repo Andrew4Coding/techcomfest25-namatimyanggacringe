@@ -16,6 +16,13 @@ class ForumDiscussion extends Model
     public $keyType = 'string';
     public $incrementing = false;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'creator_id',
+        'forum_id',
+    ];
+
     /**
      * @return BelongsTo
      */

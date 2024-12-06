@@ -16,6 +16,11 @@ class Material extends Model
     public $keyType = 'string';
     public $incrementing = false;
 
+    protected $fillable = [
+        'file_url',
+        'material_type',
+    ];
+
     /**
      * @return array<string, string>
      */

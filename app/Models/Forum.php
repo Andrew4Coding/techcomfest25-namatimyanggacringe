@@ -15,6 +15,10 @@ class Forum extends Model
     public $keyType = 'string';
     public $incrementing = false;
 
+    protected $fillable = [
+        'creator_id',
+    ];
+
     /**
      * @return BelongsTo
      */

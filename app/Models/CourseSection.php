@@ -21,6 +21,12 @@ class CourseSection extends Model
 
     public $incrementing = false;
 
+    protected $fillable = [
+        'course_id',
+        'name',
+        'description',
+    ];
+
     /**
      * @return BelongsTo
      */
