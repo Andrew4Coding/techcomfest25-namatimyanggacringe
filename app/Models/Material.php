@@ -17,6 +17,7 @@ class Material extends Model
     public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'file_url',
         'material_type',
     ];
@@ -31,10 +32,8 @@ class Material extends Model
         ];
     }
 
-    /**
-     * @return BelongsTo
-     */
-    public function courseItem(): BelongsTo {
-        return $this->belongsTo(CourseItem::class);
+    public function courseItem()
+    {
+        return $this->morphOne(CourseItem::class, 'itemable');
     }
 }

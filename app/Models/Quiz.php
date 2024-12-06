@@ -25,9 +25,9 @@ class Quiz extends Model
     /**
      * @return BelongsTo
      */
-    public function courseItem(): BelongsTo
+    public function courseItem()
     {
-        return $this->belongsTo(CourseItem::class);
+        return $this->morphOne(CourseItem::class, 'itemable');
     }
 
     /**

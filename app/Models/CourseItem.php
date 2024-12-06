@@ -28,4 +28,9 @@ class CourseItem extends Model
     {
         return $this->belongsTo(CourseSection::class);
     }
+
+    public function itemable()
+    {
+        return $this->morphTo();
+    }
 }

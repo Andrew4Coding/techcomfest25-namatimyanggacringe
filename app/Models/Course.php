@@ -28,6 +28,7 @@ class Course extends Model
         'teacher_id',
         'name',
         'description',
+        'class_code'
     ];
 
     /**

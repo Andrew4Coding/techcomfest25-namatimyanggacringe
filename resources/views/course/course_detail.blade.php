@@ -21,32 +21,50 @@
                 @include('course.components.section', ['section' => $section])
             @endforeach
         </div>
-        <x-bladewind::button onclick="showModal('tnc-agreement-titled')" class="w-full">
+
+
+
+        <button onclick="add_section_modal.showModal()" class="btn btn-primary w-full">
             + Add Section
-        </x-bladewind::button>
-        <x-bladewind::modal ok_button_label="+ Create" title="Create new Section" name="tnc-agreement-titled"
-            ok_button_action="document.getElementById('course-section-form').submit();"
-        >
-            <form method="POST" action="{{route('course.section.create', ['id' => $course->id])}}" id="course-section-form">
-                @csrf
-                <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Section Name</label>
-                    <x-bladewind::input type="text" name="name" id="name" required />
-                </div>
-                <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                    <x-bladewind::textarea name="description" id="description" rows="3" required />
-                </div>
+        </button>
+        <dialog id="add_section_modal" class="modal">
+            <div class="modal-box">
+                <h3 class="font-bold text-lg">Create new Section</h3>
+                <form method="POST" action="{{ route('course.section.create', ['id' => $course->id]) }}"
+                    id="course-section-form">
+                    @csrf
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Section Name</label>
+                        <input type="text" name="name" id="name" class="input input-bordered w-full" required />
+                    </div>
+                    <div class="mb-4">
+                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full" required></textarea>
+                    </div>
+                    <div class="modal-action">
+                        <button type="button" class="btn" onclick="add_section_modal.close()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">+ Create</button>
+                    </div>
+                </form>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>close</button>
             </form>
-        </x-bladewind::modal>
+        </dialog>
     </main>
     <script>
+        // on DOM load detect if session contains error
+        document.addEventListener('DOMContentLoaded', function() {
+            if (sessionStorage.getItem('error')) {
+                alert(sessionStorage.getItem('error'));
+            }
+        });
         document.getElementById('upload-pdf-button').addEventListener('click', function() {
             var form = document.getElementById('upload-pdf-form');
             var formData = new FormData(form);
 
             console.log('Uploading PDF...');
-            
+
 
             fetch("{{ route('course.upload.file', ['courseId' => $course->id]) }}", {
                     method: 'POST',
@@ -58,13 +76,13 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
-                    
+
                     if (data['file_path']) {
                         alert('PDF uploaded successfully');
                         const cleaned = data.file_path.replace(/\\/g, "/");
-                        const url = "https://techcomfest.s3.ap-southeast-2.amazonaws.com/"+cleaned;
+                        const url = "https://techcomfest.s3.ap-southeast-2.amazonaws.com/" + cleaned;
                         console.log(new URL(url).href);
-                        
+
                     } else {
                         alert('Failed to upload PDF');
                     }

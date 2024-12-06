@@ -12,6 +12,9 @@
             <!-- Email -->
             <label for="email" class="block text-sm">Email</label>
             <input type="email" name="email" id="email" required class="w-full border p-2 rounded mb-4">
+            
+            <label for="phone_number" class="block text-sm">Phone</label>
+            <input type="text" name="phone_number" id="phone_number" required class="w-full border p-2 rounded mb-4">
 
             <!-- Password -->
             <label for="password" class="block text-sm">Password</label>

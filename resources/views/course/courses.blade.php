@@ -1,23 +1,37 @@
 @extends('layout.layout')
 @section('content')
     <main class="px-20 pt-40">
-        <x-bladewind::button onclick="showModal('tnc-agreement-titled')" class="w-full">
+        <button onclick="add_course_modal.showModal()" class="btn btn-primary w-full">
             + Add Course
-        </x-bladewind::button>
-        <x-bladewind::modal ok_button_label="+ Create" title="Create new Course" name="tnc-agreement-titled"
-            ok_button_action="document.getElementById('add_course_form').submit();">
-            <form method="POST" action="{{ route('course.create') }}" id="add_course_form">
-                @csrf
-                <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Course Name</label>
-                    <x-bladewind::input type="text" name="name" id="name" required />
-                </div>
-                <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                    <x-bladewind::textarea name="description" id="description" rows="3" required />
-                </div>
+        </button>
+        <dialog id="add_course_modal" class="modal">
+            <div class="modal-box">
+                <h3 class="font-bold text-lg">Create new Course</h3>
+                <form method="POST" action="{{ route('course.create') }}" id="add_course_form">
+                    @csrf
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Course Name</label>
+                        <input type="text" name="name" id="name" class="input input-bordered w-full" required />
+                    </div>
+                    <div class="mb-4">
+                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full" required></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="class_code" class="block text-sm font-medium text-gray-700">Class Code (5
+                            Letters)</label>
+                        <input name="class_code" id="class_code" class="input input-bordered w-full" required />
+                    </div>
+                    <div class="modal-action">
+                        <button type="button" class="btn" onclick="hideModal('tnc-agreement-titled')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">+ Create</button>
+                    </div>
+                </form>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>close</button>
             </form>
-        </x-bladewind::modal>
+        </dialog>
 
         <div class="grid grid-cols-3 gap-4 min-h-[100vh]">
             @if ($courses->isEmpty())
