@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\MaterialType;
 use App\Models\CourseItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,6 +21,8 @@ class MaterialFactory extends Factory
         return [
             //
             'id' => CourseItem::factory(),
+            'file_url' => $this->faker->url(),
+            'type' => $this->faker->randomElement(MaterialType::class)
         ];
     }
 }

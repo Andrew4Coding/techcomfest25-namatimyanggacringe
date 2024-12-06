@@ -46,6 +46,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'remember_token',
     ];
 
     /**
@@ -112,6 +113,9 @@ class User extends Authenticatable
         return $this->hasMany(ForumDiscussion::class, 'creator_id');
     }
 
+    /**
+     * @return HasMany
+     */
     public function forumReplies(): HasMany
     {
         return $this->hasMany(ForumReply::class, 'sender_id');

@@ -37,7 +37,7 @@ class ForumReply extends Model
      */
     public function replyTo(): BelongsTo
     {
-        return $this->belongsTo(ForumReply::class);
+        return $this->belongsTo(static::class);
     }
 
     /**
@@ -45,6 +45,6 @@ class ForumReply extends Model
      */
     public function replies(): HasMany
     {
-        return $this->hasMany(ForumReply::class);
+        return $this->hasMany(static::class);
     }
 }

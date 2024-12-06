@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\QuestionType;
 use App\Models\Quiz;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,6 +22,7 @@ class QuestionFactory extends Factory
             //
             'content' => $this->faker->paragraph(),
             'answer' => $this->faker->paragraph(),
+            'question_type' => $this->faker->randomElement(QuestionType::class),
             'quiz_id' => Quiz::factory(),
         ];
     }

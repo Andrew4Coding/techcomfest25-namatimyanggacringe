@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MaterialType;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +15,16 @@ class Material extends Model
 
     public $keyType = 'string';
     public $incrementing = false;
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'type' => MaterialType::class,
+        ];
+    }
 
     /**
      * @return BelongsTo

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('quizzes', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->timestamps('start');
-            $table->timestamps('finish');
+            $table->timestampTz('start');
+            $table->timestampTz('finish');
             $table->integer('duration');
 
             $table->foreign('id')->references('id')

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('file_url');
 
             $table->uuid('id')->primary();
+            $table->enum('material_type', ['video', 'pdf', 'ppt', 'docs']);
 
             $table->foreign('id')->references('id')
                 ->on('course_items')->onDelete('cascade');
