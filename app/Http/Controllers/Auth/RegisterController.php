@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
@@ -16,7 +18,7 @@ class RegisterController extends Controller
         return view('auth.register.pick_role');
     }
 
-    public function showStudentRegistrationForm(): Application
+    public function showStudentRegistrationForm(): View
     {
         return view('auth.register.register_student');
     }
@@ -44,7 +46,7 @@ class RegisterController extends Controller
         return redirect()->route('role.select')->withErrors(['role' => 'Invalid role selected']);
     }
 
-    public function register(Request $request): Application
+    public function register(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
