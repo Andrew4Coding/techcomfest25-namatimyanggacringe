@@ -52,4 +52,20 @@ class CourseSection extends Model
     {
         return $this->hasManyThrough(Submission::class, CourseItem::class);
     }
+
+    /**
+     * @return HasManyThrough
+     */
+    public function forums(): HasManyThrough
+    {
+        return $this->hasManyThrough(Forum::class, CourseItem::class);
+    }
+
+    /**
+     * @return HasManyThrough
+     */
+    public function quizzes(): HasManyThrough
+    {
+        return $this->hasManyThrough(Quiz::class, CourseItem::class);
+    }
 }

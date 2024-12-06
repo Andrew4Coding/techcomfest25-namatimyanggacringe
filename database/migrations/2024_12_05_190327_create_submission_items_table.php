@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->float('grade');
             $table->string('comment');
-            $table->string('submission_url');
+            $table->string('submission_urls');
 
             $table->uuid('student_id');
             $table->uuid('submission_id');

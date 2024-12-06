@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class SubmissionItem extends Model
+class Quiz extends Model
 {
-    /** @use HasFactory<\Database\Factories\SubmissionItemFactory> */
+    /** @use HasFactory<\Database\Factories\QuizFactory> */
     use HasUuids, HasFactory;
 
     public $keyType = 'string';
@@ -18,16 +19,16 @@ class SubmissionItem extends Model
     /**
      * @return BelongsTo
      */
-    public function submission(): BelongsTo
+    public function courseItem(): BelongsTo
     {
-        return $this->belongsTo(Submission::class);
+        return $this->belongsTo(CourseItem::class);
     }
 
     /**
-     * @return BelongsTo
+     * @return HasMany
      */
-    public function student(): BelongsTo
+    public function questions(): HasMany
     {
-        return $this->belongsTo(Student::class);
+        return $this->hasMany(Question::class);
     }
 }

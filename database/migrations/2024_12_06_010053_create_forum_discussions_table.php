@@ -11,11 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('course_sections', function (Blueprint $table) {
+        Schema::create('forum_discussions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('course_id');
-            $table->string('name');
+
+            $table->string('title');
             $table->text('description');
+
+            $table->uuid('creator_id')->nullable();
+            $table->uuid('forum_id');
+
+            $table->foreign('creator_id')->references('id')
+                ->on('users')->onDelete('set null');
+            $table->foreign('forum_id')->references('id')
+                ->on('forums')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -25,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('course_sections');
+        Schema::dropIfExists('discussions');
     }
 };

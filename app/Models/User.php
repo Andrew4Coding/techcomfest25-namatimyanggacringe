@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
@@ -64,7 +65,8 @@ class User extends Authenticatable
      *
      * @return HasOne
      */
-    public function student(): HasOne {
+    public function student(): HasOne
+    {
         return $this->hasOne(Student::class, 'id');
     }
 
@@ -73,11 +75,45 @@ class User extends Authenticatable
      *
      * @return HasOne
      */
-    public function teacher(): HasOne {
+    public function teacher(): HasOne
+    {
         return $this->hasOne(Teacher::class, 'id');
     }
 
-    public function isStudent(): bool {
+    /**
+     * @return bool
+     */
+    public function isStudent(): bool
+    {
         return $this->student()->exists();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTeacher(): bool
+    {
+        return $this->teacher()->exists();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function forums(): HasMany
+    {
+        return $this->hasMany(Forum::class, 'creator_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function forumDiscussions(): HasMany
+    {
+        return $this->hasMany(ForumDiscussion::class, 'creator_id');
+    }
+
+    public function forumReplies(): HasMany
+    {
+        return $this->hasMany(ForumReply::class, 'sender_id');
     }
 }

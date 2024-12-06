@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('course_sections', function (Blueprint $table) {
+        Schema::create('question_choices', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('course_id');
-            $table->string('name');
-            $table->text('description');
+
+            $table->text('content');
+
+            $table->uuid('question_id');
+
+            $table->foreign('question_id')->references('id')
+                ->on('questions')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
@@ -25,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('course_sections');
+        Schema::dropIfExists('question_choices');
     }
 };

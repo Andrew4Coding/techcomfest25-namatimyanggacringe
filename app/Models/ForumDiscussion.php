@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Submission extends Model
+class ForumDiscussion extends Model
 {
-    /** @use HasFactory<\Database\Factories\SubmissionFactory> */
+    /** @use HasFactory<\Database\Factories\ForumDiscussionFactory> */
     use HasUuids, HasFactory;
 
     public $keyType = 'string';
@@ -19,16 +19,24 @@ class Submission extends Model
     /**
      * @return BelongsTo
      */
-    public function courseItem(): BelongsTo
+    public function forum(): BelongsTo
     {
-        return $this->belongsTo(CourseItem::class);
+        return $this->belongsTo(Forum::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**
      * @return HasMany
      */
-    public function submissionItems(): HasMany
+    public function forum_replies(): HasMany
     {
-        return $this->hasMany(SubmissionItem::class);
+        return $this->hasMany(ForumReply::class);
     }
 }

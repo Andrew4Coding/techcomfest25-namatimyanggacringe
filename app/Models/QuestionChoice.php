@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class SubmissionItem extends Model
+class QuestionChoice extends Model
 {
-    /** @use HasFactory<\Database\Factories\SubmissionItemFactory> */
+    /** @use HasFactory<\Database\Factories\QuestionChoiceFactory> */
     use HasUuids, HasFactory;
 
     public $keyType = 'string';
@@ -18,16 +18,8 @@ class SubmissionItem extends Model
     /**
      * @return BelongsTo
      */
-    public function submission(): BelongsTo
+    public function question(): BelongsTo
     {
-        return $this->belongsTo(Submission::class);
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function student(): BelongsTo
-    {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Question::class);
     }
 }

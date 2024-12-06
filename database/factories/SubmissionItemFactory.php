@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Student;
+use App\Models\Submission;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +20,11 @@ class SubmissionItemFactory extends Factory
     {
         return [
             //
+            'submission_id' => Submission::factory(),
+            'student_id' => Student::factory(),
+            'grade' => $this->faker->numberBetween(1, 10),
+            'comment' => $this->faker->realText(),
+            'submission_urls' => $this->faker->url(),
         ];
     }
 }
