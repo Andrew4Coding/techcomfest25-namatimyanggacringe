@@ -6,11 +6,10 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Question extends Model
+class QuizSubmissionItem extends Model
 {
-    /** @use HasFactory<\Database\Factories\QuestionFactory> */
+    /** @use HasFactory<\Database\Factories\QuizSubmissionItemFactory> */
     use HasUuids, HasFactory;
 
     public $keyType = 'string';
@@ -19,16 +18,8 @@ class Question extends Model
     /**
      * @return BelongsTo
      */
-    public function quiz(): BelongsTo
+    public function quizSubmission(): BelongsTo
     {
-        return $this->belongsTo(Quiz::class);
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function choices(): HasMany
-    {
-        return $this->hasMany(QuestionChoice::class);
+        return $this->belongsTo(QuizSubmission::class);
     }
 }

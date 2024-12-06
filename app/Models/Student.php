@@ -40,4 +40,12 @@ class Student extends Model
     {
         return $this->hasMany(SubmissionItem::class);
     }
+
+    /**
+     * @return HasMany
+     */
+    public function quizSubmissions(): HasMany
+    {
+        return $this->hasMany(QuizSubmission::class);
+    }
 }

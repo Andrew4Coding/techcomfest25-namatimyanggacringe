@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Quiz extends Model
+class QuizSubmission extends Model
 {
-    /** @use HasFactory<\Database\Factories\QuizFactory> */
+    /** @use HasFactory<\Database\Factories\QuizSubmissionFactory> */
     use HasUuids, HasFactory;
 
     public $keyType = 'string';
@@ -19,24 +19,24 @@ class Quiz extends Model
     /**
      * @return BelongsTo
      */
-    public function courseItem(): BelongsTo
+    public function quiz(): BelongsTo
     {
-        return $this->belongsTo(CourseItem::class);
+        return $this->belongsTo(Quiz::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function student(): BelongsTo
+    {
+        return $this->belongsTo(Student::class);
     }
 
     /**
      * @return HasMany
      */
-    public function questions(): HasMany
+    public function quizSubmissionItems(): HasMany
     {
-        return $this->hasMany(Question::class);
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function quizSubmissions(): HasMany
-    {
-        return $this->hasMany(QuizSubmission::class);
+        return $this->hasMany(QuizSubmissionItem::class);
     }
 }
