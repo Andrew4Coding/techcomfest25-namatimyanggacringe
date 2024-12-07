@@ -20,7 +20,6 @@ class MaterialFactory extends Factory
     {
         return [
             //
-            'id' => CourseItem::factory(),
             'file_url' => $this->faker->url(),
             'type' => $this->faker->randomElement(MaterialType::class)
         ];

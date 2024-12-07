@@ -18,7 +18,6 @@ class SubmissionFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => CourseItem::factory(),
             'content' => $this->faker->realText(),
             'due_date' => $this->faker->date(),
             'opened_at' => $this->faker->date(),

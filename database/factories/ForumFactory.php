@@ -20,7 +20,6 @@ class ForumFactory extends Factory
     {
         return [
             //
-            'id' => CourseItem::factory(),
             'creator_id' => User::factory(),
         ];
     }

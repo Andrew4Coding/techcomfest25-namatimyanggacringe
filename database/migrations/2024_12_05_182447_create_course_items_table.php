@@ -22,6 +22,8 @@ return new class extends Migration
             $table->foreign('course_section_id')->references('id')
                 ->on('course_sections')->onDelete('cascade');
 
+            $table->uuidMorphs('course_itemable');
+
             $table->timestamps();
         });
     }

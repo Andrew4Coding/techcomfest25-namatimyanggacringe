@@ -18,9 +18,6 @@ return new class extends Migration
             $table->timestampTz('finish');
             $table->integer('duration');
 
-            $table->foreign('id')->references('id')
-                ->on('course_items')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

@@ -13,6 +13,7 @@
             <label for="password" class="block text-sm">Password</label>
             <input type="password" name="password" id="password" required class="w-full border p-2 rounded mb-4">
 
+            {{ $users }}
             <!-- Remember Me -->
             <div class="flex items-center mb-4">
                 <input type="checkbox" name="remember" id="remember" class="mr-2">

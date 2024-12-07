@@ -13,10 +13,6 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-
-            $table->foreign('id')->references('id')
-                ->on('users')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

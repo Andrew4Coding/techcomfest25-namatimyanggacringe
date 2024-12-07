@@ -19,9 +19,6 @@ return new class extends Migration
             $table->timestampTz('due_date');
             $table->string('file_types');
 
-            $table->foreign('id')->references('id')
-                ->on('course_items')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

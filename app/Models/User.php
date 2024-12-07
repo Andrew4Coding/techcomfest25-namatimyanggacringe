@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
@@ -62,40 +63,9 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Get related student
-     *
-     * @return HasOne
-     */
-    public function student(): HasOne
+    public function userable(): MorphTo
     {
-        return $this->hasOne(Student::class, 'id');
-    }
-
-    /**
-     * Get related teacher
-     *
-     * @return HasOne
-     */
-    public function teacher(): HasOne
-    {
-        return $this->hasOne(Teacher::class, 'id');
-    }
-
-    /**
-     * @return bool
-     */
-    public function isStudent(): bool
-    {
-        return $this->student()->exists();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isTeacher(): bool
-    {
-        return $this->teacher()->exists();
+        return $this->morphTo();
     }
 
     /**

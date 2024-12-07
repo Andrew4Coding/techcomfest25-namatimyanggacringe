@@ -19,7 +19,6 @@ class QuizFactory extends Factory
     {
         return [
             //
-            'id' => CourseItem::factory(),
             'start' => $this->faker->dateTime(),
             'finish' => $this->faker->dateTime(),
             'duration' => $this->faker->randomDigit(),

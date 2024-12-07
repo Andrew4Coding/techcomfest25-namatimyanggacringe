@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Material extends Model
 {
@@ -32,9 +33,9 @@ class Material extends Model
     }
 
     /**
-     * @return BelongsTo
+     * @return MorphOne
      */
-    public function courseItem(): BelongsTo {
-        return $this->belongsTo(CourseItem::class);
+    public function courseItem(): MorphOne {
+        return $this->morphOne(CourseItem::class, 'coursename');
     }
 }

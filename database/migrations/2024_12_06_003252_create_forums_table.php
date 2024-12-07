@@ -18,8 +18,6 @@ return new class extends Migration
             // any user who created forums deleted their account.
             $table->uuid('creator_id')->nullable();
 
-            $table->foreign('id')->references('id')
-                ->on('course_items')->onDelete('cascade');
             $table->foreign('creator_id')->references('id')
                 ->on('users')->onDelete('set null');
 

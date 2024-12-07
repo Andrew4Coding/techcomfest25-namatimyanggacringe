@@ -15,7 +15,8 @@ class LoginController extends Controller
 {
     public function showLoginForm(): View
     {
-        return view('auth.login');
+        $kocik = Student::all();
+        return view('auth.login', ['users' => $kocik]);
     }
 
     public function login(Request $request): RedirectResponse

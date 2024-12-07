@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('verified');
             $table->rememberToken();
+            $table->uuidMorphs('userable');
             $table->timestamps();
         });
 
