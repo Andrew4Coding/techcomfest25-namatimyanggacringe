@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\User;
+use Database\Factories\StudentFactory;
+use Database\Factories\TeacherFactory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -58,24 +62,25 @@ class RegisterController extends Controller
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
             ]);
 
-            $user = new User([
+            $data = [
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'verified'=> 1,
                 'phone_number' => $request->input('phone_number'),
                 'password' => Hash::make($request->input('password')),
-            ]);
+            ];
 
-            $user->save();
-
-            // Make new teachers and students
-            if ($role == 'teacher') {
-                $user->teacher()->create();
-            } elseif ($role == 'student') {
-                $user->student()->create();
+            if ($role == 'student') {
+                $newUser = new Student();
+                $newUser->save();
+                $newUser->user()->create($data);
+            } else {
+                $newUser = new Teacher();
+                $newUser->save();
+                $newUser->user()->save($data);
             }
 
-            Auth::login($user);
+            Auth::login($newUser->user);
             return redirect('/');
         } catch (\Exception $e) {
             dd($e);

@@ -2,21 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Spatie\PdfToText\Pdf;
 
 class QuizController extends Controller
 {
-    public function showQuizSession(string $courseId, string $id, Request $request)
+    public function showQuiz()
+    {
+        return view('quiz.quiz');
+    }
+
+    public function showQuizSession(string $id, Request $request)
     {
         $page = $request->get('page', 1);
-        $questionCount = 20;
+
+        $quiz = Quiz::where('id', $id)->first();
+
+        $questionCount = $quiz->questions()->count();
 
         if ($page < 1 || $page > $questionCount) {
             $page = 1;
         }
 
-        return view('quiz.quiz', ['id' => $id, 'page' => $page, 'questionCount' => $questionCount]);
+        return view('quiz.quiz', [
+            'id' => $id,
+            'page' => $page,
+            'questionCount' => $questionCount,
+            'quiz' => $quiz,
+        ]);
     }
 
     public function showQuizCreation(string $courseId, Request $request)
@@ -29,7 +43,7 @@ class QuizController extends Controller
         return view('quiz.quiz_alter', ['id' => $id]);
     }
 
-    public function parseQuestionsFromCSV(Request $request) 
+    public function parseQuestionsFromCSV(Request $request)
     {
         // Validate the uploaded file
         $request->validate([

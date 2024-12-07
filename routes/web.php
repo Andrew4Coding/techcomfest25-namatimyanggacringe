@@ -33,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
     Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('course.show');
-    
+
     Route::post('/courses/{id}/sections', [CourseController::class, 'createCourseSection'])->name('course.section.create');
 
     Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
@@ -52,7 +52,7 @@ Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->na
 
 // Quiz
 Route::middleware(['auth'])->group(function () {
-    Route::get('/quiz/{courseId}/session/{id}', [QuizController::class, 'showQuizSession'])->name('quiz.show');
+    Route::get('/quiz/{id}', [QuizController::class, 'showQuizSession'])->name('quiz.show');
     Route::get('/quiz/{courseId}/create', [QuizController::class, 'showQuizCreation'])->name('quiz.alter');
     Route::get('/quiz/{courseId}/edit/{id}', [QuizController::class, 'showQuizAlteration'])->name('quiz.alter');
 

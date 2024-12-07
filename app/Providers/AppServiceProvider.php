@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        $isProd = $this->app->environment() === 'prod';
+        $isProd = $this->app->environment() === 'local';
 
         Model::preventLazyLoading(!$isProd);
         Model::preventSilentlyDiscardingAttributes(!$isProd);

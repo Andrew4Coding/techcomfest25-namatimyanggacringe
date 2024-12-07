@@ -15,7 +15,7 @@ class LoginController extends Controller
 {
     public function showLoginForm(): View
     {
-        $kocik = Student::all();
+        $kocik = Student::where('id', '9daa912c-5f0d-4b7a-99c9-bad31f246217')->first();
         return view('auth.login', ['users' => $kocik]);
     }
 
