@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Course;
 
+use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\CourseItem;
+use App\Models\CourseSection;
 use App\Models\Material;
 use Illuminate\Http\Request;
 
@@ -40,8 +43,11 @@ class CourseItemController extends Controller
                     'file_url' => $url,
                     'material_type' => 'pdf',
                 ]);
-    
-                return redirect()->route('course.show', ['id' => $courseItem->course_section_id]);
+
+                $course_section = CourseSection::findOrFail($course_section_id);
+                $course = Course::findOrFail($course_section->course_id);
+
+                return redirect()->route('course.show', ['id' => $course->id]);
             } else {
                 return redirect()->back()->withErrors(['error' => 'Invalid type']);
             }
