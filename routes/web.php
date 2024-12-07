@@ -51,8 +51,8 @@ Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->na
 
 
 // Quiz
-Route::middleware(['auth'])->group(function () {
-    Route::get('/quiz/{courseId}/session/{id}', [QuizController::class, 'showQuizSession'])->name('quiz.show');
+Route::middleware([])->group(function () {
+    Route::get('/quiz/{id}', [QuizController::class, 'showQuizSession'])->name('quiz.show');
     Route::get('/quiz/{courseId}/create', [QuizController::class, 'showQuizCreation'])->name('quiz.alter');
     Route::get('/quiz/{courseId}/edit/{id}', [QuizController::class, 'showQuizAlteration'])->name('quiz.alter');
 

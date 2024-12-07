@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Quiz;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Foundation\Application;
@@ -15,7 +16,7 @@ class LoginController extends Controller
 {
     public function showLoginForm(): View
     {
-        $kocik = Student::where('id', '9daa912c-5f0d-4b7a-99c9-bad31f246217')->first();
+        $kocik = Quiz::all();
         return view('auth.login', ['users' => $kocik]);
     }
 

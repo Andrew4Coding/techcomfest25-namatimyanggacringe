@@ -108,20 +108,21 @@
     <main class="px-20 h-[100vh] flex py-24 gap-20 bg-gray-50">
         {{-- Left Section: Question Navigation --}}
         <section class="flex flex-col w-1/4 gap-4">
+            {{ Auth::user()->userable()->first()->id }}
             <div id="timer" class="text-gray-700 bg-white px-4 py-2 rounded-lg shadow-md">
                 Time Left: <span id="time-left">10:00</span>
             </div>
             <section class="h-full w-full bg-white p-6 shadow-md rounded-lg">
                 {{-- Timer --}}
-    
+
                 <h2 class="text-lg font-semibold mb-4">Question Navigator</h2>
                 <div class="grid grid-cols-5 gap-3">
                     @for ($i = 0; $i < $questionCount; $i++)
                         <a href="/quiz/{{ $id }}?page={{ $i + 1 }}">
                             <div
-                                class="w-12 h-12 flex items-center justify-center rounded-full border-2 
-                                        shadow-sm 
-                                        hover:bg-blue-100 
+                                class="w-12 h-12 flex items-center justify-center rounded-full border-2
+                                        shadow-sm
+                                        hover:bg-blue-100
                                         @if ($i + 1 == $page) bg-blue-500 text-white @else text-gray-700 border-gray-300 @endif">
                                 {{ $i + 1 }}
                             </div>

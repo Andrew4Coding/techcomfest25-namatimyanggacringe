@@ -17,9 +17,9 @@ class QuizController extends Controller
     {
         $page = $request->get('page', 1);
 
-        $quiz = Quiz::where('id', $id)->first();
+        $quiz = Quiz::withCount('questions')->where('id', $id)->first();
 
-        $questionCount = $quiz->questions()->count();
+        $questionCount = $quiz->questions_count;
 
         if ($page < 1 || $page > $questionCount) {
             $page = 1;
