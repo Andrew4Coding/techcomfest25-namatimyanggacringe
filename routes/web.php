@@ -1,15 +1,16 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\ChatController;
-use App\Http\Controllers\Auth\CourseController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseItemController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UploadFileController;
 
 // Register
-Route::get('/register', [ RegisterController::class, 'showPickRole'])->name('role.select');
+Route::get('/register', [RegisterController::class, 'showPickRole'])->name('role.select');
 Route::post('/register', [RegisterController::class, 'selectRole']);
 
 Route::get('/register/student', [RegisterController::class, 'showStudentRegistrationForm'])->name('register.student');
@@ -32,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
     Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('course.show');
+    
     Route::post('/courses/{id}/sections', [CourseController::class, 'createCourseSection'])->name('course.section.create');
 
     Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
@@ -56,4 +58,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/quiz/generate', [QuizController::class, 'generateQuestionsFromPDF'])->name('quiz.generate');
     Route::post('/quiz/parse', [QuizController::class, 'parseQuestionsFromCSV'])->name('quiz.parse');
+});
+
+
+// Course Item
+Route::middleware(['auth'])->group(function () {
+    Route::post('/course/{course_section_id}/item/create', [CourseItemController::class, 'createCourseItem'])->name('course.item.create');
 });

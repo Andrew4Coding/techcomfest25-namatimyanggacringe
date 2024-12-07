@@ -28,7 +28,7 @@ class Quiz extends Model
      */
     public function courseItem(): MorphOne
     {
-        return $this->morphOne(CourseItem::class, 'coursename');
+        return $this->morphOne(CourseItem::class, 'course_itemable');
     }
 
     /**

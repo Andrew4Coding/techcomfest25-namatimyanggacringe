@@ -18,6 +18,7 @@ class Material extends Model
     public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'file_url',
         'material_type',
     ];
@@ -36,6 +37,6 @@ class Material extends Model
      * @return MorphOne
      */
     public function courseItem(): MorphOne {
-        return $this->morphOne(CourseItem::class, 'coursename');
+        return $this->morphOne(CourseItem::class, 'course_itemable');
     }
 }
