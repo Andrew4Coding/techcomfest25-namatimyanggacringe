@@ -23,7 +23,6 @@
             Course Item</button>
     </div>
 
-
     <dialog id="delete_section_modal_{{ $section->id }}" class="modal">
         <div class="modal-box">
             <h3 class="font-bold text-lg">Confirm Deletion</h3>
@@ -31,7 +30,7 @@
             <div class="modal-action">
                 <button type="button" class="btn"
                     onclick="document.getElementById('delete_section_modal_{{ $section->id }}').close();">Cancel</button>
-                <form method="POST" action="{{ route('course.section.delete', ['sectionId' => $section->id]) }}">
+                <form method="POST" action="{{ route('course.section.delete', ['id' => $section->id]) }}">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-error">Delete</button>
@@ -43,11 +42,10 @@
         </form>
     </dialog>
 
-
     <dialog id="edit_section_modal_{{ $section->id }}" class="modal">
         <div class="modal-box">
             <h3 class="font-bold text-lg">Edit Section</h3>
-            <form method="POST" action="{{ route('course.section.update', ['sectionId' => $section->id]) }}">
+            <form method="POST" action="{{ route('course.section.update', ['id' => $section->id]) }}">
                 @csrf
                 @method('PUT')
                 <div class="mb-4">
@@ -70,7 +68,6 @@
             <button>close</button>
         </form>
     </dialog>
-
 
     <dialog id="add_course_item_modal_{{ $section->id }}" class="modal">
         <div class="modal-box">
@@ -102,15 +99,59 @@
             <button>close</button>
         </form>
     </dialog>
+
+    <button class="btn btn-success"
+        onclick="document.getElementById('add_submission_modal_{{ $section->id }}').showModal();">
+        + Add Submission
+    </button>
+
+    <dialog id="add_submission_modal_{{ $section->id }}" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Create new Submission</h3>
+            <form method="POST" 
+            action="{{ route('submission.create', ['courseSectionId' => $section->id]) }}"
+            >
+                @csrf
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                    <input type="text" name="name" id="name" class="input input-bordered w-full" required />
+                </div>
+                <div class="mb-4">
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+                    <input type="text" name="content" id="content" class="input input-bordered w-full" required />
+                </div>
+                <div class="mb-4">
+                    <label for="opened_at" class="block text-sm font-medium text-gray-700">Opened At</label>
+                    <input type="datetime-local" name="opened_at" id="opened_at" class="input input-bordered w-full" required />
+                </div>
+                <div class="mb-4">
+                    <label for="due_date" class="block text-sm font-medium text-gray-700">Due Date</label>
+                    <input type="datetime-local" name="due_date" id="due_date" class="input input-bordered w-full" required />
+                </div>
+                <div class="mb-4">
+                    <label for="file_types" class="block text-sm font-medium text-gray-700">File Types</label>
+                    <input type="text" name="file_types" id="file_types" class="input input-bordered w-full" required />
+                </div>
+                <div class="modal-action">
+                    <button type="button" class="btn" onclick="document.getElementById('add_submission_modal_{{ $section->id }}').close();">Cancel</button>
+                    <button type="submit" class="btn btn-primary">+ Create</button>
+                </div>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
 </div>
 @foreach ($section->courseItems as $item)
-    <div class="bg-white shadow-sm p-5 w-full border-[1px] rounded-xl flex items-center gap-4 mt-5">
-        <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
-        <div>
-            <p class="font-semibold">{{ $item['name'] }}</p>
-            <p>{{ $item['description'] }}</p>
-        </div>
-        {{$item->material->file_url}}
-    </div>
+        @if ($item->course_itemable_type == 'App\Models\Material')
+            @include('course.components.material', ['item' => $item])
+        @elseif ($item->course_itemable_type == 'App\Models\Submission')
+            @include('course.components.submission', ['item' => $item])
+        @endif
 @endforeach
 </div>
