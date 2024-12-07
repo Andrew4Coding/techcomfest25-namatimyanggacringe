@@ -12,9 +12,11 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
-    <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
 
     <script src="//unpkg.com/alpinejs" defer></script>
 
@@ -913,8 +915,13 @@
     @endif
 </head>
 
-<body class="font-sans antialiased bg-white text-black">
-    @include('layout.navbar')
+<body class="font-poppins antialiased bg-white text-black">
+    <div class="flex gap-4 max-w-[100vw] overflow-hidden max-h-screen">
+        @include('layout.sidebar')
+        <main class="w-full overflow-y-scroll overflow-x-hidden px-20 py-20">
+            @yield('content')
+        </main>
+    </div>
     @if ($errors->any())
         <div role="alert" class="alert alert-error fixed bottom-10 right-10 max-w-[250px] overflow-y-scroll max-h-[200px] p-4 rounded-lg shadow-lg bg-red-100 text-red-800">
             <div class="flex items-center">
@@ -925,17 +932,13 @@
                 </svg>
                 <span class="font-semibold">Error</span>
             </div>
-            <ul class="mt-2 list-disc list-inside">
+            <ul class="mt-2 list-disc list-inside w-full">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
         </div>
     @endif
-    <main class="max-w-[100vw] overflow-x-hidden mb-52">
-        @yield('content')
-    </main>
-    @include('layout.footer')
 </body>
 
 </html>

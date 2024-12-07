@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Course;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
-use Illuminate\Http\RedirectResponse;
+use App\Models\CourseItem;
+use App\Models\CourseSection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -21,9 +22,10 @@ class CourseController extends Controller
     public function showCourse(
         string $id
     ): View {
-        $course = Course::with(['courseSections.courseItems.itemable'])->findOrFail($id);
+        $course = Course::findOrFail($id);
+        $courseSections = CourseSection::with('courseItems')->where('course_id', $id)->orderBy('created_at', 'asc')->get();
 
-        return view('course.course_detail', compact('course'));
+        return view('course.course_detail', compact('course', 'courseSections'));
     }
 
     public function createNewCourse(Request $request)
@@ -55,20 +57,36 @@ class CourseController extends Controller
         }
     }
 
-    public function createCourseSection(Request $request, string $id): RedirectResponse
+    public function deleteCourse(string $id)
     {
         try {
-            $course = Course::findOrFail($id);
-            $course->courseSections()->create([
+            Course::findOrFail($id)->delete();
+            return redirect()->route('courses');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Error deleting course']);
+        }
+    }
+
+    public function editCourse(Request $request, string $id)
+    {
+        // Validate input
+        $request->validate([
+            'name' => ['required', 'string'],
+            'description' => ['required', 'string'],
+            'class_code' => ['required', 'string', 'size:5'],
+        ]);
+
+        try {
+            Course::findOrFail($id)->update([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
+                'class_code' => $request->input('class_code'),
             ]);
 
-            return redirect()->route('course.show', compact('course'));
+            return redirect()->route('course', ['id' => $id]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Error updating course']);
         }
-        catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->withErrors(['error' => 'Error creating course section']);
-        }
+
     }
 }

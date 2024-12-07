@@ -4,8 +4,9 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\CourseItemController;
+use App\Http\Controllers\Course\CourseController;
+use App\Http\Controllers\Course\CourseItemController;
+use App\Http\Controllers\Course\CourseSectionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\UploadFileController;
 
@@ -34,7 +35,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
     Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('course.show');
     
-    Route::post('/courses/{id}/sections', [CourseController::class, 'createCourseSection'])->name('course.section.create');
+    Route::post('/courses/{id}/sections', [CourseSectionController::class, 'createCourseSection'])->name('course.section.create');
+    Route::delete('/courses/{id}', [CourseController::class, 'deleteCourse'])->name('course.delete');
+    Route::put('/courses/{id}', [CourseController::class, 'editCourse'])->name('course.update');
+    
+    Route::delete('/courses/sections/{sectionId}', [CourseSectionController::class, 'deleteCourseSection'])->name('course.section.delete');
+    Route::put('/courses/sections/{sectionId}', [CourseSectionController::class, 'updateCourseSection'])->name('course.section.update');
 
     Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
     Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
