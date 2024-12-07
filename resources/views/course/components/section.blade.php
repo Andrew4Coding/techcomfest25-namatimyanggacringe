@@ -110,6 +110,7 @@
             <p class="font-semibold">{{ $item['name'] }}</p>
             <p>{{ $item['description'] }}</p>
         </div>
+        {{$item->material->file_url}}
     </div>
 @endforeach
 </div>

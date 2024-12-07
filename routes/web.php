@@ -4,9 +4,12 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\CourseItemController;
+use App\Http\Controllers\Course\CourseController;
+use App\Http\Controllers\Course\CourseItemController;
+use App\Http\Controllers\Course\CourseSectionController;
+use App\Http\Controllers\ForumController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\UploadFileController;
 
 // Register
@@ -26,9 +29,14 @@ Route::post('/login', [LoginController::class, 'login']);
 // Logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {
-        return view('home');
+Route::get('/', function () {
+    return view('home');
+});
+
+// Route::middleware(['auth'])->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('dashboard');
     });
 
     Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
@@ -45,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::post('/upload/{courseId}', [UploadFileController::class, 'uploadFile'])->name('course.upload.file');
-});
+// });
 
 Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->name('course.create');
 
@@ -65,3 +73,15 @@ Route::middleware([])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::post('/course/{course_section_id}/item/create', [CourseItemController::class, 'createCourseItem'])->name('course.item.create');
 });
+
+
+// Forum 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/forum/{courseId}', [ForumController::class, 'index'])->name('forum.index');
+});
+
+
+// Submission
+// Route::middleware(['auth'])->group(function () {
+    Route::get('/submission/{submissionId}', [SubmissionController::class, 'show'])->name('submission.show');
+// });

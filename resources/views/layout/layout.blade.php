@@ -7,8 +7,6 @@
 
     <title>Mindora</title>
 
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('logo.png') }}">
-
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -913,11 +911,15 @@
             }
         </style>
     @endif
+
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('logo.png') }}">
 </head>
 
 <body class="font-poppins antialiased bg-white text-black">
     <div class="flex gap-4 max-w-[100vw] overflow-hidden max-h-screen">
-        @include('layout.sidebar')
+        @if (!request()->is('login') && !request()->is('register') && !request()->is('/'))
+            @include('layout.sidebar')
+        @endif
         <main class="w-full overflow-y-scroll overflow-x-hidden px-20 py-20">
             @yield('content')
         </main>
