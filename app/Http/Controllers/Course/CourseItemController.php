@@ -31,17 +31,15 @@ class CourseItemController extends Controller
     
                 $url = env('AWS_PATH') . $filePath;
 
-                $courseItem = CourseItem::create([
+                $newCourseItem = new Material();
+                $newCourseItem->file_url = $url;
+                $newCourseItem->material_type = 'pdf';
+                $newCourseItem->save();
+
+                $newCourseItem->courseItem()->create([
                     'name' => $request->input('name'),
                     'description' => $request->input('description'),
                     'course_section_id' => $course_section_id,
-                ]);
-    
-                // Create new material
-                Material::create([
-                    'id' => $courseItem->id,
-                    'file_url' => $url,
-                    'material_type' => 'pdf',
                 ]);
 
                 $course_section = CourseSection::findOrFail($course_section_id);

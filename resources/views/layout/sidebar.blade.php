@@ -33,9 +33,12 @@
         <button class="btn rounded-full w-14 h-14 bg-white border-none ">
             <x-lucide-settings class="w-6 h-6" />
         </button>
-        <button class="btn rounded-full w-14 h-14 bg-white border-none ">
-            <x-lucide-door-open class="w-6 h-6" />
-        </button>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+            <button class="btn rounded-full w-14 h-14 bg-white border-none ">
+                @csrf
+                <x-lucide-door-open class="w-6 h-6" />
+            </button>
+        </form>
         <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-300">
             <img class="w-full" src="" class="">
         </div>

@@ -77,7 +77,7 @@ class RegisterController extends Controller
             } else {
                 $newUser = new Teacher();
                 $newUser->save();
-                $newUser->user()->save($data);
+                $newUser->user()->create($data);
             }
 
             Auth::login($newUser->user);

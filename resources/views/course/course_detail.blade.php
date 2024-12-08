@@ -9,7 +9,10 @@
         </div>
         <div>
             <h1 class="text-3xl font-extrabold mb-4">{{ $course->name }}</h1>
-            <p class="text-lg mb-6">{{ $course->description }}</p>
+            <div class="flex gap-2 items-center">
+                <p class="text-lg mb-6">{{ $course->description }}</p>
+                <san class="badge badge-primary py-2 font-medium text-sm mb-6">{{ $course->class_code }}</span>
+            </div>
         </div>
 
         <div class="flex w-full gap-6">

@@ -4,9 +4,13 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\CourseItemController;
+use App\Http\Controllers\Course\CourseController;
+use App\Http\Controllers\Course\CourseItemController;
+use App\Http\Controllers\Course\CourseSectionController;
+use App\Http\Controllers\ForumController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\SubmissionController;
+use App\Http\Controllers\SubmissionItemController;
 use App\Http\Controllers\UploadFileController;
 
 // Register
@@ -26,15 +30,24 @@ Route::post('/login', [LoginController::class, 'login']);
 // Logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+Route::get('/', function () {
+    return view('home');
+});
+
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {
-        return view('home');
+    Route::get('/dashboard', function () {
+        return view('dashboard');
     });
 
     Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
     Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('course.show');
+    Route::delete('/courses/delete/{id}', [CourseController::class, 'deleteCourse'])->name('course.delete');
+    Route::put('/courses/update/{id}', [CourseController::class, 'updateCourse'])->name('course.update');
 
-    Route::post('/courses/{id}/sections', [CourseController::class, 'createCourseSection'])->name('course.section.create');
+
+    Route::post('/courses/{id}/sections', [CourseSectionController::class, 'createCourseSection'])->name('course.section.create');
+    Route::delete('/courses/sections/delete/{id}', [CourseSectionController::class, 'deleteCourseSection'])->name('course.section.delete');
+    Route::put('/courses/sections/update/{id}', [CourseSectionController::class, 'updateCourseSection'])->name('course.section.update');
 
     Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
     Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
@@ -48,7 +61,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->name('course.create');
-
 
 // Quiz
 Route::middleware([])->group(function () {
@@ -64,4 +76,20 @@ Route::middleware([])->group(function () {
 // Course Item
 Route::middleware(['auth'])->group(function () {
     Route::post('/course/{course_section_id}/item/create', [CourseItemController::class, 'createCourseItem'])->name('course.item.create');
+});
+
+
+// Forum 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/forum/{courseId}', [ForumController::class, 'index'])->name('forum.index');
+});
+
+
+// Submission
+Route::middleware(['auth'])->group(function () {
+    Route::get('/submission/{submissionId}', [SubmissionController::class, 'show'])->name('submission.show');
+    Route::post('/submission/{courseSectionId}/create', [SubmissionController::class, 'createSubmissionField'])->name('submission.create');
+    Route::delete('/submission/{submissionId}/delete', [SubmissionController::class, 'deleteSubmissionField'])->name('submission.delete');
+
+    Route::post('/submission/{submissionId}/submit', [SubmissionItemController::class, 'submitToSubmission'])->name('submission.submit');
 });
