@@ -17,7 +17,11 @@ class QuizController extends Controller
     {
         $page = $request->get('page', 1);
 
-        $quiz = Quiz::withCount('questions')->where('id', $id)->first();
+        $quiz = Quiz::with(['questions' => function ($query) {
+            $query->select('id', 'content', 'quiz_id');
+        }, 'questions.questionChoices' => function ($query) {
+            $query->select('content', 'question_id');
+        }])->withCount('questions')->where('id', $id)->first();
 
         $questionCount = $quiz->questions_count;
 
