@@ -1,6 +1,6 @@
 <div class="h-screen min-w-[120px] bg-white flex flex-col items-center py-20 border-r-2">
     <div class="flex flex-col gap-6">
-        <a href="/">
+        <a href="/dashboard">
             <div class="tooltip tooltip-right" data-tip="Dashboard">
                 <button class="btn rounded-full w-14 h-14">
                     <x-lucide-layout-grid class="w-6 h-6" />

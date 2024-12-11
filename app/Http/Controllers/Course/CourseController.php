@@ -67,7 +67,7 @@ class CourseController extends Controller
         }
     }
 
-    public function editCourse(Request $request, string $id)
+    public function updateCourse(Request $request, string $id)
     {
         // Validate input
         $request->validate([
@@ -83,8 +83,9 @@ class CourseController extends Controller
                 'class_code' => $request->input('class_code'),
             ]);
 
-            return redirect()->route('course', ['id' => $id]);
+            return redirect()->route('course.show', ['id' => $id]);
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->back()->withErrors(['error' => 'Error updating course']);
         }
 

@@ -93,3 +93,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/submission/{submissionId}/submit', [SubmissionItemController::class, 'submitToSubmission'])->name('submission.submit');
 });
+
+
+
+Route::get('/upload-pdf', [UploadFileController::class, 'showFileForm'])->name('pdf.upload.form');
+Route::post('/upload-pdf', [UploadFileController::class, 'processUpload'])->name('pdf.upload.process');
