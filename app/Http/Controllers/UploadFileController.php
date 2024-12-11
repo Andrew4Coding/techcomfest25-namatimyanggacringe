@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Spatie\PdfToText\Pdf;
 
 class UploadFileController extends Controller
@@ -16,7 +18,7 @@ class UploadFileController extends Controller
         return response()->json(['file_path' => $filePath, 'course_id' => $courseId]);
     }
 
-    public function showFileForm() 
+    public function showFileForm()
     {
         return view('upload');
     }
@@ -24,18 +26,50 @@ class UploadFileController extends Controller
     public function processUpload(Request $request)
     {
         $request->validate([
-            'pdf' => 'required|mimes:pdf|max:10240', // Max 10MB
+            'pdf' => 'required|mimes:pdf|max:2048', // Validate file type and size
         ]);
 
-        // Store the uploaded file
-        $filePath = $request->file('pdf')->store('uploads');
+        try {
+            // Upload the file to S3
+            if ($request->hasFile('pdf')) {
+                $file = $request->file('pdf');
+                $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
 
-        // Extract text from the PDF
-        $text = Pdf::getText(storage_path('app/' . $filePath));
+                // Sanitize the file name
+                $fileName = basename($fileName);  // Remove any path components that might be included in the filename
 
-        return response()->json([
-            'message' => 'PDF uploaded successfully!',
-            'text_content' => $text,
-        ]);
+                // Store on S3
+                $filePath = Storage::disk('s3')->putFileAs('pdfs', $file, $fileName);
+
+                // Generate the URL for the uploaded file on S3
+                $fileUrl = Storage::disk('s3')->url('pdfs/' . $fileName);
+
+                // Get the file content from S3
+                $fileContent = Storage::disk('s3')->get('pdfs/' . $fileName);
+
+                // Create a temporary path for the file
+                $tempPath = storage_path('app/temp/' . $fileName);
+
+                // Check if the 'temp' directory exists and create it if necessary
+                if (!is_dir(storage_path('app/temp'))) {
+                    mkdir(storage_path('app/temp'), 0775, true);
+                }
+
+                // Save the file content to the temporary location
+                file_put_contents($tempPath, $fileContent);
+
+                // Extract text from the downloaded file
+                $text = Pdf::getText($tempPath);
+
+                // Clean up the temporary file
+                unlink($tempPath);
+
+                return view('upload')->with('result', $text);
+            } else {
+                return back()->withErrors(['error' => 'No file uploaded.']);
+            }
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Unable to process the PDF: ' . $e->getMessage()]);
+        }
     }
 }

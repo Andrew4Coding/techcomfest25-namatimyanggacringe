@@ -29,7 +29,7 @@ class CourseItemController extends Controller
                 $fileName = $file->getClientOriginalName();
                 $filePath = $file->storeAs("uploads/{$course_section_id}", $fileName, 's3');
     
-                $url = env('AWS_PATH') . $filePath;
+                $url = env('AWS_URL') . $filePath;
 
                 $newCourseItem = new Material();
                 $newCourseItem->file_url = $url;

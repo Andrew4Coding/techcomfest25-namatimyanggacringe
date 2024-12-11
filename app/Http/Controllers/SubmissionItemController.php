@@ -28,7 +28,7 @@ class SubmissionItemController extends Controller
             $course_section_id = $submission->courseItem->courseSection->id; // Assuming course_section_id is a property of Submission
             $filePath = $file->storeAs("uploads/submissions/{$course_section_id}/{$submissionId}/{$user->id}", $fileName, 's3');
 
-            $url = env('AWS_PATH') . $filePath;
+            $url = env('AWS_URL') . $filePath;
 
             $submissionItem = SubmissionItem::create([
                 'grade' => 0,
