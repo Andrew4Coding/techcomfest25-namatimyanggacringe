@@ -1,3 +1,6 @@
+@php
+    $role = auth()->user()->userable_type;
+@endphp
 @props(['submission', 'submissionItem', 'canSubmit'])
 <!-- Submission Status -->
 <section class="bg-gray-100 shadow-md rounded-lg p-6 mb-8">
@@ -18,7 +21,7 @@
 </section>
 
 <!-- Number of Attempts -->
-<section class="bg-white shadow-md rounded-lg p-6 mb-8">
+<section class="rounded-lg">
     <h3 class="font-bold text-2xl text-gray-800 mb-4">Number of Attempts</h3>
     <p class="text-gray-600">You have tried to submit {{ $submissionItem->attempts }} /
         {{ $submission->max_attempts }} times.</p>
@@ -26,7 +29,7 @@
 
 <!-- Submit Your Work -->
 @if ($canSubmit)
-    <section class="bg-white shadow-md rounded-lg p-6">
+    <section class="rounded-lg">
         <h3 class="font-bold text-2xl text-gray-800 mb-4">Submit Your Work</h3>
         <form action="{{ route('submission.submit', $submission->id) }}" method="POST" enctype="multipart/form-data"
             class="flex flex-col gap-4">
@@ -42,7 +45,7 @@
         </form>
     </section>
 @else
-    <section class="bg-white shadow-md rounded-lg p-6">
+    <section class="rounded-lg">
         <h3 class="font-bold text-2xl text-gray-800 mb-4">Submit Your Work</h3>
         <p class="text-gray-600">Submission is currently closed.</p>
     </section>
@@ -97,8 +100,9 @@
         <button>close</button>
     </form>
 </dialog>
+
 <!-- Grade and Comments -->
-<section class="bg-white shadow-md rounded-lg p-6 mb-8">
+<section class="rounded-lg">
     <h3 class="font-bold text-2xl text-gray-800 mb-4">Grade and Comments</h3>
     <div class="flex flex-col gap-4">
         <div class="flex items-center">

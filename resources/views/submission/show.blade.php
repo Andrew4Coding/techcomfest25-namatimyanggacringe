@@ -1,3 +1,7 @@
+@php
+    $role = auth()->user()->userable_type;
+@endphp
+
 @extends('layout.layout')
 
 @section('content')
@@ -35,5 +39,11 @@
             </button>
         </div>
 
-        @include('submission.sections.student_submission')
+        @if ($role == 'App\Models\Teacher')
+            <div>
+                
+            </div>
+        @else
+            @include('submission.sections.student_submission')
+        @endif
 @endsection
