@@ -4,8 +4,8 @@
 return [
     'theme' => [
         'yellow' => [
-            'primary' => '#E2BF3F',
-            'secondary' => '#705801',
+            'primary' => '#F7EDC9',
+            'secondary' => '#E2BF3F',
             'tertiary' => '#705801',
         ],
         'blue' => [
@@ -31,7 +31,7 @@ return [
         'brown' => [
             'primary' => '#F6D7C2',
             'secondary' => '#80441C',
-            'tertiary' => '#705801',
+            'tertiary' => '#FFFFFF',
         ],
     ],
 ];

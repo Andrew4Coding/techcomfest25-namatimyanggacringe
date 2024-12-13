@@ -14,27 +14,37 @@ class CourseController extends Controller
 {
 
     public function enrollCourse(Request $request) {
-        $user = Auth::user();
+        try {
 
-        // Find course by class code
-        $course = Course::where('class_code', $request->input('class_code'))->first();
+            $user = Auth::user();
 
-        // Check if course exists
-        if (!$course) {
-            return redirect()->back()->withErrors(['error' => 'Course not found']);
+            if ($user->userable_type == 'App\Models\Teacher') {
+                return redirect()->back()->withErrors(['error' => 'Teachers cannot enroll in courses']);
+            }
+    
+            // Find course by class code
+            $course = Course::where('class_code', $request->input('class_code'))->first();
+    
+            // Check if course exists
+            if (!$course) {
+                return redirect()->back()->withErrors(['error' => 'Course not found']);
+            }
+    
+            // Check if user is already enrolled in course
+            if ($user->userable->courses->contains($course)) {
+                return redirect()->back()->withErrors(['error' => 'You are already enrolled in this course']);
+            }
+    
+            // Enroll user in course
+            $user->userable->courses()->attach($course);
+    
+            $courses = $user->userable->courses;
+    
+            return redirect()->route('courses', compact('courses'));
         }
-
-        // Check if user is already enrolled in course
-        if ($user->userable->courses->contains($course)) {
-            return redirect()->back()->withErrors(['error' => 'You are already enrolled in this course']);
+        catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Error enrolling in course']);
         }
-
-        // Enroll user in course
-        $user->userable->courses()->attach($course);
-
-        $courses = $user->userable->courses;
-
-        return redirect()->route('courses', compact('courses'));
     }
 
     public function unenrollCourse(Request $request) {

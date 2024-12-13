@@ -14,9 +14,13 @@ class SubmissionController extends Controller
             $submission = Submission::findOrFail($submissionId);
 
             // Show user submission
-            $submissionItems = $submission->submissionItems()->where('student_id', $request->user()->userable_id)->get();
+            $submissionItem = $submission->submissionItems()->where('student_id', $request->user()->userable_id)->first();
 
-            return view('submission.show', compact('submission', 'submissionItems'));
+            $fullOfChances = $submissionItem ? $submissionItem->attempts >= $submission->max_attempts : false;
+
+            $canSubmit = $submission->opened_at <= now() && $submission->due_date >= now() && !$fullOfChances;
+
+            return view('submission.show', compact('submission', 'submissionItem', 'canSubmit'));
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back()->withErrors('Submission not found.');

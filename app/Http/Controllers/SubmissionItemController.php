@@ -35,6 +35,7 @@ class SubmissionItemController extends Controller
 
             if ($submissionItem) {
                 $submissionItem->submission_urls = $url;
+                $submissionItem->attempts += 1;
                 $submissionItem->save();
             } else {
                 $submissionItem = new SubmissionItem();
@@ -48,7 +49,6 @@ class SubmissionItemController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Error submitting to submission: ' . $e->getMessage());
-            dd($e);
             return redirect()->back()->withErrors('Failed to submit to submission.');
         }
     }
