@@ -1,3 +1,9 @@
+@php
+    $selected_theme = $course->theme;
+
+    $theme = config('constants.theme')[$selected_theme];
+@endphp
+
 @extends('layout.layout')
 @section('content')
     <main class="w-full">
@@ -8,13 +14,16 @@
             </ul>
         </div>
 
-        <div class="bg-[#F7EDC9] p-5 mb-10 text-[#705801]">
-            <h1 class="text-3xl font-extrabold mb-4">{{ $course->name }}</h1>
+        <div class="p-5 mb-10 course-{{$selected_theme}} rounded-xl">
+            <h1 class="text-xl font-extrabold mb-4">{{ $course->name }}</h1>
             <div class="flex gap-2 items-center">
-                <p class="text-lg mb-6 font-medium">{{ $course->description }}</p>
-                <san class="badge badge-primary py-2 font-medium text-sm mb-6">{{ $course->class_code }}</span>
+                <p class="text-sm mb-6 font-medium">{{ $course->description }}</p>
+                <san class="badge badge-primary py-2 font-medium text-sm mb-6"
+                    style="background-color: {{ $theme['secondary'] }}; color: {{ $theme['tertiary'] }}"
+                >{{ $course->class_code }}</span>
             </div>
         </div>
+
 
         @include('course.sections.course_list', ['course' => $course, 'courseSections' => $courseSections])
     </main>

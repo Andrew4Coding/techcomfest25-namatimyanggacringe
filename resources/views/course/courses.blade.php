@@ -35,9 +35,11 @@
                 Add Course
             </button>
         @else
-            <button onclick="enroll_class_modal.showModal()" class="btn btn-primary">
-                Enroll a Class
-            </button>
+            @if (!$courses->isEmpty())
+                <button onclick="enroll_class_modal.showModal()" class="btn btn-primary">
+                    Enroll a Class
+                </button>
+            @endif
         @endif
     </section>
 

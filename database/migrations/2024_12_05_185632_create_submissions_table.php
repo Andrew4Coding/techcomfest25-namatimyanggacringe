@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestampTz('opened_at');
             $table->timestampTz('due_date');
             $table->string('file_types');
+            $table->integer('max_attempts')->default(100);
 
             $table->timestamps();
         });

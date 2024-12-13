@@ -94,8 +94,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/submission/{submissionId}', [SubmissionController::class, 'show'])->name('submission.show');
     Route::post('/submission/{courseSectionId}/create', [SubmissionController::class, 'createSubmissionField'])->name('submission.create');
     Route::delete('/submission/{submissionId}/delete', [SubmissionController::class, 'deleteSubmissionField'])->name('submission.delete');
+    Route::put('/submission/{submissionId}/update', [SubmissionController::class, 'updateSubmissionField'])->name('submission.update');
 
     Route::post('/submission/{submissionId}/submit', [SubmissionItemController::class, 'submitToSubmission'])->name('submission.submit');
+
 });
 
 

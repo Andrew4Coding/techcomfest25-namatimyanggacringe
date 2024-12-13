@@ -17,3 +17,27 @@
 .btn-error {
     color: white;
 }
+
+.course-green {
+    @apply bg-[#C6E4DC] text-[#39816E]
+}
+
+.course-yellow {
+    @apply bg-[#F7EDC9] text-[#705801]
+}
+
+.course-red {
+    @apply bg-[#F9D1D1] text-[#8B2C2C]
+}
+
+.course-blue {
+    @apply bg-[#C6E4DC] text-[#39816E]
+}
+
+.course-purple {
+    @apply bg-[#E9D8FD] text-[#6C5DD3]
+}
+
+.course-brown {
+    @apply bg-[#F5E1D3] text-[#7F5A3F]
+}
