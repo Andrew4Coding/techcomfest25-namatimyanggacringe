@@ -5,6 +5,11 @@
 * {
     font-family: 'poppins', sans-serif;
 }
+
+.btn {
+    @apply rounded-xl
+}
+
 .btn-primary {
     @apply bg-[#017AE4] hover:bg-[#015FB4] text-white font-medium border-none;
 }

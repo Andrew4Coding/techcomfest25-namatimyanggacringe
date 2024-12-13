@@ -8,10 +8,10 @@
             </ul>
         </div>
 
-        <div>
+        <div class="bg-[#F7EDC9] p-5 mb-10 text-[#705801]">
             <h1 class="text-3xl font-extrabold mb-4">{{ $course->name }}</h1>
             <div class="flex gap-2 items-center">
-                <p class="text-lg mb-6">{{ $course->description }}</p>
+                <p class="text-lg mb-6 font-medium">{{ $course->description }}</p>
                 <san class="badge badge-primary py-2 font-medium text-sm mb-6">{{ $course->class_code }}</span>
             </div>
         </div>

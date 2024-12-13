@@ -920,12 +920,12 @@
         @if (!request()->is('login') && !request()->is('register'))
             @include('layout.sidebar')
         @endif
-        <main class="w-full overflow-y-scroll overflow-x-hidden px-20 py-20">
+        <main class="w-full overflow-y-scroll overflow-x-hidden px-10 md:px-20 py-20">
             @yield('content')
         </main>
     </div>
     @if ($errors->any())
-        <div role="alert" class="alert alert-error fixed bottom-10 right-10 max-w-[250px] overflow-y-scroll max-h-[200px] p-4 rounded-lg shadow-lg bg-red-100 text-red-800">
+        <div role="alert" class="alert alert-error fixed bottom-10 right-10 max-w-[250px] overflow-y-scroll max-h-[200px] p-4 rounded-lg shadow-lg bg-red-100 text-red-800 flex flex-col items-start gap-2">
             <div class="flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current mr-2" fill="none"
                     viewBox="0 0 24 24">
@@ -934,7 +934,7 @@
                 </svg>
                 <span class="font-semibold">Error</span>
             </div>
-            <ul class="mt-2 list-disc list-inside w-full">
+            <ul class="mt-2 list-none list-inside w-full">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach

@@ -1,17 +1,44 @@
 @extends('layout.layout')
 @section('content')
+    <section class="flex flex-col md:flex-row justify-between">
+        <dialog id="enroll_class_modal" class="modal">
+            <div class="modal-box">
+                <h3 class="font-bold text-lg">Enroll in a Class</h3>
+                <form method="POST" action="{{ route('course.enroll') }}" id="enroll_class_form">
+                    @csrf
+                    <div class="mb-4">
+                        <label for="enroll_class_code" class="block text-sm font-medium text-gray-700">Class Code</label>
+                        <input type="text" name="class_code" id="enroll_class_code" class="input input-bordered w-full"
+                            required />
+                    </div>
+                    <div class="modal-action">
+                        <button type="button" class="btn" onclick="hideModal('enroll_class_modal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Enroll</button>
+                    </div>
+                </form>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>close</button>
+            </form>
+        </dialog>
 
-    <section class="flex justify-between">
-        <div class="space-y-2">
+        <div class="space-y-2 mb-4 md:mb-0">
             <h1 class="text-3xl font-bold">Course List</h1>
             <p class="font-medium bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
                 Siap untuk melanjutkan perjalanan belajarmu?
             </p>
         </div>
-    
-        <button onclick="add_course_modal.showModal()" class="btn btn-primary">
-            Add Course
-        </button>
+
+        {{-- If User is a teacher --}}
+        @if (Auth::user()->userable_type == 'App\Models\Teacher')
+            <button onclick="add_course_modal.showModal()" class="btn btn-primary">
+                Add Course
+            </button>
+        @else
+            <button onclick="enroll_class_modal.showModal()" class="btn btn-primary">
+                Enroll a Class
+            </button>
+        @endif
     </section>
 
     <dialog id="add_course_modal" class="modal">
@@ -33,7 +60,7 @@
                     <input name="class_code" id="class_code" class="input input-bordered w-full" required />
                 </div>
                 <div class="modal-action">
-                    <button type="button" class="btn" onclick="hideModal('tnc-agreement-titled')">Cancel</button>
+                    <button type="button" class="btn" onclick="hideModal('add_course_modal')">Cancel</button>
                     <button type="submit" class="btn btn-primary">+ Create</button>
                 </div>
             </form>
@@ -43,30 +70,17 @@
         </form>
     </dialog>
 
-    <div class="grid grid-cols-3 gap-4 min-h-[100vh]">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[50vh] py-4">
         @if ($courses->isEmpty())
-            <p>No courses available.</p>
+            <div class="w-full flex flex-col gap-4 items-center justify-center col-span-3">
+                <h1 class="text-xl font-semibold">Kamu belum memiliki course apapun</h1>
+                <button class="btn btn-primary" onclick="enroll_class_modal.showModal()">
+                    Enroll a Class
+                </button>
+            </div>
         @else
             @foreach ($courses as $course)
-                <a href="{{ url('/courses/' . $course->id) }}" class="no-underline text-black">
-                    <div class="max-w-sm rounded overflow-hidden shadow-lg h-full">
-                        <img class="w-full" src="{{ $course->image }}" alt="{{ $course->title }}">
-                        <div class="px-6 py-4">
-                            <div class="font-bold text-xl mb-2">{{ $course->title }}</div>
-                            <p class="text-gray-700 text-base">
-                                {{ $course->description }}
-                            </p>
-                        </div>
-                        <div class="px-6 pt-4 pb-2">
-                            {{-- Map all Sections --}}
-                            <span
-                                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{ $course->code }}</span>
-                            <span
-                                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{{ $course->duration }}
-                                hours</span>
-                        </div>
-                    </div>
-                </a>
+                @include('course.components.course_card', ['course' => $course])
             @endforeach
         @endif
     </div>

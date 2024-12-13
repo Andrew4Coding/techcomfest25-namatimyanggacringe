@@ -13,9 +13,64 @@ use Illuminate\View\View;
 class CourseController extends Controller
 {
 
-    public function showCourses(): View
+    public function enrollCourse(Request $request) {
+        $user = Auth::user();
+
+        // Find course by class code
+        $course = Course::where('class_code', $request->input('class_code'))->first();
+
+        // Check if course exists
+        if (!$course) {
+            return redirect()->back()->withErrors(['error' => 'Course not found']);
+        }
+
+        // Check if user is already enrolled in course
+        if ($user->userable->courses->contains($course)) {
+            return redirect()->back()->withErrors(['error' => 'You are already enrolled in this course']);
+        }
+
+        // Enroll user in course
+        $user->userable->courses()->attach($course);
+
+        $courses = $user->userable->courses;
+
+        return redirect()->route('courses', compact('courses'));
+    }
+
+    public function unenrollCourse(Request $request) {
+        $user = Auth::user();
+
+        // Find course by class code
+        $course = Course::where('class_code', $request->input('class_code'))->first();
+
+        // Check if course exists
+        if (!$course) {
+            return redirect()->back()->withErrors(['error' => 'Course not found']);
+        }
+
+        // Check if user is already enrolled in course
+        if (!$user->userable->courses->contains($course)) {
+            return redirect()->back()->withErrors(['error' => 'You are not enrolled in this course']);
+        }
+
+        // Unenroll user in course
+        $user->userable->courses()->detach($course);
+
+        $courses = $user->userable->courses;
+
+        return redirect()->route('courses', compact('courses'));
+    }
+
+    public function showCourses(Request $request): View
     {
         $courses = Course::get();
+        $student = Auth::user()->userable;
+
+        if ($student) {
+            $courses = $student->courses;
+            return view('course.courses', compact('courses'));
+        }
+
         return view('course.courses', compact('courses'));
     }
 

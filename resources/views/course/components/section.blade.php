@@ -2,7 +2,7 @@
 
 <div class="flex flex-col gap-2">
     <div class="flex flex-col gap-4">
-        <h1 class="text-3xl font-bold">{{ $section->name }}</h1>
+        <h1 class="text-base font-semibold bg-[#F7EDC9] w-fit px-3 py-2 rounded">{{ $section->name }}</h1>
         <p class="font-medium">{{ $section->description }}</p>
     </div>
 

@@ -35,19 +35,23 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
-
     Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
     Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('course.show');
     Route::delete('/courses/delete/{id}', [CourseController::class, 'deleteCourse'])->name('course.delete');
     Route::put('/courses/update/{id}', [CourseController::class, 'updateCourse'])->name('course.update');
 
+    Route::post('/courses/enroll', [CourseController::class, 'enrollCourse'])->name('course.enroll');
+    Route::post('/courses/unenroll', [CourseController::class, 'unenrollCourse'])->name('course.unenroll');
 
     Route::post('/courses/{id}/sections', [CourseSectionController::class, 'createCourseSection'])->name('course.section.create');
     Route::delete('/courses/sections/delete/{id}', [CourseSectionController::class, 'deleteCourseSection'])->name('course.section.delete');
     Route::put('/courses/sections/update/{id}', [CourseSectionController::class, 'updateCourseSection'])->name('course.section.update');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
 
     Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
     Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
