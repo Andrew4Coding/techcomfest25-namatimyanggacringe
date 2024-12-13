@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('password');
             $table->boolean('verified');
+            $table->string('profile_picture')->nullable();
             $table->rememberToken();
             $table->uuidMorphs('userable');
             $table->timestamps();

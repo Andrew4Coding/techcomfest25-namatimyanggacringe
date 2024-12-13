@@ -1,3 +1,7 @@
+@php
+    $PATH = env('AWS_URL');
+@endphp
+
 <div class="h-screen min-w-[120px] bg-white flex flex-col items-center py-20 border-r-2">
     <div class="flex flex-col gap-6">
         <a href="/dashboard">
@@ -7,8 +11,8 @@
                 </button>
             </div>
         </a>
-        <a href="/">
-            <div class="tooltip tooltip-right" data-tip="Dashboard">
+        <a href="/courses">
+            <div class="tooltip tooltip-right" data-tip="Courses">
                 <button class="btn rounded-full w-14 h-14">
                     <x-lucide-laptop class="w-6 h-6" />
                 </button>
@@ -39,8 +43,18 @@
                 <x-lucide-door-open class="w-6 h-6" />
             </button>
         </form>
-        <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-300">
-            <img class="w-full" src="" class="">
-        </div>
+        <a
+            href="/profile"
+        >
+            <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-300" >
+                <img class="w-full object-cover" src="
+                    @if (auth()->user()->profile_picture)
+                        {{ $PATH . auth()->user()->profile_picture }}                        
+                    @else
+                        H
+                    @endif
+                " class="">
+            </div>
+        </a>
     </div>
 </div>

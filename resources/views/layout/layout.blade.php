@@ -917,7 +917,7 @@
 
 <body class="font-poppins antialiased bg-white text-black">
     <div class="flex gap-4 max-w-[100vw] overflow-hidden max-h-screen">
-        @if (!request()->is('login') && !request()->is('register') && !request()->is('/'))
+        @if (!request()->is('login') && !request()->is('register'))
             @include('layout.sidebar')
         @endif
         <main class="w-full overflow-y-scroll overflow-x-hidden px-20 py-20">

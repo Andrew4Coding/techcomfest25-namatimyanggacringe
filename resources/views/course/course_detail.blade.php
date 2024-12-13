@@ -16,21 +16,7 @@
             </div>
         </div>
 
-        <div role="tablist" class="tabs tabs-bordered w-full">
-            <input type="radio" name="my_tabs_1" role="tab" class="tab w-full" aria-label="Tab 1" />
-            <div role="tabpanel" class="tab-content p-10">
-                @include('course.sections.course_list', ['course' => $course, 'courseSections' => $courseSections])
-            </div>
-
-            <input type="radio" name="my_tabs_1" role="tab" class="tab w-full" aria-label="Tab 2" checked="checked" />
-            <div role="tabpanel" class="tab-content p-10">
-            </div>
-
-            <input type="radio" name="my_tabs_1" role="tab" class="tab w-full" aria-label="Tab 3" />
-            <div role="tabpanel" class="tab-content p-10">Tab content 3</div>
-        </div>
-
-
+        @include('course.sections.course_list', ['course' => $course, 'courseSections' => $courseSections])
     </main>
     <script>
         // on DOM load detect if session contains error

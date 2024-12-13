@@ -60,7 +60,16 @@ class RegisterController extends Controller
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'phone_number' => ['required', 'string', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             ]);
+
+            $profilePicture = $request->file('profile_picture');
+            
+            // Upload to s3
+            if ($profilePicture) {
+                $fileName = $profilePicture->getClientOriginalName();
+                $filePath = $profilePicture->storeAs('profile_pictures', $fileName, 's3');
+            }
 
             $data = [
                 'name' => $request->input('name'),
@@ -68,6 +77,7 @@ class RegisterController extends Controller
                 'verified'=> 1,
                 'phone_number' => $request->input('phone_number'),
                 'password' => Hash::make($request->input('password')),
+                'profile_picture' => $filePath ?? null,
             ];
 
             if ($role == 'student') {
