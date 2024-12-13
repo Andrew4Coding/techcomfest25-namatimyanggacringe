@@ -4,30 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\CourseSection;
 use App\Models\Submission;
+use App\Models\SubmissionItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class SubmissionController extends Controller
 {
-    public function show(Request $request, string $submissionId) {
+    public function show(Request $request, string $submissionId)
+    {
         try {
+            $role = $request->user()->userable_type;
             $submission = Submission::findOrFail($submissionId);
+            // Get all submission items with its student           
+            if ($role === 'App\Models\Teacher') {
+                $submissionItems = $submission->submissionItems()->with('student')->get();
+    
+                return view('submission.show', compact('submission', 'submissionItems'));
+            } else {
+                // Show user submission
+                $submissionItem = $submission->submissionItems()->where('student_id', $request->user()->userable_id)->first();
 
-            // Show user submission
-            $submissionItem = $submission->submissionItems()->where('student_id', $request->user()->userable_id)->first();
+                $fullOfChances = $submissionItem ? $submissionItem->attempts >= $submission->max_attempts : false;
 
-            $fullOfChances = $submissionItem ? $submissionItem->attempts >= $submission->max_attempts : false;
+                $canSubmit = $submission->opened_at <= now() && $submission->due_date >= now() && !$fullOfChances;
 
-            $canSubmit = $submission->opened_at <= now() && $submission->due_date >= now() && !$fullOfChances;
-
-            return view('submission.show', compact('submission', 'submissionItem', 'canSubmit'));
+                return view('submission.show', compact('submission', 'submissionItem', 'canSubmit'));
+            }
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back()->withErrors('Submission not found.');
         }
     }
 
-    public function createSubmissionField(Request $request, string $courseSectionId) {
+    public function createSubmissionField(Request $request, string $courseSectionId)
+    {
         try {
             $request->validate([
                 'name' => ['required', 'string'],
@@ -35,7 +45,7 @@ class SubmissionController extends Controller
                 'content' => ['required', 'string'],
                 'opened_at' => ['required', 'date'],
                 'due_date' => ['required', 'date'],
-                'file_types'=> ['required', 'string'],
+                'file_types' => ['required', 'string'],
             ]);
 
             $newCourseItem = new Submission();
@@ -62,7 +72,8 @@ class SubmissionController extends Controller
         }
     }
 
-    public function deleteSubmissionField(string $submissionId) {
+    public function deleteSubmissionField(string $submissionId)
+    {
         try {
             $submission = Submission::findOrFail($submissionId);
             $courseId = $submission->courseItem->courseSection->course_id;
@@ -74,7 +85,8 @@ class SubmissionController extends Controller
         }
     }
 
-    public function updateSubmissionField(Request $request, string $submissionId) {
+    public function updateSubmissionField(Request $request, string $submissionId)
+    {
         try {
             $submission = Submission::findOrFail($submissionId);
 
@@ -84,7 +96,7 @@ class SubmissionController extends Controller
                 'content' => ['required', 'string'],
                 'opened_at' => ['required', 'date'],
                 'due_date' => ['required', 'date'],
-                'file_types'=> ['required', 'string'],
+                'file_types' => ['required', 'string'],
             ]);
 
             $submission->content = $request->input('content');
@@ -104,4 +116,20 @@ class SubmissionController extends Controller
             return redirect()->back()->withErrors('Failed to update submission field.');
         }
     }
+
+    public function displaySubmission(Request $request, string $submissionItemId) {
+        try {
+            $submissionItem = SubmissionItem::findOrFail($submissionItemId);
+            $submission = $submissionItem->submission;
+            $user = $request->user();
+
+            $role = $user->userable_type;
+
+            return view('submission.display', compact('submissionItem'));
+        } catch (\Exception $e) {
+            Log::error('Error displaying submission: ' . $e->getMessage());
+            return redirect()->back()->withErrors('Failed to display submission.');
+        }
+    }
+
 }

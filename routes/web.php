@@ -97,9 +97,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/submission/{submissionId}/update', [SubmissionController::class, 'updateSubmissionField'])->name('submission.update');
 
     Route::post('/submission/{submissionId}/submit', [SubmissionItemController::class, 'submitToSubmission'])->name('submission.submit');
-
+    Route::post('/submission/{submissionItemId}/grade', [SubmissionItemController::class, 'gradeAndCommentSubmission'])->name('submission.grade');
 });
-
 
 
 Route::get('/upload-pdf', [UploadFileController::class, 'showFileForm'])->name('pdf.upload.form');

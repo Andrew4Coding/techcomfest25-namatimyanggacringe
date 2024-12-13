@@ -33,16 +33,15 @@
                 </div>
             </div>
             <button
-                class="mt-4 px-4 py-2 bg-yellow-500 text-white font-bold rounded-md hover:bg-yellow-600 transition duration-300"
+            class="btn btn-primary mt-4"
                 onclick="document.getElementById('edit_submission_modal').showModal();">
                 Edit Submission Detail
             </button>
         </div>
 
+        
         @if ($role == 'App\Models\Teacher')
-            <div>
-                
-            </div>
+            @include('submission.sections.teacher_submission')
         @else
             @include('submission.sections.student_submission')
         @endif

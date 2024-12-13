@@ -52,4 +52,24 @@ class SubmissionItemController extends Controller
             return redirect()->back()->withErrors('Failed to submit to submission.');
         }
     }
+
+    public function gradeAndCommentSubmission(Request $request, string $submissionItemId) {
+        try {
+            $request->validate([
+                'grade' => ['required', 'numeric'],
+                'comment' => ['required', 'string'],
+            ]);
+
+            $submissionItem = SubmissionItem::findOrFail($submissionItemId);
+            $submissionItem->grade = $request->input('grade');
+            $submissionItem->comment = $request->input('comment');
+            $submissionItem->save();
+
+            return redirect()->route('submission.show', ['submissionId' => $submissionItem->submission_id]);
+
+        } catch (\Exception $e) {
+            Log::error('Error grading and commenting submission: ' . $e->getMessage());
+            return redirect()->back()->withErrors('Failed to grade and comment submission.');
+        }
+    }
 }
