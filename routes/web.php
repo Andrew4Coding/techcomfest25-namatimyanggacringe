@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Livewire\Quiz;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseItemController;
@@ -68,7 +69,9 @@ Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->na
 
 // Quiz
 Route::middleware([])->group(function () {
-    Route::get('/quiz/{id}', [QuizController::class, 'showQuizSession'])->name('quiz.show');
+    Route::get('/quiz', Quiz::class);
+
+//    Route::get('/quiz/{id}', [QuizController::class, 'showQuizSession'])->name('quiz.show');
     Route::get('/quiz/{courseId}/create', [QuizController::class, 'showQuizCreation'])->name('quiz.alter');
     Route::get('/quiz/{courseId}/edit/{id}', [QuizController::class, 'showQuizAlteration'])->name('quiz.alter');
 
@@ -83,7 +86,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-// Forum 
+// Forum
 Route::middleware(['auth'])->group(function () {
     Route::get('/forum/{courseId}', [ForumController::class, 'index'])->name('forum.index');
 });

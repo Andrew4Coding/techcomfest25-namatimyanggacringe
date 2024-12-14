@@ -19,6 +19,7 @@ class QuizSubmissionItem extends Model
         'answer',
         'score',
         'quiz_submission_id',
+        'question_id',
     ];
 
     /**
@@ -27,5 +28,13 @@ class QuizSubmissionItem extends Model
     public function quizSubmission(): BelongsTo
     {
         return $this->belongsTo(QuizSubmission::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function question(): BelongsTo
+    {
+        return $this->belongsTo(Question::class);
     }
 }

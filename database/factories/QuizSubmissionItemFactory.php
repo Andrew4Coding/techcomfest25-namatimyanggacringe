@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Question;
 use App\Models\QuizSubmission;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,6 +21,7 @@ class QuizSubmissionItemFactory extends Factory
         return [
             //
             'quiz_submission_id' => QuizSubmission::factory(),
+            'question_id' => Question::factory(),
             'answer' => $this->faker->word(),
             'score' => $this->faker->numberBetween(1, 10),
         ];

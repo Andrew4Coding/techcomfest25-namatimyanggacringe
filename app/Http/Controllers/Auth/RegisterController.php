@@ -64,7 +64,7 @@ class RegisterController extends Controller
             ]);
 
             $profilePicture = $request->file('profile_picture');
-            
+
             // Upload to s3
             if ($profilePicture) {
                 $fileName = $profilePicture->getClientOriginalName();
@@ -74,7 +74,7 @@ class RegisterController extends Controller
             $data = [
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
-                'verified'=> 1,
+                'verified' => 1,
                 'phone_number' => $request->input('phone_number'),
                 'password' => Hash::make($request->input('password')),
                 'profile_picture' => $filePath ?? null,

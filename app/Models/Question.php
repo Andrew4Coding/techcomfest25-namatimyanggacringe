@@ -50,4 +50,12 @@ class Question extends Model
     {
         return $this->hasMany(QuestionChoice::class);
     }
+
+    /**
+     * @return HasMany
+     */
+    public function quizSubmissionItems(): HasMany
+    {
+        return $this->hasMany(QuizSubmissionItem::class);
+    }
 }

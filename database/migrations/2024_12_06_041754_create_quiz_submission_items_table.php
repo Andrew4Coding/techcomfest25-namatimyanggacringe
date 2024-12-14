@@ -18,9 +18,12 @@ return new class extends Migration
             $table->float('score')->default(0);
 
             $table->uuid('quiz_submission_id');
+            $table->uuid('question_id');
 
             $table->foreign('quiz_submission_id')->references('id')
                 ->on('quiz_submissions')->onDelete('cascade');
+            $table->foreign('question_id')->references('id')
+                ->on('questions')->onDelete('cascade');
 
             $table->timestamps();
         });
