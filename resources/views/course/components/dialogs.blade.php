@@ -62,7 +62,7 @@
             </div>
             <div class="mb-4">
                 <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full" required></textarea>
+                <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
             </div>
             <div class="modal-action">
                 <button type="button" class="btn" onclick="add_section_modal.close()">Cancel</button>

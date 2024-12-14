@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
             'profile_picture' => null,
         ];
 
-        $newUser = new Student();
+        $newUser = new Teacher();
         $newUser->save();
         $newUser->user()->create($data);
 

@@ -13,6 +13,7 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\SubmissionItemController;
 use App\Http\Controllers\UploadFileController;
+use App\Http\Middleware\TeacherMiddleware;
 
 // Register
 Route::get('/register', [RegisterController::class, 'showPickRole'])->name('role.select');
@@ -36,20 +37,6 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
-    Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('course.show');
-    Route::delete('/courses/delete/{id}', [CourseController::class, 'deleteCourse'])->name('course.delete');
-    Route::put('/courses/update/{id}', [CourseController::class, 'updateCourse'])->name('course.update');
-
-    Route::post('/courses/enroll', [CourseController::class, 'enrollCourse'])->name('course.enroll');
-    Route::post('/courses/unenroll', [CourseController::class, 'unenrollCourse'])->name('course.unenroll');
-
-    Route::post('/courses/{id}/sections', [CourseSectionController::class, 'createCourseSection'])->name('course.section.create');
-    Route::delete('/courses/sections/delete/{id}', [CourseSectionController::class, 'deleteCourseSection'])->name('course.section.delete');
-    Route::put('/courses/sections/update/{id}', [CourseSectionController::class, 'updateCourseSection'])->name('course.section.update');
-});
-
-Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     });
@@ -65,10 +52,27 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/upload/{courseId}', [UploadFileController::class, 'uploadFile'])->name('course.upload.file');
 });
 
-Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->name('course.create');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
+    Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('course.show');
+    Route::post('/courses/enroll', [CourseController::class, 'enrollCourse'])->name('course.enroll');
+    Route::post('/courses/unenroll', [CourseController::class, 'unenrollCourse'])->name('course.unenroll');
+
+    Route::middleware([TeacherMiddleware::class])->group(function () {
+        Route::get('/courses/{id}/edit', [CourseController::class, 'showCourseEdit'])->name('course.show.edit');
+        Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->name('course.create');
+        Route::delete('/courses/delete/{id}', [CourseController::class, 'deleteCourse'])->name('course.delete');
+        Route::put('/courses/update/{id}', [CourseController::class, 'updateCourse'])->name('course.update');
+        Route::post('/courses/{id}/sections', [CourseSectionController::class, 'createCourseSection'])->name('course.section.create');
+        Route::delete('/courses/sections/delete/{id}', [CourseSectionController::class, 'deleteCourseSection'])->name('course.section.delete');
+        Route::put('/courses/sections/update/{id}', [CourseSectionController::class, 'updateCourseSection'])->name('course.section.update');
+        Route::delete('/courses/items/delete/{id}', [CourseItemController::class, 'deleteCourseItem'])->name('course.item.delete');
+    });
+});
 
 // Quiz
-Route::middleware([])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/quiz/{id}', [QuizController::class, 'showQuizSession'])->name('quiz.show');
     Route::get('/quiz/{courseId}/create', [QuizController::class, 'showQuizCreation'])->name('quiz.alter');
     Route::get('/quiz/{courseId}/edit/{id}', [QuizController::class, 'showQuizAlteration'])->name('quiz.alter');
@@ -86,23 +90,26 @@ Route::middleware(['auth'])->group(function () {
 // Forum 
 Route::middleware(['auth'])->group(function () {
     Route::get('/forum/{forumId}', [ForumController::class, 'index'])->name('forum.index');
-    Route::post('/forum/{courseSectionId}/create', [ForumController::class, 'create'])->name('forum.create');
     Route::post('/forum/{forumId}/discussion/create', [ForumController::class, 'createNewDiscussion'])->name('forum.discussion.create');
-
     Route::get('/forum/{forumId}/discussion/{discussionId}', [ForumDiscussionController::class, 'index'])->name('forum.discussion.index');
-
     Route::post('/forum/{forumId}/discussion/{discussionId}/reply', [ForumDiscussionController::class, 'replyToDiscussion'])->name('forum.discussion.reply');
+
+    Route::middleware([TeacherMiddleware::class])->group(function () {
+        Route::post('/forum/{courseSectionId}/create', [ForumController::class, 'create'])->name('forum.create');
+    });
 });
 
 // Submission
 Route::middleware(['auth'])->group(function () {
     Route::get('/submission/{submissionId}', [SubmissionController::class, 'show'])->name('submission.show');
-    Route::post('/submission/{courseSectionId}/create', [SubmissionController::class, 'createSubmissionField'])->name('submission.create');
-    Route::delete('/submission/{submissionId}/delete', [SubmissionController::class, 'deleteSubmissionField'])->name('submission.delete');
-    Route::put('/submission/{submissionId}/update', [SubmissionController::class, 'updateSubmissionField'])->name('submission.update');
-
     Route::post('/submission/{submissionId}/submit', [SubmissionItemController::class, 'submitToSubmission'])->name('submission.submit');
-    Route::post('/submission/{submissionItemId}/grade', [SubmissionItemController::class, 'gradeAndCommentSubmission'])->name('submission.grade');
+    
+    Route::middleware([TeacherMiddleware::class])->group(function () {
+        Route::post('/submission/{courseSectionId}/create', [SubmissionController::class, 'createSubmissionField'])->name('submission.create');
+        Route::delete('/submission/{submissionId}/delete', [SubmissionController::class, 'deleteSubmissionField'])->name('submission.delete');
+        Route::put('/submission/{submissionId}/update', [SubmissionController::class, 'updateSubmissionField'])->name('submission.update');
+        Route::post('/submission/{submissionItemId}/grade', [SubmissionItemController::class, 'gradeAndCommentSubmission'])->name('submission.grade');
+    });
 });
 
 

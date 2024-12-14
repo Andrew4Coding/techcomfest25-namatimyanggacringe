@@ -7,12 +7,8 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next)
     {
-        if (!Auth::check() || $request->user()->userable instanceOf $role) {
-            return redirect()->route('login')->with('error', 'Access denied.');
-        }
-
-        return $next($request);
+        
     }
 }

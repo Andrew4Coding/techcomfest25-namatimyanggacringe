@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Course;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
-use App\Models\CourseItem;
 use App\Models\CourseSection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -74,12 +73,15 @@ class CourseController extends Controller
     public function showCourses(Request $request): View
     {
         $courses = Course::get();
-        $student = Auth::user()->userable;
+        $user = Auth::user();
 
-        if ($student) {
-            $courses = $student->courses;
+        if ($user && $user->userable_type == 'App\Models\Student') {
+            $courses = $user->userable->courses;
             return view('course.courses', compact('courses'));
         }
+
+        // Get courses by teacher id
+        $courses = Course::where('teacher_id', $user->userable->id)->get();
 
         return view('course.courses', compact('courses'));
     }
@@ -93,8 +95,31 @@ class CourseController extends Controller
 
         $tab = $request->input('tab');
 
-        return view('course.course_detail', compact('course', 'courseSections', 'tab'));
+        $isEdit = false;
+
+        return view('course.course_detail', compact('course', 'courseSections', 'tab', 'isEdit'));
     }
+
+    public function showCourseEdit(
+        Request $request,
+        string $id
+    ): View {
+        try {
+            $course = Course::findOrFail($id);
+            $courseSections = CourseSection::with('courseItems')->where('course_id', $id)->orderBy('created_at', 'asc')->get();
+    
+            $tab = $request->input('tab');
+
+            $isEdit = true && Auth::user()->userable_type == 'App\Models\Teacher';
+    
+            return view('course.course_detail', compact('course', 'courseSections', 'tab', 'isEdit'));
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->withErrors(['error' => 'Error loading course']);
+        }
+    }
+        
 
     public function createNewCourse(Request $request)
     {
@@ -110,7 +135,7 @@ class CourseController extends Controller
 
         try {
             Course::create([
-                'teacher_id' => $user->id,
+                'teacher_id' => $user->userable->id,
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
                 'class_code' => $request->input('class_code'),
@@ -151,7 +176,7 @@ class CourseController extends Controller
                 'class_code' => $request->input('class_code'),
             ]);
 
-            return redirect()->route('course.show', ['id' => $id]);
+            return redirect()->route('course.show.edit', ['id' => $id]);
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back()->withErrors(['error' => 'Error updating course']);

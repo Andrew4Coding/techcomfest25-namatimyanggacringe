@@ -920,7 +920,7 @@
         @if (!request()->is('login') && !request()->is('register'))
             @include('layout.sidebar')
         @endif
-        <main class="w-full overflow-y-scroll overflow-x-hidden px-10 md:px-20 py-20">
+        <main class="w-full overflow-y-scroll overflow-x-hidden px-5 md:px-20 py-20">
             @yield('content')
         </main>
     </div>

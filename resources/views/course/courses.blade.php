@@ -42,8 +42,30 @@
             @endif
         @endif
     </section>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[50vh] py-4">
+        @if ($courses->isEmpty())
+            <div class="w-full flex flex-col gap-4 items-center justify-center col-span-3">
+                @if (Auth::user()->userable_type == 'App\Models\Teacher')
+                    <h1 class="text-xl font-semibold">Kamu belum membuat course apapun</h1>
+                    <button class="btn btn-primary" onclick="add_course_modal.showModal()">
+                        Add Course
+                    </button>
+                @else
+                    <h1 class="text-xl font-semibold">Kamu belum memiliki course apapun</h1>
+                    <button class="btn btn-primary" onclick="enroll_class_modal.showModal()">
+                        Enroll a Class
+                    </button>
+                @endif
+            </div>
+        @else
+            @foreach ($courses as $course)
+                @include('course.components.course_card', ['course' => $course])
+            @endforeach
+        @endif
+    </div>
 
-    <dialog id="add_course_modal" class="modal">
+        <dialog id="add_course_modal" class="modal">
         <div class="modal-box">
             <h3 class="font-bold text-lg">Create new Course</h3>
             <form method="POST" action="{{ route('course.create') }}" id="add_course_form">
@@ -59,7 +81,7 @@
                 <div class="mb-4">
                     <label for="class_code" class="block text-sm font-medium text-gray-700">Class Code (5
                         Letters)</label>
-                    <input name="class_code" id="class_code" class="input input-bordered w-full" required />
+                    <input name="class_code" id="class_code" class="input input-bordered w-full" required pattern="[A-Za-z]{5}" title="Class code must be 5 letters" />
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn" onclick="hideModal('add_course_modal')">Cancel</button>
@@ -71,19 +93,4 @@
             <button>close</button>
         </form>
     </dialog>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[50vh] py-4">
-        @if ($courses->isEmpty())
-            <div class="w-full flex flex-col gap-4 items-center justify-center col-span-3">
-                <h1 class="text-xl font-semibold">Kamu belum memiliki course apapun</h1>
-                <button class="btn btn-primary" onclick="enroll_class_modal.showModal()">
-                    Enroll a Class
-                </button>
-            </div>
-        @else
-            @foreach ($courses as $course)
-                @include('course.components.course_card', ['course' => $course])
-            @endforeach
-        @endif
-    </div>
 @endsection
