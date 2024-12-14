@@ -38,7 +38,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return view('dashboard.dashboard');
     });
 
     Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
