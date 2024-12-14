@@ -37,19 +37,6 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
-    Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('course.show');
-    Route::delete('/courses/delete/{id}', [CourseController::class, 'deleteCourse'])->name('course.delete');
-    Route::put('/courses/update/{id}', [CourseController::class, 'updateCourse'])->name('course.update');
-
-    Route::post('/courses/enroll', [CourseController::class, 'enrollCourse'])->name('course.enroll');
-    Route::post('/courses/unenroll', [CourseController::class, 'unenrollCourse'])->name('course.unenroll');
-
-    Route::post('/courses/{id}/sections', [CourseSectionController::class, 'createCourseSection'])->name('course.section.create');
-    Route::delete('/courses/sections/delete/{id}', [CourseSectionController::class, 'deleteCourseSection'])->name('course.section.delete');
-    Route::put('/courses/sections/update/{id}', [CourseSectionController::class, 'updateCourseSection'])->name('course.section.update');
-});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
@@ -67,7 +54,27 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/upload/{courseId}', [UploadFileController::class, 'uploadFile'])->name('course.upload.file');
 });
 
-Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->name('course.create');
+// Courses
+Route::middleware(['auth'])->group(function () {
+    Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
+    Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('course.show');
+    Route::post('/courses/enroll', [CourseController::class, 'enrollCourse'])->name('course.enroll');
+    Route::post('/courses/unenroll', [CourseController::class, 'unenrollCourse'])->name('course.unenroll');
+
+    Route::middleware([TeacherMiddleware::class])->group(function () {
+        Route::get('/courses/{id}/edit', [CourseController::class, 'showCourseEdit'])->name('course.show.edit');
+        Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->name('course.create');
+        Route::delete('/courses/delete/{id}', [CourseController::class, 'deleteCourse'])->name('course.delete');
+        Route::put('/courses/update/{id}', [CourseController::class, 'updateCourse'])->name('course.update');
+        Route::post('/courses/{id}/sections', [CourseSectionController::class, 'createCourseSection'])->name('course.section.create');
+        Route::delete('/courses/sections/delete/{id}', [CourseSectionController::class, 'deleteCourseSection'])->name('course.section.delete');
+        Route::put('/courses/sections/update/{id}', [CourseSectionController::class, 'updateCourseSection'])->name('course.section.update');
+        Route::delete('/courses/items/delete/{id}', [CourseItemController::class, 'deleteCourseItem'])->name('course.item.delete');
+
+        Route::post('/courses/sections/toggle/{id}', [CourseSectionController::class, 'toggleVisibility'])->name('course.section.toggle');
+        Route::post('/courses/items/toggle/{id}', [CourseItemController::class, 'toggleVisibility'])->name('course.item.toggle');
+    });
+});
 
 // Quiz
 Route::middleware([])->group(function () {
