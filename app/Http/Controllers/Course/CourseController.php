@@ -85,12 +85,15 @@ class CourseController extends Controller
     }
 
     public function showCourse(
+        Request $request,
         string $id
     ): View {
         $course = Course::findOrFail($id);
         $courseSections = CourseSection::with('courseItems')->where('course_id', $id)->orderBy('created_at', 'asc')->get();
 
-        return view('course.course_detail', compact('course', 'courseSections'));
+        $tab = $request->input('tab');
+
+        return view('course.course_detail', compact('course', 'courseSections', 'tab'));
     }
 
     public function createNewCourse(Request $request)

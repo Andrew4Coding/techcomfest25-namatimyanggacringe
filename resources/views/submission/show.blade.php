@@ -32,11 +32,13 @@
                     <p class="text-gray-600">{{ $submission->due_date }}</p>
                 </div>
             </div>
-            <button
-            class="btn btn-primary mt-4"
-                onclick="document.getElementById('edit_submission_modal').showModal();">
-                Edit Submission Detail
-            </button>
+            @if ($role == 'App\Models\Teacher')                
+                <button
+                    class="btn btn-primary mt-4"
+                    onclick="document.getElementById('edit_submission_modal').showModal();">
+                    Edit Submission Detail
+                </button>
+            @endif
         </div>
 
         

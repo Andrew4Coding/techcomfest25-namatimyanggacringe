@@ -85,7 +85,8 @@ Route::middleware(['auth'])->group(function () {
 
 // Forum 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/forum/{courseId}', [ForumController::class, 'index'])->name('forum.index');
+    Route::get('/forum/{forumId}', [ForumController::class, 'index'])->name('forum.index');
+    Route::post('/forum/{courseSectionId}/create', [ForumController::class, 'create'])->name('forum.create');
 });
 
 

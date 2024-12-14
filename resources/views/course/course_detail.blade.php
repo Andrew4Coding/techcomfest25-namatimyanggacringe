@@ -24,8 +24,10 @@
             </div>
         </div>
 
+        @if ($tab == 'overview' || $tab == '')
+            @include('course.sections.course_list', ['course' => $course, 'courseSections' => $courseSections])
+        @endif
 
-        @include('course.sections.course_list', ['course' => $course, 'courseSections' => $courseSections])
     </main>
     <script>
         // on DOM load detect if session contains error
