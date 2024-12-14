@@ -8,6 +8,7 @@ use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseItemController;
 use App\Http\Controllers\Course\CourseSectionController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ForumDiscussionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\SubmissionItemController;
@@ -82,13 +83,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/course/{course_section_id}/item/create', [CourseItemController::class, 'createCourseItem'])->name('course.item.create');
 });
 
-
 // Forum 
 Route::middleware(['auth'])->group(function () {
     Route::get('/forum/{forumId}', [ForumController::class, 'index'])->name('forum.index');
     Route::post('/forum/{courseSectionId}/create', [ForumController::class, 'create'])->name('forum.create');
-});
+    Route::post('/forum/{forumId}/discussion/create', [ForumController::class, 'createNewDiscussion'])->name('forum.discussion.create');
 
+    Route::get('/forum/{forumId}/discussion/{discussionId}', [ForumDiscussionController::class, 'index'])->name('forum.discussion.index');
+
+    Route::post('/forum/{forumId}/discussion/{discussionId}/reply', [ForumDiscussionController::class, 'replyToDiscussion'])->name('forum.discussion.reply');
+});
 
 // Submission
 Route::middleware(['auth'])->group(function () {

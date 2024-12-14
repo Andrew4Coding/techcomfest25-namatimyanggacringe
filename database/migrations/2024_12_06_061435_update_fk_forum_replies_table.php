@@ -13,7 +13,7 @@ return new class extends Migration
     {
         //
         Schema::table('forum_replies', function (Blueprint $table) {
-            $table->uuid('reply_to_id');
+            $table->uuid('reply_to_id')->nullable();
             $table->foreign('reply_to_id')->references('id')
                 ->on('forum_replies');
         });
