@@ -3,17 +3,18 @@
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ForumDiscussionController;
+use App\Http\Middleware\TeacherMiddleware;
+use App\Livewire\Quiz;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseItemController;
 use App\Http\Controllers\Course\CourseSectionController;
 use App\Http\Controllers\ForumController;
-use App\Http\Controllers\ForumDiscussionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\SubmissionItemController;
 use App\Http\Controllers\UploadFileController;
-use App\Http\Middleware\TeacherMiddleware;
 
 // Register
 Route::get('/register', [RegisterController::class, 'showPickRole'])->name('role.select');
@@ -37,6 +38,20 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
+    Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('course.show');
+    Route::delete('/courses/delete/{id}', [CourseController::class, 'deleteCourse'])->name('course.delete');
+    Route::put('/courses/update/{id}', [CourseController::class, 'updateCourse'])->name('course.update');
+
+    Route::post('/courses/enroll', [CourseController::class, 'enrollCourse'])->name('course.enroll');
+    Route::post('/courses/unenroll', [CourseController::class, 'unenrollCourse'])->name('course.unenroll');
+
+    Route::post('/courses/{id}/sections', [CourseSectionController::class, 'createCourseSection'])->name('course.section.create');
+    Route::delete('/courses/sections/delete/{id}', [CourseSectionController::class, 'deleteCourseSection'])->name('course.section.delete');
+    Route::put('/courses/sections/update/{id}', [CourseSectionController::class, 'updateCourseSection'])->name('course.section.update');
+});
+
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard.dashboard');
     });
@@ -52,32 +67,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/upload/{courseId}', [UploadFileController::class, 'uploadFile'])->name('course.upload.file');
 });
 
-
-// Courses
-Route::middleware(['auth'])->group(function () {
-    Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
-    Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('course.show');
-    Route::post('/courses/enroll', [CourseController::class, 'enrollCourse'])->name('course.enroll');
-    Route::post('/courses/unenroll', [CourseController::class, 'unenrollCourse'])->name('course.unenroll');
-
-    Route::middleware([TeacherMiddleware::class])->group(function () {
-        Route::get('/courses/{id}/edit', [CourseController::class, 'showCourseEdit'])->name('course.show.edit');
-        Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->name('course.create');
-        Route::delete('/courses/delete/{id}', [CourseController::class, 'deleteCourse'])->name('course.delete');
-        Route::put('/courses/update/{id}', [CourseController::class, 'updateCourse'])->name('course.update');
-        Route::post('/courses/{id}/sections', [CourseSectionController::class, 'createCourseSection'])->name('course.section.create');
-        Route::delete('/courses/sections/delete/{id}', [CourseSectionController::class, 'deleteCourseSection'])->name('course.section.delete');
-        Route::put('/courses/sections/update/{id}', [CourseSectionController::class, 'updateCourseSection'])->name('course.section.update');
-        Route::delete('/courses/items/delete/{id}', [CourseItemController::class, 'deleteCourseItem'])->name('course.item.delete');
-
-        Route::post('/courses/sections/toggle/{id}', [CourseSectionController::class, 'toggleVisibility'])->name('course.section.toggle');
-        Route::post('/courses/items/toggle/{id}', [CourseItemController::class, 'toggleVisibility'])->name('course.item.toggle');
-    });
-});
+Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->name('course.create');
 
 // Quiz
-Route::middleware(['auth'])->group(function () {
-    Route::get('/quiz/{id}', [QuizController::class, 'showQuizSession'])->name('quiz.show');
+Route::middleware([])->group(function () {
+    Route::get('/quiz', Quiz::class)->name('quiz.show');
+
+//    Route::get('/quiz/{id}', [QuizController::class, 'showQuizSession'])->name('quiz.show');
     Route::get('/quiz/{courseId}/create', [QuizController::class, 'showQuizCreation'])->name('quiz.alter');
     Route::get('/quiz/{courseId}/edit/{id}', [QuizController::class, 'showQuizAlteration'])->name('quiz.alter');
 
@@ -91,7 +87,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/course/{course_section_id}/item/create', [CourseItemController::class, 'createCourseItem'])->name('course.item.create');
 });
 
-// Forum 
+
+// Forum
 Route::middleware(['auth'])->group(function () {
     Route::get('/forum/{forumId}', [ForumController::class, 'index'])->name('forum.index');
     Route::post('/forum/{forumId}/discussion/create', [ForumController::class, 'createNewDiscussion'])->name('forum.discussion.create');
@@ -103,11 +100,12 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+
 // Submission
 Route::middleware(['auth'])->group(function () {
     Route::get('/submission/{submissionId}', [SubmissionController::class, 'show'])->name('submission.show');
     Route::post('/submission/{submissionId}/submit', [SubmissionItemController::class, 'submitToSubmission'])->name('submission.submit');
-    
+
     Route::middleware([TeacherMiddleware::class])->group(function () {
         Route::post('/submission/{courseSectionId}/create', [SubmissionController::class, 'createSubmissionField'])->name('submission.create');
         Route::delete('/submission/{submissionId}/delete', [SubmissionController::class, 'deleteSubmissionField'])->name('submission.delete');
@@ -115,6 +113,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/submission/{submissionItemId}/grade', [SubmissionItemController::class, 'gradeAndCommentSubmission'])->name('submission.grade');
     });
 });
+
 
 
 Route::get('/upload-pdf', [UploadFileController::class, 'showFileForm'])->name('pdf.upload.form');
