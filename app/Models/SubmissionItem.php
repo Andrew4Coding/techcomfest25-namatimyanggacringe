@@ -19,6 +19,7 @@ class SubmissionItem extends Model
         'grade',
         'comment',
         'submission_urls',
+        'attempts',
         'student_id',
         'submission_id'
     ];

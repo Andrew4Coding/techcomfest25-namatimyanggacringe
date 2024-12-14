@@ -24,6 +24,7 @@ class CourseFactory extends Factory
             'description' => $this->faker->paragraph(),
             'teacher_id' => Teacher::factory(),
             'class_code' => Str::random(5),
+            'theme' => $this->faker->randomElement(['yellow', 'blue', 'green', 'red', 'purple', 'brown']),
         ];
     }
 }

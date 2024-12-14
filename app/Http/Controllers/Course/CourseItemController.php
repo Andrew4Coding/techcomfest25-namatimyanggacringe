@@ -45,13 +45,39 @@ class CourseItemController extends Controller
                 $course_section = CourseSection::findOrFail($course_section_id);
                 $course = Course::findOrFail($course_section->course_id);
 
-                return redirect()->route('course.show', ['id' => $course->id]);
+                return redirect()->route('course.show.edit', ['id' => $course->id]);
             } else {
                 return redirect()->back()->withErrors(['error' => 'Invalid type']);
             }
         }
         catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function deleteCourseItem(string $id) 
+    {
+        try {
+            $courseItem = CourseItem::findOrFail($id);
+            $courseItem->courseItemable->delete();
+            $courseItem->delete();
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Error deleting course item']);
+        }
+    }
+
+    public function toggleVisibility(string $id) 
+    {
+        try {
+            $courseItem = CourseItem::findOrFail($id);
+            $courseItem->isPublic = !$courseItem->isPublic;
+            $courseItem->save();
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Error toggling visibility']);
         }
     }
 }

@@ -33,7 +33,7 @@
 
             <!-- Profile Picture -->
             <label for="profile_picture" class="block text-sm">Profile Picture</label>
-            <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="w-full border p-2 rounded mb-4" onchange="previewImage(event)">
+            <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="file-input file-input-primary w-full border p-2 rounded mb-4" onchange="previewImage(event)">
 
             {{-- Direct to Login --}}
             <div class="mt-4">
@@ -42,7 +42,6 @@
 
             <!-- Submit Button -->
             <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded">Register</button>
-
         </form>
     </div>
 

@@ -19,7 +19,7 @@ class CourseSectionController extends Controller
                 'description' => $request->input('description'),
             ]);
 
-            return redirect()->route('course.show', ['id' => $course->id, 'course' => $course]);
+            return redirect()->route('course.show.edit', ['id' => $course->id, 'course' => $course]);
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back()->withErrors(['error' => 'Error creating course section']);
@@ -52,6 +52,26 @@ class CourseSectionController extends Controller
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back()->withErrors(['error' => 'Error updating course section']);
+        }
+    }
+
+    public function toggleVisibility(string $id): RedirectResponse
+    {
+        try {
+            $courseSection = CourseSection::findOrFail($id);
+            $courseSection->isPublic = !$courseSection->isPublic;
+            $courseSection->save();
+
+            // Hide all course items inside the section
+            foreach ($courseSection->courseItems as $courseItem) {
+                $courseItem->isPublic = $courseSection->isPublic;
+                $courseItem->save();
+            }
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->withErrors(['error' => 'Error updating course section visibility']);
         }
     }
 }

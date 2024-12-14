@@ -50,10 +50,10 @@
                     </button>
                     <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-300">
                         <img class="w-full object-cover" src="
-                            @if (auth()->user())
+                            @if (auth()->user() && auth()->user()->profile_picture)
                                 {{ $PATH . auth()->user()->profile_picture }}                        
                             @else
-                                H
+                                https://ui-avatars.com/api/?name={{ Auth::user()->name }}&color=7F9CF5&background=EBF4FF
                             @endif
                         " class="">
                     </div>

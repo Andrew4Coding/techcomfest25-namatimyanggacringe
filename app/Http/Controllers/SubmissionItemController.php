@@ -30,23 +30,46 @@ class SubmissionItemController extends Controller
 
             $url = env('AWS_URL') . $filePath;
 
-            $submissionItem = SubmissionItem::create([
-                'grade' => 0,
-                'comment' => '',
-                'submission_urls' => $url,
-                'student_id' => $user->userable_id,
-                'submission_id' => $submissionId,
-            ]);
+            // Find related submission item by submissionid and user and edit it if it exists
+            $submissionItem = SubmissionItem::where('submission_id', $submissionId)->where('student_id', $user->userable_id)->first();
 
+            if ($submissionItem) {
+                $submissionItem->submission_urls = $url;
+                $submissionItem->attempts += 1;
+                $submissionItem->save();
+            } else {
+                $submissionItem = new SubmissionItem();
+                $submissionItem->submission_id = $submissionId;
+                $submissionItem->student_id = $user->userable_id;
+                $submissionItem->submission_urls = $url;
+                $submissionItem->save();
+            }
 
-
-
-            return redirect()->route('submission.show', ['id' => $submissionId]);
+            return redirect()->route('submission.show', ['submissionId' => $submissionId]);
 
         } catch (\Exception $e) {
             Log::error('Error submitting to submission: ' . $e->getMessage());
-            dd($e);
             return redirect()->back()->withErrors('Failed to submit to submission.');
+        }
+    }
+
+    public function gradeAndCommentSubmission(Request $request, string $submissionItemId) {
+        try {
+            $request->validate([
+                'grade' => ['required', 'numeric'],
+                'comment' => ['required', 'string'],
+            ]);
+
+            $submissionItem = SubmissionItem::findOrFail($submissionItemId);
+            $submissionItem->grade = $request->input('grade');
+            $submissionItem->comment = $request->input('comment');
+            $submissionItem->save();
+
+            return redirect()->route('submission.show', ['submissionId' => $submissionItem->submission_id]);
+
+        } catch (\Exception $e) {
+            Log::error('Error grading and commenting submission: ' . $e->getMessage());
+            return redirect()->back()->withErrors('Failed to grade and comment submission.');
         }
     }
 }

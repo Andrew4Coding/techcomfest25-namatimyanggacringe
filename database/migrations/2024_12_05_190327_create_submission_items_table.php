@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('submission_items', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->float('grade');
-            $table->string('comment');
+            $table->float('grade')->nullable();
+            $table->string('comment')->nullable();
             $table->string('submission_urls');
+            $table->integer('attempts')->default(1);
 
             $table->uuid('student_id');
             $table->uuid('submission_id');

@@ -22,6 +22,7 @@ class Submission extends Model
         'opened_at',
         'due_date',
         'file_types',
+        'max_attempts',
     ];
 
     /**

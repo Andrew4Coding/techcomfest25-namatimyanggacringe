@@ -3,7 +3,6 @@
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Livewire\Quiz;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseItemController;
@@ -69,9 +68,7 @@ Route::post('/courses/create', [CourseController::class, 'createNewCourse'])->na
 
 // Quiz
 Route::middleware([])->group(function () {
-    Route::get('/quiz', Quiz::class);
-
-//    Route::get('/quiz/{id}', [QuizController::class, 'showQuizSession'])->name('quiz.show');
+    Route::get('/quiz/{id}', [QuizController::class, 'showQuizSession'])->name('quiz.show');
     Route::get('/quiz/{courseId}/create', [QuizController::class, 'showQuizCreation'])->name('quiz.alter');
     Route::get('/quiz/{courseId}/edit/{id}', [QuizController::class, 'showQuizAlteration'])->name('quiz.alter');
 
@@ -88,17 +85,28 @@ Route::middleware(['auth'])->group(function () {
 
 // Forum
 Route::middleware(['auth'])->group(function () {
-    Route::get('/forum/{courseId}', [ForumController::class, 'index'])->name('forum.index');
+    Route::get('/forum/{forumId}', [ForumController::class, 'index'])->name('forum.index');
+    Route::post('/forum/{forumId}/discussion/create', [ForumController::class, 'createNewDiscussion'])->name('forum.discussion.create');
+    Route::get('/forum/{forumId}/discussion/{discussionId}', [ForumDiscussionController::class, 'index'])->name('forum.discussion.index');
+    Route::post('/forum/{forumId}/discussion/{discussionId}/reply', [ForumDiscussionController::class, 'replyToDiscussion'])->name('forum.discussion.reply');
+
+    Route::middleware([TeacherMiddleware::class])->group(function () {
+        Route::post('/forum/{courseSectionId}/create', [ForumController::class, 'create'])->name('forum.create');
+    });
 });
 
 
 // Submission
 Route::middleware(['auth'])->group(function () {
     Route::get('/submission/{submissionId}', [SubmissionController::class, 'show'])->name('submission.show');
-    Route::post('/submission/{courseSectionId}/create', [SubmissionController::class, 'createSubmissionField'])->name('submission.create');
-    Route::delete('/submission/{submissionId}/delete', [SubmissionController::class, 'deleteSubmissionField'])->name('submission.delete');
-
     Route::post('/submission/{submissionId}/submit', [SubmissionItemController::class, 'submitToSubmission'])->name('submission.submit');
+
+    Route::middleware([TeacherMiddleware::class])->group(function () {
+        Route::post('/submission/{courseSectionId}/create', [SubmissionController::class, 'createSubmissionField'])->name('submission.create');
+        Route::delete('/submission/{submissionId}/delete', [SubmissionController::class, 'deleteSubmissionField'])->name('submission.delete');
+        Route::put('/submission/{submissionId}/update', [SubmissionController::class, 'updateSubmissionField'])->name('submission.update');
+        Route::post('/submission/{submissionItemId}/grade', [SubmissionItemController::class, 'gradeAndCommentSubmission'])->name('submission.grade');
+    });
 });
 
 

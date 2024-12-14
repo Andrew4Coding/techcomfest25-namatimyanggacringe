@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -16,8 +15,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('teacher_id');
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('class_code', 5)->unique();
+            $table->string('theme')->default('yellow');
             $table->timestamps();
         });
     }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Course;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
-use App\Models\CourseItem;
 use App\Models\CourseSection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,27 +13,37 @@ class CourseController extends Controller
 {
 
     public function enrollCourse(Request $request) {
-        $user = Auth::user();
+        try {
 
-        // Find course by class code
-        $course = Course::where('class_code', $request->input('class_code'))->first();
+            $user = Auth::user();
 
-        // Check if course exists
-        if (!$course) {
-            return redirect()->back()->withErrors(['error' => 'Course not found']);
+            if ($user->userable_type == 'App\Models\Teacher') {
+                return redirect()->back()->withErrors(['error' => 'Teachers cannot enroll in courses']);
+            }
+    
+            // Find course by class code
+            $course = Course::where('class_code', $request->input('class_code'))->first();
+    
+            // Check if course exists
+            if (!$course) {
+                return redirect()->back()->withErrors(['error' => 'Course not found']);
+            }
+    
+            // Check if user is already enrolled in course
+            if ($user->userable->courses->contains($course)) {
+                return redirect()->back()->withErrors(['error' => 'You are already enrolled in this course']);
+            }
+    
+            // Enroll user in course
+            $user->userable->courses()->attach($course);
+    
+            $courses = $user->userable->courses;
+    
+            return redirect()->route('courses', compact('courses'));
         }
-
-        // Check if user is already enrolled in course
-        if ($user->userable->courses->contains($course)) {
-            return redirect()->back()->withErrors(['error' => 'You are already enrolled in this course']);
+        catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Error enrolling in course']);
         }
-
-        // Enroll user in course
-        $user->userable->courses()->attach($course);
-
-        $courses = $user->userable->courses;
-
-        return redirect()->route('courses', compact('courses'));
     }
 
     public function unenrollCourse(Request $request) {
@@ -64,31 +73,75 @@ class CourseController extends Controller
     public function showCourses(Request $request): View
     {
         $courses = Course::get();
-        $student = Auth::user()->userable;
+        $user = Auth::user();
 
-        if ($student) {
-            $courses = $student->courses;
+        if ($user && $user->userable_type == 'App\Models\Student') {
+            $courses = $user->userable->courses;
             return view('course.courses', compact('courses'));
         }
+
+        // Get courses by teacher id
+        $courses = Course::where('teacher_id', $user->userable->id)->get();
 
         return view('course.courses', compact('courses'));
     }
 
     public function showCourse(
+        Request $request,
         string $id
     ): View {
         $course = Course::findOrFail($id);
         $courseSections = CourseSection::with('courseItems')->where('course_id', $id)->orderBy('created_at', 'asc')->get();
 
-        return view('course.course_detail', compact('course', 'courseSections'));
+        // Hide private course sections if user is a student
+        if (Auth::user()->userable_type == 'App\Models\Student') {
+            $courseSections = $courseSections->filter(function ($courseSection) {
+                return $courseSection->isPublic;
+            });
+
+            // Filter course items too
+            $courseSections = $courseSections->map(function ($courseSection) {
+                $courseSection->courseItems = $courseSection->courseItems->filter(function ($courseItem) {
+                    return $courseItem->isPublic;
+                });
+
+                return $courseSection;
+            });
+        }
+        
+        $tab = $request->input('tab');
+
+        $isEdit = false;
+
+        return view('course.course_detail', compact('course', 'courseSections', 'tab', 'isEdit'));
     }
+
+    public function showCourseEdit(
+        Request $request,
+        string $id
+    ): View {
+        try {
+            $course = Course::findOrFail($id);
+            $courseSections = CourseSection::with('courseItems')->where('course_id', $id)->orderBy('created_at', 'asc')->get();
+    
+            $tab = $request->input('tab');
+
+            $isEdit = true && Auth::user()->userable_type == 'App\Models\Teacher';
+    
+            return view('course.course_detail', compact('course', 'courseSections', 'tab', 'isEdit'));
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->withErrors(['error' => 'Error loading course']);
+        }
+    }
+        
 
     public function createNewCourse(Request $request)
     {
         // Validate input
         $request->validate([
             'name' => ['required', 'string'],
-            'description' => ['required', 'string'],
             'class_code' => ['required', 'string', 'size:5'],
         ]);
 
@@ -97,7 +150,7 @@ class CourseController extends Controller
 
         try {
             Course::create([
-                'teacher_id' => $user->id,
+                'teacher_id' => $user->userable->id,
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
                 'class_code' => $request->input('class_code'),
@@ -138,7 +191,7 @@ class CourseController extends Controller
                 'class_code' => $request->input('class_code'),
             ]);
 
-            return redirect()->route('course.show', ['id' => $id]);
+            return redirect()->route('course.show.edit', ['id' => $id]);
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back()->withErrors(['error' => 'Error updating course']);
