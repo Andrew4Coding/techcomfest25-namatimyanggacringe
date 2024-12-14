@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('course_id');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->boolean('isPublic')->default(true);
             $table->timestamps();
         });
     }

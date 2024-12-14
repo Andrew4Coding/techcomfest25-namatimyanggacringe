@@ -10,11 +10,12 @@
         style="background-color: {{ $theme['primary'] }}; color: {{ $theme['secondary'] ?? $theme['secondary']}}">
         <div class="px-6 py-4 flex flex-col justify-between h-full">
             <div class="flex justify-between">
-                <div class="font-bold text-xl mb-2">{{ $course->name }} Kasiyah</div>
+                <div class="font-bold text-xl mb-2">{{ $course->name }}</div>
                 <div class="font-medium px-5 rounded-full w-fit h-fit flex items-center text-white"
                     style="background-color: {{ $theme['secondary'] }}; color: {{ $theme['tertiary'] }}">{{ $course->class_code }}</div>
             </div>
-            <div class="font-medium text-sm mb-2">{{ 'Dr. kasiyah' }}</div>
+            <div class="font-medium text-sm mb-2">
+                {{ $course -> teacher -> user -> name}}</div>
         </div>
     </div>
 </a>

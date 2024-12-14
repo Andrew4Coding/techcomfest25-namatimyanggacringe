@@ -6,6 +6,22 @@
             <h1 class="text-2xl font-semibold rounded">{{ $section->name }}</h1>
             <div class="flex gap-2">
                 @if ($isEdit)
+                    <form method="POST" action="{{ route('course.section.toggle', ['id' => $section->id]) }}">
+                        @csrf
+                        <button type="submit">
+                            @if ($section->isPublic)
+                                <div class="tooltip tooltip-right" data-tip="Hide from students">
+                                    <x-lucide-eye
+                                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12" />
+                                </div>
+                            @else
+                                <div class="tooltip tooltip-right" data-tip="Show to students">
+                                    <x-lucide-eye-off
+                                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12" />
+                                </div>
+                            @endif
+                        </button>
+                    </form>
                     <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
                         onclick="document.getElementById('edit_section_modal_{{ $section->id }}').showModal();" />
                     <x-lucide-trash
@@ -103,7 +119,8 @@
                 </div>
                 <div class="mb-4">
                     <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
-                    <input type="text" name="content" id="content" class="input input-bordered w-full" required />
+                    <input type="text" name="content" id="content" class="input input-bordered w-full"
+                        required />
                 </div>
                 <div class="mb-4">
                     <label for="opened_at" class="block text-sm font-medium text-gray-700">Opened At</label>

@@ -20,7 +20,7 @@
         </div>
 
         <div class="p-10 mb-10 course-{{ $selected_theme }} rounded-xl">
-            <div class="flex gap-2 items-center mb-4 w-full">
+            <div class="flex gap-4 items-center mb-4 w-full">
                 <h1 class="text-2xl font-extrabold">{{ $course->name }}</h1>
                 <span class="badge badge-primary py-2 font-medium text-sm border-none"
                     style="background-color: {{ $theme['secondary'] }}; color: {{ $theme['tertiary'] }}"
@@ -54,8 +54,6 @@
 
 
         </div>
-
-
 
         @if ($tab == 'overview' || $tab == '')
             @include('course.sections.course_list', [

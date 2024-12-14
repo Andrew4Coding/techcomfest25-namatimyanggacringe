@@ -37,7 +37,7 @@ class ForumController extends Controller
 
         $courseSection = CourseSection::findOrFail($courseSectionId);
 
-        return redirect()->route('course.show', ['id' => $courseSection->course->id]);
+        return redirect()->route('course.show.edit', ['id' => $courseSection->course->id]);
     }
 
     public function createNewDiscussion(Request $request, string $forumId)

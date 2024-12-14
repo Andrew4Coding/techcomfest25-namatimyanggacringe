@@ -54,4 +54,24 @@ class CourseSectionController extends Controller
             return redirect()->back()->withErrors(['error' => 'Error updating course section']);
         }
     }
+
+    public function toggleVisibility(string $id): RedirectResponse
+    {
+        try {
+            $courseSection = CourseSection::findOrFail($id);
+            $courseSection->isPublic = !$courseSection->isPublic;
+            $courseSection->save();
+
+            // Hide all course items inside the section
+            foreach ($courseSection->courseItems as $courseItem) {
+                $courseItem->isPublic = $courseSection->isPublic;
+                $courseItem->save();
+            }
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->withErrors(['error' => 'Error updating course section visibility']);
+        }
+    }
 }

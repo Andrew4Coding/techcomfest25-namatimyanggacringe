@@ -25,6 +25,7 @@ class CourseSection extends Model
         'course_id',
         'name',
         'description',
+        'isPublic'
     ];
 
     /**

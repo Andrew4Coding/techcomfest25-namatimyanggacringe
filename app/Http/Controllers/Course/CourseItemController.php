@@ -67,4 +67,17 @@ class CourseItemController extends Controller
             return redirect()->back()->withErrors(['error' => 'Error deleting course item']);
         }
     }
+
+    public function toggleVisibility(string $id) 
+    {
+        try {
+            $courseItem = CourseItem::findOrFail($id);
+            $courseItem->isPublic = !$courseItem->isPublic;
+            $courseItem->save();
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Error toggling visibility']);
+        }
+    }
 }

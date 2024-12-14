@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($submissionItems as $item)
+        @forelse ($submissionItems as $item)
             <tr>
                 <td class="flex gap-2 items-center">
                     <img src="
@@ -87,7 +87,11 @@
                     </dialog>
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="7" class="text-center">No submissions found.</td>
+            </tr>
+        @endforelse
     </tbody>
 </table>
 

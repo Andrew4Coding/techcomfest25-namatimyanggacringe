@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
+// Courses
 Route::middleware(['auth'])->group(function () {
     Route::get('/courses', [CourseController::class, 'showCourses'])->name('courses');
     Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('course.show');
@@ -68,6 +69,9 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/courses/sections/delete/{id}', [CourseSectionController::class, 'deleteCourseSection'])->name('course.section.delete');
         Route::put('/courses/sections/update/{id}', [CourseSectionController::class, 'updateCourseSection'])->name('course.section.update');
         Route::delete('/courses/items/delete/{id}', [CourseItemController::class, 'deleteCourseItem'])->name('course.item.delete');
+
+        Route::post('/courses/sections/toggle/{id}', [CourseSectionController::class, 'toggleVisibility'])->name('course.section.toggle');
+        Route::post('/courses/items/toggle/{id}', [CourseItemController::class, 'toggleVisibility'])->name('course.item.toggle');
     });
 });
 

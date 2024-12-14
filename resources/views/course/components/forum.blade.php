@@ -1,4 +1,5 @@
-<div class="flex w-full justify-between items-center gap-10 pr-5">
+@extends('course.components.course_item')
+@section('courseitem')
     <a 
         class="w-full"
         href="{{ route('forum.index', ['forumId' => $item->courseItemable->id]) }}">
@@ -14,10 +15,4 @@
             </div>
         </div>
     </a>
-    @if ($isEdit)
-        <div>
-            <x-lucide-trash onclick="document.getElementById('delete_courseitem_modal_{{ $item->id }}').showModal();"
-                class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12" />
-        </div>
-    @endif
-</div>
+@endsection

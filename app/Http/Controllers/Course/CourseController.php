@@ -93,6 +93,22 @@ class CourseController extends Controller
         $course = Course::findOrFail($id);
         $courseSections = CourseSection::with('courseItems')->where('course_id', $id)->orderBy('created_at', 'asc')->get();
 
+        // Hide private course sections if user is a student
+        if (Auth::user()->userable_type == 'App\Models\Student') {
+            $courseSections = $courseSections->filter(function ($courseSection) {
+                return $courseSection->isPublic;
+            });
+
+            // Filter course items too
+            $courseSections = $courseSections->map(function ($courseSection) {
+                $courseSection->courseItems = $courseSection->courseItems->filter(function ($courseItem) {
+                    return $courseItem->isPublic;
+                });
+
+                return $courseSection;
+            });
+        }
+        
         $tab = $request->input('tab');
 
         $isEdit = false;
@@ -126,7 +142,6 @@ class CourseController extends Controller
         // Validate input
         $request->validate([
             'name' => ['required', 'string'],
-            'description' => ['required', 'string'],
             'class_code' => ['required', 'string', 'size:5'],
         ]);
 
