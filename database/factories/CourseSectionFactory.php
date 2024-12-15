@@ -21,7 +21,7 @@ class CourseSectionFactory extends Factory
             'name' => $this->faker->word(),
             'course_id' => Course::factory(),
             'description' => $this->faker->paragraph(),
-            'visible' => $this->faker->boolean(),
+            'is_public' => $this->faker->boolean(),
         ];
     }
 }

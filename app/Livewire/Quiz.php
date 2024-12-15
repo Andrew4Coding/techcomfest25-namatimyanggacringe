@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Question;
 use App\Models\QuizSubmission;
 use App\Models\QuizSubmissionItem;
+use App\Models\Teacher;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
@@ -116,10 +117,9 @@ class Quiz extends Component
      * This function is used to generate formatted time from which the quiz started
      * to when the quiz is finished.
      */
-    protected function getTimeLeft(): string
+    protected function getTimeLeftFormatted(): string
     {
-        // subtract finish time with current
-        $timeLeft = strtotime($this->quiz['finish']) - strtotime(date("Y-m-d h:i:sa"));
+        $timeLeft = $this->getTimeLeft();
 
         // get hour minute and second
         $hour = intdiv($timeLeft, 3600);
@@ -131,6 +131,16 @@ class Quiz extends Component
     }
 
     /**
+     * @return int
+     */
+    protected function getTimeLeft(): int
+    {
+        // subtract duration from progress
+        $progress = strtotime(date("Y-m-d h:i:sa") - strtotime($this->submission->getCreatedAtColumn()));
+        return $this->quiz->duration - $progress;
+    }
+
+    /**
      * @return void
      *
      * mount is used for mounting the component when it first loaded.
@@ -138,7 +148,16 @@ class Quiz extends Component
     public function mount(): void
     {
         // check whether the regex matched and the id given is valid id
-        if (!preg_match($this->uuidRegex, $this->id)) return; // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
+        if (!preg_match($this->uuidRegex, $this->id)) {
+            $this->redirectIntended("/");
+            return;
+        } // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
+
+        // if teacher redirect to edit page
+        if (Auth::user()->userable_type === Teacher::class) {
+            $this->redirect("/quiz/$this->id/edit");
+            return;
+        }
 
         // check whether the quiz is found
         try {
@@ -161,7 +180,10 @@ class Quiz extends Component
             ]);
 
             // FIXME: BENERIN GUE MALAS :V
-            if ($this->submission->done) {
+            if (
+                $this->submission->done or  // sudah selesai
+                $this->getTimeLeft() < 0    // durasi habis
+            ) {
                 echo "Tidak boleh masuk";
                 // ini kalau mau "back"
                 // $this->redirectIntended('/');

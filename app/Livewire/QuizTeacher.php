@@ -2,11 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Enums\QuestionType;
+use App\Models\Question;
+use App\Models\QuestionChoice;
 use App\Models\Quiz as QuizModel;
-use App\Models\QuizSubmission;
-use App\Models\QuizSubmissionItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Reactive;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -22,33 +24,73 @@ class QuizTeacher extends Component
     // actual quiz model
     public QuizModel $quiz;
 
-    // total question in the quiz
-    public int $questionCount;
+    // QUIZ EDITOR PROPS
+    public QuestionType $questionType = QuestionType::MultipleChoice;
 
     /**
-     * @param $id string "quiz ID"
+     * @return void
+     */
+    public function addQuestion()
+    {
+        // buat kuis baru
+        $newQuestion = Question::create([
+            'content' => 'Pertanyaan baru',
+            'answer' => '',
+            'question_type' => $this->questionType,
+            'quiz_id' => $this->quiz->id,
+        ]);
+
+        // if the selected type is multiple choice or multiselect, create new choices
+        if ($this->questionType === QuestionType::MultipleChoice or $this->questionType === QuestionType::MultiSelect)
+        {
+            $newChoice = QuestionChoice::create([
+                'content' => 'Pilihan 1',
+                'question_id' => $newQuestion->id,
+            ]);
+
+            $newQuestion->questionChoices()->save($newChoice);
+        }
+
+        $this->quiz->questions()->save($newQuestion);
+
+        $this->questionType = QuestionType::MultipleChoice;
+
+    }
+
+    public function deleteQuestion($id)
+    {
+        Question::destroy($id);
+        $this->quiz = QuizModel
+            ::with('questions', 'questions.questionChoices')
+            ->findOrFail($this->quiz->id)
+            ->first();
+    }
+
+    public function back()
+    {
+        $this->redirectIntended('/');
+    }
+
+    /**
+     * @param string $id "quiz ID"
      * @return void
      */
     public function mount(string $id): void
     {
         // check whether the regex matched and the id given is valid id
-        if (!preg_match($this->uuidRegex, $this->id)) return; // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
+        if (!preg_match($this->uuidRegex, $id)) return; // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
 
         // check whether the quiz is found
         try {
-            $this->quiz = QuizModel::with('questions', 'questions.questionChoices')->withCount('questions')->firstOrCreate(['id' => $id]);
-
-            // get question count
-            $this->questionCount = $this->quiz->questions_count;
+            $this->quiz = QuizModel::with('questions', 'questions.questionChoices')
+                ->withCount('questions')
+                ->first($id);
 
             // check if quiz is valid
             $this->isValid = true;
 
         } catch (ModelNotFoundException $e) {}  // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
-
     }
-
-
 
     public function render()
     {
