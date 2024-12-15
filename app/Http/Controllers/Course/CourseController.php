@@ -46,25 +46,14 @@ class CourseController extends Controller
         }
     }
 
-    public function unenrollCourse(Request $request) {
+    public function unenrollCourse(Request $request, string $courseId) {
         $user = Auth::user();
 
-        // Find course by class code
-        $course = Course::where('class_code', $request->input('class_code'))->first();
-
-        // Check if course exists
-        if (!$course) {
-            return redirect()->back()->withErrors(['error' => 'Course not found']);
+        if ($user->userable_type == 'App\Models\Teacher') {
+            return redirect()->back()->withErrors(['error' => 'Teachers cannot unenroll from courses']);
         }
 
-        // Check if user is already enrolled in course
-        if (!$user->userable->courses->contains($course)) {
-            return redirect()->back()->withErrors(['error' => 'You are not enrolled in this course']);
-        }
-
-        // Unenroll user in course
-        $user->userable->courses()->detach($course);
-
+        $user->userable->courses()->detach($courseId);
         $courses = $user->userable->courses;
 
         return redirect()->route('courses', compact('courses'));
@@ -149,10 +138,16 @@ class CourseController extends Controller
         $user = Auth::user();
 
         try {
+            // Make sure class code is unique
+            if (Course::where('class_code', $request->input('class_code'))->exists()) {
+                return redirect()->back()->withErrors(['error' => 'Class code already exists']);
+            }
+
             Course::create([
                 'teacher_id' => $user->userable->id,
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
+                'subject' => $request->input('subject'),
                 'class_code' => $request->input('class_code'),
             ]);
 
@@ -185,6 +180,11 @@ class CourseController extends Controller
         ]);
 
         try {
+            // Make sure class code is unique
+            if (Course::where('class_code', $request->input('class_code'))->exists()) {
+                return redirect()->back()->withErrors(['error' => 'Class code already exists']);
+            }
+            
             Course::findOrFail($id)->update([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),

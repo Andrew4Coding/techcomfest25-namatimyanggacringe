@@ -1,5 +1,5 @@
 @php
-    $selected_theme = $course->theme;
+    $selected_theme = $course->subject;
 
     $theme = config('constants.theme')[$selected_theme];
 @endphp
@@ -16,48 +16,79 @@
                     </a>
                 </li>
                 @if ($isEdit)
-                    <li>Edit</li>   
+                    <li>Edit</li>
                 @endif
             </ul>
         </div>
 
-        <div class="p-10 mb-10 course-{{ $selected_theme }} rounded-xl">
-            <div class="flex justify-between items-center mb-4 w-full">
-                <h1 class="text-2xl font-extrabold">{{ $course->name }}</h1>
-                <div class="flex gap-4 items-center">
-                    <span class="badge badge-primary py-2 font-medium text-sm border-none"
-                        style="background-color: {{ $theme['secondary'] }}; color: {{ $theme['tertiary'] }}"
-                        onclick="copyToClipboard('{{ $course->class_code }}')">
-                        {{ $course->class_code }}</span>
+        <div class="p-4 mb-10 rounded-xl relative min-h-52 overflow-hidden"
+            style="background-color: {{ $theme['primary'] }}; color: {{ $theme['secondary'] }};">
 
-                    @if (Auth::user()->userable_type == 'App\Models\Teacher')
-                        @if ($isEdit)
-                            <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
-                                onclick="edit_course_modal.showModal()" />
+            <!-- Adjusted Image Styling -->
+            <div class="absolute inset-0 pointer-events-none top-10 left-20">
+                <img src="{{ asset('subject-mascots/' . $course->subject . '.png') }}" alt="Icon"
+                    class="w-80 object-contain z-0">
+            </div>
+
+            <div class="z-10">
+                <div class="flex justify-between items-center mb-4 w-full">
+                    <h1 class="text-xl font-bold">{{ $course->name }}</h1>
+                    <div class="flex gap-4 items-center">
+                        <span class="badge badge-primary py-2 font-medium text-sm border-none text-white"
+                            style="background-color: {{ $theme['secondary'] }};"
+                            onclick="copyToClipboard('{{ $course->class_code }}')">
+                            {{ $course->class_code }}
+                        </span>
+
+                        @if (Auth::user()->userable_type == 'App\Models\Teacher')
+                            @if ($isEdit)
+                                <x-lucide-pencil class="min-w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
+                                    onclick="edit_course_modal.showModal()" />
+                            @else
+                                <a href="{{ route('course.show.edit', ['id' => $course->id]) }}">
+                                    <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
+                                </a>
+                            @endif
                         @else
-                            <a href="{{ route('course.show.edit', ['id' => $course->id]) }}">
-                                <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
-                            </a>
+                            <button
+                                onclick="document.getElementById('unenroll_course_modal_{{ $course->id }}').showModal();">
+                                <x-lucide-door-open class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
+                            </button>
+                            <dialog id="unenroll_course_modal_{{ $course->id }}" class="modal text-black">
+                                <div class="modal-box">
+                                    <h3 class="font-bold text-lg">Confirm Unenrollment</h3>
+                                    <p>Are you sure you want to unenroll from this Course?</p>
+                                    <div class="modal-action">
+                                        <button type="button" class="btn"
+                                            onclick="document.getElementById('unenroll_course_modal_{{ $course->id }}').close();">Cancel</button>
+                                        <form method="POST"
+                                            action="{{ route('course.unenroll', ['courseId' => $course->id]) }}">
+                                            @csrf
+                                            <button type="submit" class="btn btn-error">Unenroll</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <form method="dialog" class="modal-backdrop">
+                                    <button>close</button>
+                                </form>
+                            </dialog>
                         @endif
-                    @endif
 
-                    @if ($isEdit)
-                        <div class="flex w-full gap-6">
-                            <x-lucide-trash
-                                class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12"
-                                onclick="document.getElementById('delete_course_modal_{{ $course->id }}').showModal();" />
-                        </div>
-                    @endif
+                        @if ($isEdit)
+                            <div class="flex w-full gap-6">
+                                <x-lucide-trash
+                                    class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12"
+                                    onclick="document.getElementById('delete_course_modal_{{ $course->id }}').showModal();" />
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="flex justify-between items-center absolute right-4 bottom-4">
+                    <span class="text-sm font-medium" style="color: {{ $theme['tertiary'] }};">
+                        {{ $course->teacher->user ? $course->teacher->user->name : 'Teacher' }}
+                    </span>
                 </div>
             </div>
-            <div class="flex justify-between items-center">
-                <p class="text-sm mb-6 font-normal leading-loose">{{ $course->description }}</p>
-                <span class="text-sm font-medium">
-                    {{$course->teacher->user->name}}
-                </span>
-            </div>
-
-
         </div>
 
         @if ($tab == 'overview' || $tab == '')
@@ -68,6 +99,7 @@
         @endif
 
     </main>
+
     <script>
         // on DOM load detect if session contains error
         document.addEventListener('DOMContentLoaded', function() {

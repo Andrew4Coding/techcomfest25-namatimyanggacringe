@@ -3,35 +3,40 @@
 // config/constants.php
 return [
     'theme' => [
-        'yellow' => [
+        'sosiologi' => [
             'primary' => '#F7EDC9',
             'secondary' => '#E2BF3F',
             'tertiary' => '#705801',
         ],
-        'blue' => [
+        'bahasa' => [
             'primary' => '#C4DDF1',
             'secondary' => '#325C7D',
             'tertiary' => '#FFFFFF',
         ],
-        'green' => [
+        'ekonomi' => [
             'primary' => '#C6E4DC',
             'secondary' => '#39816E',
-            'tertiary' => '#FFFFFF',
+            'tertiary' => '#39816E',
         ],
-        'red' => [
-            'primary' => '#F2C4E0',
+        'matematika' => [
+            'primary' => '#DAB0CA',
             'secondary' => '#6D2752',
-            'tertiary' => '#FFFFFF',
+            'tertiary' => '#6D2752',
         ],
-        'purple' => [
-            'primary' => '#6D2752',
+        'geografi' => [
+            'primary' => '#AEA3BF',
             'secondary' => '#5E4584',
-            'tertiary' => '#FFFFFF',
+            'tertiary' => '#5E4584',
         ],
-        'brown' => [
+        'sejarah' => [
             'primary' => '#F6D7C2',
             'secondary' => '#80441C',
-            'tertiary' => '#FFFFFF',
+            'tertiary' => '#80441C',
+        ],
+        'ipa' => [
+            'primary' => '#F6D7C2',
+            'secondary' => '#80441C',
+            'tertiary' => '#80441C',
         ],
     ],
 ];

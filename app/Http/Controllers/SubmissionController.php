@@ -55,6 +55,11 @@ class SubmissionController extends Controller
                 'file_types' => ['required', 'string'],
             ]);
 
+            // Validate due date cant be before opened date
+            if ($request->input('due_date') < $request->input('opened_at')) {
+                return redirect()->back()->withErrors('Due date cannot be before opened date.');
+            }
+
             $newCourseItem = new Submission();
             $newCourseItem->content = $request->input('content');
             $newCourseItem->opened_at = $request->input('opened_at');
@@ -106,6 +111,11 @@ class SubmissionController extends Controller
                 'due_date' => ['required', 'date'],
                 'file_types' => ['required', 'string'],
             ]);
+
+            // Validate due date cant be before opened date
+            if ($request->input('due_date') < $request->input('opened_at')) {
+                return redirect()->back()->withErrors('Due date cannot be before opened date.');
+            }
 
             $submission->content = $request->input('content');
             $submission->opened_at = $request->input('opened_at');

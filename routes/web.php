@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseItemController;
 use App\Http\Controllers\Course\CourseSectionController;
+use App\Http\Controllers\FlashCardController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\SubmissionItemController;
@@ -50,12 +52,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
     Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
 
-    Route::get('/profile', function () {
-        return view('profile');
-    })->name('profile');
 
 
     Route::post('/upload/{courseId}', [UploadFileController::class, 'uploadFile'])->name('course.upload.file');
+});
+
+// Profile
+Route::prefix('profile')->middleware(['auth'])->group(function () {
+    Route::get('/', [ProfileController::class, 'showProfile'])->name('profile');
+    Route::get('/edit', [ProfileController::class, 'showProfileEdit'])->name('profile.update');
+    Route::post('/edit/post', [ProfileController::class, 'updateProfile'])->name('profile.update.update');
 });
 
 // Courses
@@ -63,7 +69,7 @@ Route::prefix('courses')->middleware(['auth'])->group(function () {
     Route::get('/', [CourseController::class, 'showCourses'])->name('courses');
     Route::get('/{id}', [CourseController::class, 'showCourse'])->name('course.show');
     Route::post('/enroll', [CourseController::class, 'enrollCourse'])->name('course.enroll');
-    Route::post('/unenroll', [CourseController::class, 'unenrollCourse'])->name('course.unenroll');
+    Route::post('/unenroll/{courseId}', [CourseController::class, 'unenrollCourse'])->name('course.unenroll');
 
     Route::middleware([TeacherMiddleware::class])->group(function () {
         // Course
@@ -144,3 +150,10 @@ Route::prefix('attendance')->middleware(['auth'])->group(function () {
 
 Route::get('/upload-pdf', [UploadFileController::class, 'showFileForm'])->name('pdf.upload.form');
 Route::post('/upload-pdf', [UploadFileController::class, 'processUpload'])->name('pdf.upload.process');
+
+
+// FlashCard
+Route::prefix('flashcard')->middleware(['auth'])->group(function () {
+    Route::get('/', [FlashCardController::class, 'show'])->name('flashcard.show');
+    Route::post('/create', [FlashCardController::class, 'create'])->name('flashcard.create');
+});

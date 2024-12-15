@@ -1,12 +1,10 @@
 @extends('layout.layout')
 @section('content')
-    <section class="flex flex-col md:flex-row justify-between">
-
-
+    <section class="flex flex-col md:flex-row justify-between items-start space-y-4 md:space-y-0 md:space-x-4">
         <div class="space-y-2 mb-4 md:mb-0">
-            <h1 class="text-3xl font-bold">Course List</h1>
-            <p class="font-medium bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
-                Siap untuk melanjutkan perjalanan belajarmu?
+            <h1 class="text-3xl font-semibold">Course List</h1>
+            <p class="font-medium gradient-blue text-transparent bg-clip-text">
+                Semangad yaa!
             </p>
         </div>
 
@@ -17,7 +15,7 @@
             </button>
         @else
             @if (!$courses->isEmpty())
-                <button onclick="enroll_class_modal.showModal()" class="btn btn-primary">
+                <button onclick="enroll_class_modal.showModal()" class="btn btn-primary px-10">
                     Enroll a Class
                 </button>
             @endif
@@ -26,18 +24,27 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[50vh] py-4">
         @if ($courses->isEmpty())
-            <div class="w-full flex flex-col gap-4 items-center justify-center col-span-3">
-                @if (Auth::user()->userable_type == 'App\Models\Teacher')
-                    <h1 class="text-xl font-semibold">Kamu belum membuat course apapun</h1>
-                    <button class="btn btn-primary" onclick="add_course_modal.showModal()">
-                        Add Course
-                    </button>
-                @else
-                    <h1 class="text-xl font-semibold">Kamu belum memiliki course apapun</h1>
-                    <button class="btn btn-primary" onclick="enroll_class_modal.showModal()">
-                        Enroll a Class
-                    </button>
-                @endif
+            <div class="w-full flex flex-col gap-4 items-center justify-center col-span-1 sm:col-span-2 lg:col-span-3">
+                <div class="flex flex-col items-center gap-2 text-center">
+                    <img src="{{ asset('mindora-mascot.png') }}" alt="Icon" class="hidden lg:flex">
+                    <h1 class="text-xl font-medium">
+                        Belum ada Kelas Saat ini
+                    </h1>
+                    <p
+                        class="font-medium bg-gradient-to-r from-[#3A4EC1] via-[#5298ED] to-[#945AC6] text-transparent bg-clip-text">
+                        Belajar menjadi menyenangkan dan praktis.
+                    </p>
+                    @if (Auth::user()->userable_type == 'App\Models\Teacher')
+                        <button class="btn btn-primary" onclick="add_course_modal.showModal()">
+                            Tambah Kelas
+                        </button>
+                    @else
+                        <h1 class="text-xl font-semibold">Kamu belum memiliki course apapun</h1>
+                        <button class="btn btn-primary" onclick="enroll_class_modal.showModal()">
+                            Enroll a Class
+                        </button>
+                    @endif
+                </div>
             </div>
         @else
             @foreach ($courses as $course)
@@ -52,18 +59,29 @@
             <form method="POST" action="{{ route('course.create') }}" id="add_course_form">
                 @csrf
                 <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Course Name</label>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nama Kelas</label>
                     <input type="text" name="name" id="name" class="input input-bordered w-full" required />
                 </div>
                 <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                     <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="mb-4">
-                    <label for="class_code" class="block text-sm font-medium text-gray-700">Class Code (5
-                        Letters)</label>
+                    <label for="class_code" class="block text-sm font-medium text-gray-700">Kode Kelas (5 Digit)</label>
                     <input name="class_code" id="class_code" class="input input-bordered w-full" required
                         pattern="[A-Za-z]{5}" title="Class code must be 5 letters" />
+                </div>
+                <div class="mb-4">
+                    <label for="subject" class="block text-sm font-medium text-gray-700">Mata Pelajaran Terkait</label>
+                    <select name="subject" id="subject" class="select select-bordered w-full" required>
+                        <option value="sosiologi">Sosiologi</option>
+                        <option value="ekonomi">Ekonomi</option>
+                        <option value="bahasa">Bahasa</option>
+                        <option value="geografi">Geografi</option>
+                        <option value="matematika">Matematika</option>
+                        <option value="sejarah">Sejarah</option>
+                        <option value="ipa">IPA</option>
+                    </select>
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn" onclick="hideModal('add_course_modal')">Cancel</button>
@@ -75,7 +93,7 @@
             <button>close</button>
         </form>
     </dialog>
-    
+
     <dialog id="enroll_class_modal" class="modal">
         <div class="modal-box">
             <h3 class="font-bold text-lg">Enroll in a Class</h3>

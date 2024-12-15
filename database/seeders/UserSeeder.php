@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         // Make new user
         $data = [
             'name' => 'Andrew Devito Aryo',
-            'email' => 'a@co',
+            'email' => 'a@gmail.com',
             'verified' => 1,
             'phone_number' => '1234567890',
             'password' => Hash::make('dummy123'),

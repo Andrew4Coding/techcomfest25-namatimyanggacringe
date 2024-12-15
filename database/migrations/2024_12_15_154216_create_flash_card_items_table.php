@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('courses', function (Blueprint $table) {
+        Schema::create('flash_card_items', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('teacher_id');
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->string('class_code', 5)->unique();
-            $table->enum('subject', ['sosiologi', 'ekonomi', 'bahasa', 'geografi', 'matematika', 'sejarah', 'ipa'])->nullable();
+            $table->string('question');
+            $table->string('answer');
+
+            $table->uuid('flash_card_id');
+            $table->foreign('flash_card_id')->references('id')
+                ->on('forum_replies');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('courses');
+        Schema::dropIfExists('flash_card_items');
     }
 };
