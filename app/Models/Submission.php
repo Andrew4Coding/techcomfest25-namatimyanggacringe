@@ -25,6 +25,11 @@ class Submission extends Model
         'max_attempts',
     ];
 
+    protected $casts = [
+        'opened_at' => 'datetime',
+        'due_date' => 'datetime',
+    ];
+
     /**
      * @return MorphOne
      */

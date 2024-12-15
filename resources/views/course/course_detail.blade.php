@@ -15,7 +15,9 @@
                         {{ $course->name }}
                     </a>
                 </li>
-                <li>Edit</li>
+                @if ($isEdit)
+                    <li>Edit</li>   
+                @endif
             </ul>
         </div>
 
@@ -54,6 +56,8 @@
 
 
         </div>
+
+
 
         @if ($tab == 'overview' || $tab == '')
             @include('course.sections.course_list', [

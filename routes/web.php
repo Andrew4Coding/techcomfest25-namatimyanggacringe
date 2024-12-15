@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -92,6 +93,12 @@ Route::prefix('quiz')->middleware(['auth'])->group(function () {
 
     Route::post('/generate', [QuizController::class, 'generateQuestionsFromPDF'])->name('quiz.generate');
     Route::post('/parse', [QuizController::class, 'parseQuestionsFromCSV'])->name('quiz.parse');
+
+    Route::middleware([TeacherMiddleware::class])->group(function () {
+        Route::post('/{courseSectionId}/store', [QuizController::class, 'store'])->name('quiz.store');
+        Route::put('/{id}/update', [QuizController::class, 'update'])->name('quiz.update');
+        Route::delete('/{id}/delete', [QuizController::class, 'destroy'])->name('quiz.delete');
+    });
 });
 
 // Forum
@@ -119,7 +126,17 @@ Route::prefix('submission')->middleware(['auth'])->group(function () {
     });
 });
 
-
+// Attendance
+Route::prefix('attendance')->middleware(['auth'])->group(function () {
+    Route::get('/{id}', [AttendanceController::class, 'show'])->name('attendance.show');
+    Route::post('/{id}/submit', [AttendanceController::class, 'submitAttendance'])->name('attendance.submit');
+    
+    Route::middleware([TeacherMiddleware::class])->group(function () {
+        Route::post('/{courseSectionId}/store', [AttendanceController::class, 'store'])->name('attendance.store');
+        Route::put('/{id}/update', [AttendanceController::class, 'update'])->name('attendance.update');
+        Route::delete('/{id}/delete', [AttendanceController::class, 'destroy'])->name('attendance.delete');
+    });
+});
 
 Route::get('/upload-pdf', [UploadFileController::class, 'showFileForm'])->name('pdf.upload.form');
 Route::post('/upload-pdf', [UploadFileController::class, 'processUpload'])->name('pdf.upload.process');

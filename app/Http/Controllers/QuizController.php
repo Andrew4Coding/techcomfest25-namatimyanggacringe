@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CourseSection;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Spatie\PdfToText\Pdf;
@@ -107,5 +108,58 @@ class QuizController extends Controller
 
         // Return or store the text
         return response()->json(['text' => $text]);
+    }
+
+    public function store(Request $request, string $courseSectionId)
+    {
+        // Validate the request
+        $request->validate([
+            'content' => 'required|string',
+            'quiz_id' => 'required|exists:quizzes,id',
+        ]);
+
+        // Create the question
+        $quiz = CourseSection::findOrFail($courseSectionId);
+
+        $newQuizItem = new Quiz();
+        $newQuizItem->start = $request->input('start');
+        $newQuizItem->end = $request->input('finish');
+        $newQuizItem->duration = $request->input('duration');
+        $newQuizItem->save();
+
+        $newQuizItem->courseItem()->create([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'course_section_id' => $courseSectionId,
+        ]);
+
+        $courseSection = CourseSection::findOrFail($courseSectionId);
+        $courseId = $courseSection->course_id;
+
+        return redirect()->route('course.show.edit', ['id' => $courseId]);
+
+        // Return the question
+        return response()->json($question);
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $quiz = Quiz::findOrFail($id);
+        $quiz->courseItem->name = $request->input('name');
+        $quiz->courseItem->description = $request->input('description');
+        $quiz->start = $request->input('start');
+        $quiz->finish = $request->input('finish');
+        $quiz->duration = $request->input('duration');
+        $quiz->save();
+
+        return redirect()->route('quiz.show', ['id' => $id]);
+    }
+
+    public function destroy(string $id)
+    {
+        $quiz = Quiz::findOrFail($id);
+        $quiz->delete();
+
+        return redirect()->route('course.show.edit', ['id' => $quiz->courseItem->course_section_id]);
     }
 }

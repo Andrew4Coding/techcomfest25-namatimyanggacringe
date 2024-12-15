@@ -126,9 +126,15 @@
                 <input type="datetime-local" name="due_date" id="due_date" class="input input-bordered w-full"
                     value="{{ \Carbon\Carbon::parse($submission->due_date)->format('Y-m-d\TH:i') }}" required />
             </div>
+            {{-- Max attemps --}}
+            <div class="mb-4">
+                <label for="attempts" class="block text-sm font-medium text-gray-700">Attempts</label>
+                <input type="number" name="max_attempts" id="attempts" value="{{ $submission->max_attempts }}"
+                    class="input input-bordered w-full" required min="1" />
+            </div>
             <div class="mb-4">
                 <label for="file_types" class="file-input block text-sm font-medium text-gray-700">File
-                    Types</label>
+                    Accepted File Types</label>
                 <input type="text" name="file_types" id="file_types" class="input input-bordered w-full"
                     value="{{ $submission->file_types }}" required />
             </div>

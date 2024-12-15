@@ -11,15 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('submissions', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->uuid('id')->primary();
-
-            $table->string('content');
-            $table->timestampTz('opened_at');
-            $table->timestampTz('due_date');
-            $table->string('file_types');
-            $table->integer('max_attempts')->default(10);
-
+            $table->string('password');
             $table->timestamps();
         });
     }
@@ -29,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('submissions');
+        Schema::dropIfExists('attendances');
     }
 };

@@ -15,7 +15,8 @@
                     style="background-color: {{ $theme['secondary'] }}; color: {{ $theme['tertiary'] }}">{{ $course->class_code }}</div>
             </div>
             <div class="font-medium text-sm mb-2">
-                {{ $course -> teacher -> user -> name}}</div>
+                {{ $course -> teacher -> user ? $course -> teacher -> user -> name : 'Teacher' }}
+            </div>
         </div>
     </div>
 </a>

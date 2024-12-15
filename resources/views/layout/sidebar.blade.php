@@ -52,10 +52,12 @@
                     </button>
                     <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-300">
                         <img class="w-full object-cover" src="
-                            @if (auth()->user() && auth()->user()->profile_picture)
+                            @if (Auth::user() && !Auth::user()->profile_picture)
                                 {{ $PATH . auth()->user()->profile_picture }}
-                            @else
+                            @elseif (Auth::user() && Auth::user()->profile_picture)
                                 https://ui-avatars.com/api/?name={{ Auth::user()->name }}&color=7F9CF5&background=EBF4FF
+                            @else
+                                https://ui-avatars.com/api/?name=Guest&color=7F9CF5&background=EBF4FF
                             @endif
                         " class="">
                     </div>
