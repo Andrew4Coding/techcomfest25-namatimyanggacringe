@@ -19,14 +19,14 @@ class UserSeeder extends Seeder
         // Make new user
         $data = [
             'name' => 'Andrew Devito Aryo',
-            'email' => 'a@gmail.com',
+            'email' => 'a@co',
             'verified' => 1,
             'phone_number' => '1234567890',
             'password' => Hash::make('dummy123'),
             'profile_picture' => null,
         ];
 
-        $newUser = new Teacher();
+        $newUser = new Student();
         $newUser->save();
         $newUser->user()->create($data);
 

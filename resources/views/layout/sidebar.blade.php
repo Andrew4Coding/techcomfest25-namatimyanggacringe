@@ -44,16 +44,20 @@
                     <x-lucide-door-open class="w-6 h-6" />
                 </button>
             </form>
-            
+
             <a href="/profile">
                 <div class="tooltip tooltip-right" data-tip="Profile">
                     </button>
                     <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-300">
                         <img class="w-full object-cover" src="
-                            @if (auth()->user() && auth()->user()->profile_picture)
-                                {{ $PATH . auth()->user()->profile_picture }}                        
+                            @if (auth()->user())
+                                @if (auth()->user()->profile_picture)
+                                    {{ $PATH . auth()->user()->profile_picture }}
+                                @else
+                                    https://ui-avatars.com/api/?name={{ Auth::user()->name }}&color=7F9CF5&background=EBF4FF
+                                @endif
                             @else
-                                https://ui-avatars.com/api/?name={{ Auth::user()->name }}&color=7F9CF5&background=EBF4FF
+
                             @endif
                         " class="">
                     </div>

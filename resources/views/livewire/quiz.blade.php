@@ -3,7 +3,7 @@
     {{-- Left Section: Question Navigation --}}
     <section class="flex flex-col w-1/4 gap-4">
         <div id="timer" class="text-gray-700 bg-white px-4 py-2 rounded-lg shadow-md">
-            Time Left: <span id="time-left">10:00</span>
+            Time Left: <span wire:poll.500ms id="time-left">{{ $timeLeft }}</span>
         </div>
         <section class="h-full w-full bg-white p-6 shadow-md rounded-lg">
             {{-- Timer --}}
@@ -18,7 +18,13 @@
                             class="question-circles w-12 h-12 flex items-center justify-center rounded-full border-2
                                     shadow-sm
                                     hover:bg-blue-100 hover:cursor-pointer
-                                    @if($page == $i) bg-blue-500 text-white hover:bg-blue-600 @else text-gray-700 border-gray-300 @endif">
+                                    @if($page == $i)
+                                        bg-blue-500 text-white hover:bg-blue-600
+                                    @elseif($flagged[$quiz->questions[$i - 1]->id])
+                                        bg-yellow-200 text-gray-700 hover:bg-yellow-300 border-yellow-400
+                                    @else
+                                        text-gray-700 border-gray-300
+                                    @endif">
                             {{ $i }}
                     </button>
                 @endfor
@@ -27,13 +33,40 @@
     </section>
 
     {{-- Right Section: Current Question --}}
-    <livewire:quiz.multiple-choice
-        :page="$page"
-        :questionCount="$questionCount"
-        :question="$curQuestion"
-        :submissionId="$submission->id"
-        wire:key="question-{{ $page }}"
-    />
+    @if($curQuestion->question_type === \App\Enums\QuestionType::MultipleChoice)
+        <livewire:quiz.multiple-choice
+            :page="$page"
+            :questionCount="$questionCount"
+            :question="$curQuestion"
+            :submissionId="$submission->id"
+            wire:key="question-{{ $page }}"
+        />
+        ui
+    @elseif($curQuestion->question_type === \App\Enums\QuestionType::ShortAnswer)
+        <livewire:quiz.short-answer
+            :page="$page"
+            :questionCount="$questionCount"
+            :question="$curQuestion"
+            :submissionId="$submission->id"
+            wire:key="question-{{ $page }}"
+        />
+    @elseif($curQuestion->question_type === \App\Enums\QuestionType::MultiSelect)
+        <livewire:quiz.multi-select
+            :page="$page"
+            :questionCount="$questionCount"
+            :question="$curQuestion"
+            :submissionId="$submission->id"
+            wire:key="question-{{ $page }}"
+        />
+    @elseif($curQuestion->question_type === \App\Enums\QuestionType::Essay)
+        <livewire:quiz.essay
+            :page="$page"
+            :questionCount="$questionCount"
+            :question="$curQuestion"
+            :submissionId="$submission->id"
+            wire:key="question-{{ $page }}"
+        />
+    @endif
 
     @else
     <h1>Tes</h1>

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('quiz_submissions', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
+            $table->boolean('done')->default(false);
+
             $table->uuid('quiz_id');
             $table->uuid('student_id');
 

@@ -4,10 +4,9 @@ namespace App\Livewire\Quiz;
 
 use App\Models\Question;
 use App\Models\QuizSubmissionItem;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class ShortAnswer extends Component
+class MultiSelect extends Component
 {
     public int $page;
     public int $questionCount;
@@ -16,8 +15,7 @@ class ShortAnswer extends Component
     public QuizSubmissionItem $submissionItem;
     public string $submissionId;
 
-    #[Validate('required')]
-    public string $answer;
+    public array $answers = [];
 
     public bool $flagged;
 
@@ -33,8 +31,9 @@ class ShortAnswer extends Component
             'quiz_submission_id' => $this->submissionId,
         ]);
 
-        if ($this->submissionItem->answer !== null) {
-            $this->answer = $this->submissionItem->answer;
+        // mark chosen answers
+        if ($this->submissionItem->answer !== null && $this->submissionItem->answer !== '') {
+            $this->answers = explode(',', $this->submissionItem->answer);
         }
 
 
@@ -43,9 +42,13 @@ class ShortAnswer extends Component
         }
     }
 
-    public function updatedAnswer(): void
+    public function updatedAnswers(): void
     {
-        $this->submissionItem->update(['answer' => $this->answer]);
+        // transform answer to a string
+        $this->submissionItem->answer = implode(',', $this->answers);
+
+        // update
+        $this->submissionItem->save();
     }
 
     public function updatedFlagged()
@@ -57,6 +60,6 @@ class ShortAnswer extends Component
 
     public function render()
     {
-        return view('livewire.quiz.short-answer');
+        return view('livewire.quiz.multi-select');
     }
 }

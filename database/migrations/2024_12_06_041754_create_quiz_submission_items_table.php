@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('quiz_submission_items', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->text('answer')->nullable();
+            $table->text('answer')->default("");
             $table->float('score')->default(0);
+            $table->boolean('flagged')->default(false);
 
             $table->uuid('quiz_submission_id');
             $table->uuid('question_id');

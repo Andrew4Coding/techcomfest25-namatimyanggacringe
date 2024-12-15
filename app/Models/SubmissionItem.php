@@ -20,6 +20,7 @@ class SubmissionItem extends Model
         'comment',
         'submission_urls',
         'attempts',
+        'flagged',
         'student_id',
         'submission_id'
     ];

@@ -15,8 +15,8 @@
                 class="flex items-center gap-4"
             >
                 <input
-                    type="radio" wire:model.change="answer" name="answer" id="answer-{{ $choice->id }}" value="{{ $choice->id }}"
-                    class="answer-radio h-5 w-5 text-blue-500 focus:ring-blue-400 border-gray-300"
+                    type="checkbox" wire:model.change="answers" name="answer" id="answer-{{ $choice->id }}" value="{{ $choice->id }}"
+                    class="answer-checkbox h-5 w-5 text-blue-500 focus:ring-blue-400 border-gray-300"
                 >
                 <label for="answer-{{ $choice->id }}" class="text-gray-700 text-lg cursor-pointer">
                     {{ $choice['content'] }}

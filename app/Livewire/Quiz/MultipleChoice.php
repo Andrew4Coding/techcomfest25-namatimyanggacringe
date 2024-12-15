@@ -16,7 +16,9 @@ class MultipleChoice extends Component
     public QuizSubmissionItem $submissionItem;
     public string $submissionId;
 
-    public array $activeCheck;
+    public string $answer = '';
+
+    public bool $flagged;
 
     public function mount($page, $questionCount, $question, $submissionId)
     {
@@ -30,27 +32,26 @@ class MultipleChoice extends Component
             'quiz_submission_id' => $this->submissionId,
         ]);
 
-        foreach ($this->question->questionChoices as $choice)
-        {
-            $this->activeCheck[$choice->id] = false;
-            if ($choice === $this->submissionItem->answer) {
-                $this->activeCheck[$choice->id] = true;
-            }
+        if ($this->submissionItem->answer !== null) {
+            $this->answer = $this->submissionItem->answer;
+        }
+
+        if ($this->submissionItem->flagged !== null) {
+            $this->flagged = $this->submissionItem->flagged;
         }
     }
 
-    public function updateAnswer($answer)
+    public function updatedAnswer()
     {
-        $this->submissionItem->answer = $answer;
+        $this->submissionItem->answer = $this->answer;
         $this->submissionItem->save();
+    }
 
-        foreach ($this->question->questionChoices as $choice)
-        {
-            $this->activeCheck[$choice->id] = false;
-            if ($choice === $answer) {
-                $this->activeCheck[$choice->id] = true;
-            }
-        }
+    public function updatedFlagged()
+    {
+        $this->submissionItem->flagged = $this->flagged;
+        $this->submissionItem->save();
+        $this->dispatch('flag-question', id: $this->question->id, flagged: $this->flagged);
     }
 
     public function render()

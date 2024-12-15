@@ -6,24 +6,14 @@
     </div>
 
     {{-- Answer Options  --}}
-    @foreach($question['questionChoices'] as $choice)
-        <div
-            wire:key="{{ $choice->id }}"
-            id="answer-box" class="mt-6 space-y-4"
-        >
-            <div
-                class="flex items-center gap-4"
-            >
-                <input
-                    type="radio" wire:model.change="answer" name="answer" id="answer-{{ $choice->id }}" value="{{ $choice->id }}"
-                    class="answer-radio h-5 w-5 text-blue-500 focus:ring-blue-400 border-gray-300"
-                >
-                <label for="answer-{{ $choice->id }}" class="text-gray-700 text-lg cursor-pointer">
-                    {{ $choice['content'] }}
-                </label>
-            </div>
-        </div>
-    @endforeach
+    <div class="my-4">
+        <textarea
+            wire:model.blur="answer"
+            class="textarea textarea-bordered w-full my-2"
+            placeholder="masukkan jawaban..." >
+            {{ $answer }}
+        </textarea>
+    </div>
 
     {{-- Actions: Flag, Next, Submit --}}
     <div class="mt-10 flex justify-between items-center">
@@ -31,11 +21,11 @@
         <label class="flex items-center gap-2 px-4 py-2 rounded-lg @if($flagged)  text-yellow-100 bg-yellow-400 hover:bg-yellow-500 @else text-yellow-500 bg-yellow-100 hover:bg-yellow-200 @endif">
             <input wire:model.change="flagged" type="checkbox" class="hidden"
             />
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                 stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M6.75 4.5h10.5a1.5 1.5 0 011.5 1.5v10.5a1.5 1.5 0 01-1.5 1.5H6.75M9 6.75l4.5 4.5L9 15.75"/>
-            </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                     stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M6.75 4.5h10.5a1.5 1.5 0 011.5 1.5v10.5a1.5 1.5 0 01-1.5 1.5H6.75M9 6.75l4.5 4.5L9 15.75"/>
+                </svg>
             Flag Question
         </label>
         <button wire:click="$parent.prev" class="btn @if($page <= 1) btn-disabled @else btn-primary @endif">
