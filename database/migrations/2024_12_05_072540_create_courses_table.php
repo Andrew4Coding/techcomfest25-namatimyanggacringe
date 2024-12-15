@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('class_code', 5)->unique();
-            $table->string('theme')->default('yellow');
+            $table->enum('subject', ['sosiologi', 'ekonomi', 'bahasa', 'geografi', 'matematika', 'sejarah', 'ipa'])->nullable();
             $table->timestamps();
         });
     }

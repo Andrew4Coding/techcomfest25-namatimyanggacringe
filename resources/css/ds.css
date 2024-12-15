@@ -84,3 +84,7 @@ h1 {
 .shadow-smooth {
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
+
+.gradient-blue {
+    @apply bg-gradient-to-r from-[#017AE4] via-[#04A2E0] to-[#07C5DC]
+}

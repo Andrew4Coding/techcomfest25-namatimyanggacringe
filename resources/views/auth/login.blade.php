@@ -7,11 +7,11 @@
 
             <!-- Email -->
             <label for="email" class="block text-sm">Email</label>
-            <input type="email" name="email" id="email" required class="w-full border p-2 rounded mb-4">
+            <input type="email" name="email" id="email" required class="input w-full border p-2 rounded mb-4">
 
             <!-- Password -->
             <label for="password" class="block text-sm">Password</label>
-            <input type="password" name="password" id="password" required class="w-full border p-2 rounded mb-4">
+            <input type="password" name="password" id="password" required class="input w-full border p-2 rounded mb-4">
 
             <!-- Remember Me -->
             <div class="flex items-center mb-4">

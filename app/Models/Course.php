@@ -30,7 +30,7 @@ class Course extends Model
         'name',
         'description',
         'class_code',
-        'theme'
+        'subject'
     ];
 
     /**

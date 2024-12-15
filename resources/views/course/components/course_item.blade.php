@@ -1,4 +1,4 @@
-<div class="flex w-full justify-between items-center gap-10 pr-5">
+<div class="flex w-full justify-between items-center gap-10">
     @if ($item->course_itemable_type === 'App\Models\Material')
         <div class="bg-white shadow-sm p-5 w-full border-[1px] rounded-xl flex items-center gap-4 mt-5 justify-between">
             <div class="flex gap-4">
@@ -78,7 +78,7 @@
     @endif
 
     @if ($isEdit)
-        <div class="flex gap-4 mt-5">
+        <div class="flex gap-4 mt-5 mr-5">
             <form method="POST" action="{{ route('course.item.toggle', ['id' => $item->id]) }}">
                 @csrf
                 <button type="submit">

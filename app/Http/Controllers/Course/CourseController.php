@@ -149,10 +149,16 @@ class CourseController extends Controller
         $user = Auth::user();
 
         try {
+            // Make sure class code is unique
+            if (Course::where('class_code', $request->input('class_code'))->exists()) {
+                return redirect()->back()->withErrors(['error' => 'Class code already exists']);
+            }
+
             Course::create([
                 'teacher_id' => $user->userable->id,
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
+                'subject' => $request->input('subject'),
                 'class_code' => $request->input('class_code'),
             ]);
 
@@ -185,6 +191,11 @@ class CourseController extends Controller
         ]);
 
         try {
+            // Make sure class code is unique
+            if (Course::where('class_code', $request->input('class_code'))->exists()) {
+                return redirect()->back()->withErrors(['error' => 'Class code already exists']);
+            }
+            
             Course::findOrFail($id)->update([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
