@@ -22,42 +22,43 @@
         </div>
 
         <div class="p-10 mb-10 course-{{ $selected_theme }} rounded-xl">
-            <div class="flex gap-4 items-center mb-4 w-full">
+            <div class="flex justify-between items-center mb-4 w-full">
                 <h1 class="text-2xl font-extrabold">{{ $course->name }}</h1>
-                <span class="badge badge-primary py-2 font-medium text-sm border-none"
-                    style="background-color: {{ $theme['secondary'] }}; color: {{ $theme['tertiary'] }}"
-                    onclick="copyToClipboard('{{ $course->class_code }}')">
-                    {{ $course->class_code }}</span>
+                <div class="flex gap-4 items-center">
+                    <span class="badge badge-primary py-2 font-medium text-sm border-none"
+                        style="background-color: {{ $theme['secondary'] }}; color: {{ $theme['tertiary'] }}"
+                        onclick="copyToClipboard('{{ $course->class_code }}')">
+                        {{ $course->class_code }}</span>
 
-
-                @if (Auth::user()->userable_type == 'App\Models\Teacher')
-                    @if ($isEdit)
-                        <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
-                            onclick="edit_course_modal.showModal()" />
-                    @else
-                        <a href="
-                    {{ route('course.show.edit', ['id' => $course->id]) }}">
-                            <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
-                        </a>
+                    @if (Auth::user()->userable_type == 'App\Models\Teacher')
+                        @if ($isEdit)
+                            <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
+                                onclick="edit_course_modal.showModal()" />
+                        @else
+                            <a href="{{ route('course.show.edit', ['id' => $course->id]) }}">
+                                <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
+                            </a>
+                        @endif
                     @endif
-                @endif
 
-                @if ($isEdit)
-                    <div class="flex w-full gap-6">
-                        <x-lucide-trash
-                            class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12"
-                            onclick="document.getElementById('delete_course_modal_{{ $course->id }}').showModal();" />
-                    </div>
-                @endif
+                    @if ($isEdit)
+                        <div class="flex w-full gap-6">
+                            <x-lucide-trash
+                                class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12"
+                                onclick="document.getElementById('delete_course_modal_{{ $course->id }}').showModal();" />
+                        </div>
+                    @endif
+                </div>
             </div>
-            <div class="flex gap-2 items-center">
+            <div class="flex justify-between items-center">
                 <p class="text-sm mb-6 font-normal leading-loose">{{ $course->description }}</p>
+                <span class="text-sm font-medium">
+                    {{$course->teacher->user->name}}
+                </span>
             </div>
 
 
         </div>
-
-
 
         @if ($tab == 'overview' || $tab == '')
             @include('course.sections.course_list', [

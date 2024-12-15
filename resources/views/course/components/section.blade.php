@@ -212,10 +212,6 @@
                     <input type="datetime-local" name="start" id="start" class="input input-bordered w-full" required />
                 </div>
                 <div class="mb-4">
-                    <label for="finish" class="block text-sm font-medium text-gray-700">Finish</label>
-                    <input type="datetime-local" name="finish" id="finish" class="input input-bordered w-full" required />
-                </div>
-                <div class="mb-4">
                     <label for="duration" class="block text-sm font-medium text-gray-700">Duration (minutes)</label>
                     <input type="number" name="duration" id="duration" class="input input-bordered w-full" required min="1" />
                 </div>

@@ -18,7 +18,7 @@ use App\Http\Controllers\SubmissionItemController;
 use App\Http\Controllers\UploadFileController;
 
 Route::get('/', function () {
-    return view('home');
+    return view('home.home');
 });
 
 // Register

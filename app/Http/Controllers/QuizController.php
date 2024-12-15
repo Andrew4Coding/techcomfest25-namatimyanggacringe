@@ -6,6 +6,7 @@ use App\Models\CourseSection;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Spatie\PdfToText\Pdf;
+use Illuminate\Support\Str;
 
 class QuizController extends Controller
 {
@@ -112,34 +113,40 @@ class QuizController extends Controller
 
     public function store(Request $request, string $courseSectionId)
     {
-        // Validate the request
-        $request->validate([
-            'content' => 'required|string',
-            'quiz_id' => 'required|exists:quizzes,id',
-        ]);
+        try {
 
-        // Create the question
-        $quiz = CourseSection::findOrFail($courseSectionId);
-
-        $newQuizItem = new Quiz();
-        $newQuizItem->start = $request->input('start');
-        $newQuizItem->end = $request->input('finish');
-        $newQuizItem->duration = $request->input('duration');
-        $newQuizItem->save();
-
-        $newQuizItem->courseItem()->create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'course_section_id' => $courseSectionId,
-        ]);
-
-        $courseSection = CourseSection::findOrFail($courseSectionId);
-        $courseId = $courseSection->course_id;
-
-        return redirect()->route('course.show.edit', ['id' => $courseId]);
-
-        // Return the question
-        return response()->json($question);
+            // Validate the request
+            $request->validate([
+                'name' => 'required|string',
+                'content' => 'required|string',
+                'start' => 'required|date',
+                'duration' => 'required|integer',
+            ]);
+    
+            $newQuizItem = new Quiz();
+            $newQuizItem->id  = (string) Str::uuid();
+            $newQuizItem->start = $request->input('start');
+            $newQuizItem->duration = $request->input('duration');
+    
+            // Determine finish time by start time and duration
+            $newQuizItem->finish = date('Y-m-d H:i:s', strtotime($newQuizItem->start . ' + ' . $newQuizItem->duration . ' minutes'));
+            $newQuizItem->save();
+    
+            $newQuizItem->courseItem()->create([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'course_section_id' => $courseSectionId,
+            ]);
+    
+            $courseSection = CourseSection::findOrFail($courseSectionId);
+            $courseId = $courseSection->course_id;
+    
+            return redirect()->route('course.show.edit', ['id' => $courseId]);
+        }
+        catch (\Exception $e) {
+            dd($e);
+            return back()->withErrors(['error' => 'Failed to create quiz: ' . $e->getMessage()]);
+        }
     }
 
     public function update(Request $request, string $id)

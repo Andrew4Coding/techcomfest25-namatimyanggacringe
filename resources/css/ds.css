@@ -6,8 +6,12 @@
     font-family: 'poppins', sans-serif;
 }
 
+:root {
+    background-color: #F6F5FF;
+}
+
 .btn {
-    @apply rounded-xl
+    @apply rounded-xl hover:scale-[102%] duration-200 font-medium
 }
 
 .btn-primary {
@@ -16,6 +20,10 @@
 
 .btn-error {
     color: white;
+}
+
+.btn-outline {
+    @apply bg-transparent border-none text-[#017AE4] hover:bg-[#017AE4]/10 hover:text-[#017AE4];
 }
 
 .course-green {
@@ -58,4 +66,21 @@
 
 ::-webkit-scrollbar-thumb:hover {
     @apply bg-gray-500;
+}
+
+.modal-box {
+    @apply bg-[#F6F9FA]
+}
+
+.input, .textarea, .select {
+    @apply border border-gray-500 rounded-lg focus:outline-none focus:border-blue-500 mt-2
+}
+
+
+h1 {
+    @apply text-4xl font-semibold leading-normal
+}
+
+.shadow-smooth {
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
