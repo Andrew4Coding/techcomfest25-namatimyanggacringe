@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\Question;
 use App\Models\QuizSubmission;
 use App\Models\QuizSubmissionItem;
-use App\Models\SubmissionItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
@@ -15,29 +14,52 @@ use App\Models\Quiz as QuizModel;
 
 class Quiz extends Component
 {
+    // get id from query params
     #[Url]
     public string $id = '';
 
+    // uuid regex for filtering valid uuid
     private string $uuidRegex = "/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/";
 
+    // check if quiz is valid
     public bool $isValid = false;
 
+    // actual quiz model
     public QuizModel $quiz;
+
+    // page for selecting which question to be displayed
     public int $page = 1;
+
+    // current active question
     public Question $curQuestion;
+
+    // total question in the quiz
     public int $questionCount;
 
+    // actual student's quiz submission
     public QuizSubmission $submission;
 
+    // array of flagged question
     public array $flagged = [];
 
-    public function moveTo($page)
+    /**
+     * @param $page
+     * @return void
+     *
+     * This function is used for moving from one page to another page.
+     */
+    public function moveTo($page): void
     {
         $this->page = $page;
         $this->curQuestion = $this->quiz['questions'][$page - 1];
     }
 
-    public function next()
+    /**
+     * @return void
+     *
+     * This function is used for moving to the next question
+     */
+    public function next(): void
     {
         if ($this->page < $this->questionCount) {
             $this->page++;
@@ -45,7 +67,12 @@ class Quiz extends Component
         }
     }
 
-    public function prev()
+    /**
+     * @return void
+     *
+     * This function is used for moving to the prev question
+     */
+    public function prev(): void
     {
         if ($this->page > 1) {
             $this->page--;
@@ -53,22 +80,67 @@ class Quiz extends Component
         }
     }
 
+    /**
+     * @param $id string "actual quiz id"
+     * @param $flagged bool "is flagged"
+     * @return void
+     *
+     * This function is triggered to flag a question
+     */
     #[On('flag-question')]
-    public function flagQuestion($id, $flagged)
+    public function flagQuestion(string $id, bool $flagged): void
     {
+        // change the flag
         $this->flagged[$id] = $flagged;
     }
 
+    /**
+     * @return void
+     *
+     * This function is for submitting the quiz by changing the submission flag to done
+     */
     public function submit()
     {
+        // change submission flage
         $this->submission->done = true;
         $this->submission->save();
+
+        // back, if not exists then move to the index page.
         $this->redirectIntended('/');
     }
 
-    public function mount()
+
+    /**
+     * @return string
+     *
+     * This function is used to generate formatted time from which the quiz started
+     * to when the quiz is finished.
+     */
+    protected function getTimeLeft(): string
     {
+        // subtract finish time with current
+        $timeLeft = strtotime($this->quiz['finish']) - strtotime(date("Y-m-d h:i:sa"));
+
+        // get hour minute and second
+        $hour = intdiv($timeLeft, 3600);
+        $minute = intdiv($timeLeft % 3600, 60);
+        $second = $timeLeft % 60;
+
+        // return formatted
+        return "$hour:$minute:$second";
+    }
+
+    /**
+     * @return void
+     *
+     * mount is used for mounting the component when it first loaded.
+     */
+    public function mount(): void
+    {
+        // check whether the regex matched and the id given is valid id
         if (preg_match($this->uuidRegex, $this->id)) {
+
+            // check whether the quiz is found
             try {
                 // fetch quiz from database
                 $this->quiz = QuizModel::with('questions', 'questions.questionChoices')->withCount('questions')->findOrFail($this->id);
@@ -81,11 +153,14 @@ class Quiz extends Component
                     // $this->redirectIntended('/');
                 }
 
+                // check whether the student already has any submission, if not then
+                // create new submission item
                 $this->submission = QuizSubmission::firstOrCreate([
                     'quiz_id' => $this->id,
                     'student_id' => Auth::user()->userable_id,
                     ]);
 
+                // FIXME: BENERIN GUE MALAS :V
                 if ($this->submission->done) {
                     echo "Tidak boleh masuk";
                     // ini kalau mau "back"
@@ -98,14 +173,19 @@ class Quiz extends Component
                 // get question count
                 $this->questionCount = $this->quiz->questions_count;
 
+                // iterate each questions
                 foreach ($this->quiz->questions as $question)
                 {
+                    // set each flag to false
                     $this->flagged[$question->id] = false;
+
+                    // fetch previous submission item, if any
                     $fetched = QuizSubmissionItem::where([
                             'question_id' => $question->id,
                             'quiz_submission_id' => $this->submission->id,
                         ])->first();
 
+                    // if there's from the previous submission, mark it
                     if ($fetched !== null && $fetched->flagged) {
                         $this->flagged[$question->id] = true;
                     }
@@ -113,24 +193,16 @@ class Quiz extends Component
 
                 // check if quiz is valid
                 $this->isValid = true;
-            } catch (ModelNotFoundException $e) {}
+
+            } catch (ModelNotFoundException $e) {}  // FIXME: maybe ini bisa ditambahin error handling yang lebih biak
         }
     }
 
-    public function getTimeLeft()
-    {
-        $timeLeft = strtotime($this->quiz['finish']) - strtotime(date("Y-m-d h:i:sa"));
-        $hour = intdiv($timeLeft, 3600);
-        $minute = intdiv($timeLeft % 3600, 60);
-        $second = $timeLeft % 60;
-
-        return "$hour:$minute:$second";
-    }
-
+    // render the quiz
     public function render()
     {
         return view('livewire.quiz', [
-            'timeLeft' => $this->getTimeLeft(),
+            'timeLeft' => $this->getTimeLeft(),  // get the actual time for wire:poll, ini fungsi timer realtime
         ]);
     }
 }
