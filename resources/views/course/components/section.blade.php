@@ -10,7 +10,7 @@
                         @csrf
                         <button type="submit">
                             @if ($section->isPublic)
-                                <div class="tooltip tooltip-right" data-tip="Hide from students">
+                                <div class="tooltip tooltip-top" data-tip="Hide from students">
                                     <x-lucide-eye
                                         class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12" />
                                 </div>
@@ -22,13 +22,19 @@
                             @endif
                         </button>
                     </form>
-                    <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
-                        onclick="document.getElementById('edit_section_modal_{{ $section->id }}').showModal();" />
-                    <x-lucide-trash
-                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12"
-                        onclick="document.getElementById('delete_section_modal_{{ $section->id }}').showModal();" />
-                    <x-lucide-plus-circle class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
-                        onclick="document.getElementById('add_course_item_modal_{{ $section->id }}').showModal();" />
+                    <div class="tooltip tooltip-top" data-tip="Edit Section">
+                        <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
+                            onclick="document.getElementById('edit_section_modal_{{ $section->id }}').showModal();" />
+                    </div>
+                    <div class="tooltip tooltip-top" data-tip="Delete Section">
+                        <x-lucide-trash
+                            class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12"
+                            onclick="document.getElementById('delete_section_modal_{{ $section->id }}').showModal();" />
+                    </div>
+                    <div class="tooltip tooltip-top" data-tip="Add Course Item">
+                        <x-lucide-plus-circle class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
+                            onclick="document.getElementById('add_course_item_modal_{{ $section->id }}').showModal();" />
+                    </div>
                 @endif
             </div>
 
@@ -39,13 +45,7 @@
     </div>
 
     @foreach ($section->courseItems as $item)
-        @if ($item->course_itemable_type == 'App\Models\Material')
-            @include('course.components.material', ['item' => $item])
-        @elseif ($item->course_itemable_type == 'App\Models\Submission')
-            @include('course.components.submission', ['item' => $item])
-        @elseif ($item->course_itemable_type == 'App\Models\Forum')
-            @include('course.components.forum', ['item' => $item])
-        @endif
+        @include('course.components.course_item', ['item' => $item])
 
         <dialog id="delete_courseitem_modal_{{ $item->id }}" class="modal">
             <div class="modal-box">
@@ -69,7 +69,6 @@
 </div>
 
 
-
 <dialog id="add_course_item_modal_{{ $section->id }}" class="modal">
     <div class="modal-box">
         <h3 class="font-bold text-lg">Create new Course Item</h3>
@@ -79,6 +78,8 @@
                 <option value="material">Material</option>
                 <option value="submission">Submission</option>
                 <option value="forum">Forum</option>
+                <option value="attendance">Attendance</option>
+                <option value="quiz">Quiz</option>
             </select>
         </div>
 
@@ -132,8 +133,13 @@
                     <input type="datetime-local" name="due_date" id="due_date" class="input input-bordered w-full"
                         required />
                 </div>
+                {{-- Max attemps --}}
                 <div class="mb-4">
-                    <label for="file_types" class="block text-sm font-medium text-gray-700">File Types</label>
+                    <label for="attempts" class="block text-sm font-medium text-gray-700">Attempts</label>
+                    <input type="number" name="max_attempts" id="attempts" class="input input-bordered w-full" required min="0" />
+                </div>
+                <div class="mb-4">
+                    <label for="file_types" class="block text-sm font-medium text-gray-700">Accepted File Types</label>
                     <input type="text" name="file_types" id="file_types" class="input input-bordered w-full"
                         required />
                 </div>
@@ -159,6 +165,62 @@
                 <div class="modal-action">
                     <button type="button" class="btn"
                         onclick="document.getElementById('add_forum_modal_{{ $section->id }}').close();">Cancel</button>
+                    <button type="submit" class="btn btn-primary">+ Create</button>
+                </div>
+            </form>
+        </div>
+        <div id="attendance_fields" class="hidden">
+            <form method="POST"
+                action="{{ route('attendance.store', ['courseSectionId' => $section->id, 'type' => 'attendance']) }}"
+                enctype="multipart/form-data">
+                @csrf
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                    <input type="text" name="name" id="name" class="input input-bordered w-full" required />
+                </div>
+                <div class="mb-4">
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password Absensi</label>
+                    <input type="text" name="password" id="password" class="input input-bordered w-full" required />
+                </div>
+                <div class="modal-action">
+                    <button type="button" class="btn" onclick="add_section_modal.close()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">+ Create</button>
+                </div>
+            </form>
+        </div>
+        <div id="quiz_fields" class="hidden">
+            <form method="POST" action="{{ route('quiz.store', ['courseSectionId' => $section->id]) }}">
+                @csrf
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                    <input type="text" name="name" id="name" class="input input-bordered w-full" required />
+                </div>
+                <div class="mb-4">
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+                    <textarea name="content" id="content" rows="3" class="textarea textarea-bordered w-full" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="start" class="block text-sm font-medium text-gray-700">Start</label>
+                    <input type="datetime-local" name="start" id="start" class="input input-bordered w-full" required />
+                </div>
+                <div class="mb-4">
+                    <label for="finish" class="block text-sm font-medium text-gray-700">Finish</label>
+                    <input type="datetime-local" name="finish" id="finish" class="input input-bordered w-full" required />
+                </div>
+                <div class="mb-4">
+                    <label for="duration" class="block text-sm font-medium text-gray-700">Duration (minutes)</label>
+                    <input type="number" name="duration" id="duration" class="input input-bordered w-full" required min="1" />
+                </div>
+                <div class="modal-action">
+                    <button type="button" class="btn" onclick="document.getElementById('add_quiz_modal_{{ $section->id }}').close();">Cancel</button>
                     <button type="submit" class="btn btn-primary">+ Create</button>
                 </div>
             </form>
@@ -220,9 +282,14 @@
         const materialFields = document.getElementById('material_fields');
         const submissionFields = document.getElementById('submission_fields');
         const forumFields = document.getElementById('forum_fields');
+        const attendanceFields = document.getElementById('attendance_fields');
+        const quizFields = document.getElementById('quiz_fields');
+
         materialFields.classList.add('hidden');
         submissionFields.classList.add('hidden');
         forumFields.classList.add('hidden');
+        attendanceFields.classList.add('hidden');
+        quizFields.classList.add('hidden');
 
         if (this.value === 'material') {
             materialFields.classList.remove('hidden');
@@ -230,6 +297,10 @@
             submissionFields.classList.remove('hidden');
         } else if (this.value === 'forum') {
             forumFields.classList.remove('hidden');
+        } else if (this.value === 'attendance') {
+            attendanceFields.classList.remove('hidden');
+        } else if (this.value === 'quiz') {
+            quizFields.classList.remove('hidden');
         }
     });
 </script>

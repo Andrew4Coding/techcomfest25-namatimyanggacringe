@@ -18,16 +18,23 @@ class SubmissionController extends Controller
             // Get all submission items with its student           
             if ($role === 'App\Models\Teacher') {
                 $submissionItems = $submission->submissionItems()->with('student')->get();
-    
+
                 return view('submission.show', compact('submission', 'submissionItems'));
             } else {
                 // Show user submission
-                $submissionItem = $submission->submissionItems()->where('student_id', $request->user()->userable_id)->first();
+                $submissionItem = $submission->submissionItems()
+                    ->where('student_id', $request->user()->userable_id)
+                    ->first();
 
-                $fullOfChances = $submissionItem ? $submissionItem->attempts >= $submission->max_attempts : false;
+                // Check if the student has used all their chances
+                $fullOfChances = $submissionItem && $submissionItem->attempts >= $submission->max_attempts;
 
-                $canSubmit = $submission->opened_at <= now() && $submission->due_date >= now() && !$fullOfChances;
+                // Validate submission dates
+                $submissionOpen = $submission->opened_at && $submission->opened_at->isPast();
+                $submissionDue = $submission->due_date && $submission->due_date->isFuture();
 
+                // Determine if the student can submit
+                $canSubmit = $submissionOpen && $submissionDue && !$fullOfChances;
                 return view('submission.show', compact('submission', 'submissionItem', 'canSubmit'));
             }
         } catch (\Exception $e) {
@@ -53,6 +60,7 @@ class SubmissionController extends Controller
             $newCourseItem->opened_at = $request->input('opened_at');
             $newCourseItem->due_date = $request->input('due_date');
             $newCourseItem->file_types = $request->input('file_types');
+            $newCourseItem->max_attempts = $request->input('max_attempts') ?? 10; 
             $newCourseItem->save();
 
             $newCourseItem->courseItem()->create([
@@ -64,7 +72,7 @@ class SubmissionController extends Controller
             $courseSection = CourseSection::findOrFail($courseSectionId);
             $courseId = $courseSection->course_id;
 
-            return redirect()->route('course.show', ['id' => $courseId]);
+            return redirect()->route('course.show.edit', ['id' => $courseId]);
         } catch (\Exception $e) {
             Log::error('Error creating submission field: ' . $e->getMessage());
             dd($e);
@@ -103,6 +111,7 @@ class SubmissionController extends Controller
             $submission->opened_at = $request->input('opened_at');
             $submission->due_date = $request->input('due_date');
             $submission->file_types = $request->input('file_types');
+            $submission->max_attempts = $request->input('max_attempts') ?? 10;
             $submission->save();
 
             $submission->courseItem()->update([
@@ -117,7 +126,8 @@ class SubmissionController extends Controller
         }
     }
 
-    public function displaySubmission(Request $request, string $submissionItemId) {
+    public function displaySubmission(Request $request, string $submissionItemId)
+    {
         try {
             $submissionItem = SubmissionItem::findOrFail($submissionItemId);
             $submission = $submissionItem->submission;
@@ -131,5 +141,4 @@ class SubmissionController extends Controller
             return redirect()->back()->withErrors('Failed to display submission.');
         }
     }
-
 }
