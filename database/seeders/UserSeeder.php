@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
         $newUser = new Student();
         $newUser->save();
         $newUser->user()->create($data);
-        
+
         User::factory()->count(5)->for(
             Teacher::factory(), 'userable'
         )->create();
