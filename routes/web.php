@@ -60,7 +60,8 @@ Route::middleware(['auth'])->group(function () {
 // Profile
 Route::prefix('profile')->middleware(['auth'])->group(function () {
     Route::get('/', [ProfileController::class, 'showProfile'])->name('profile');
-    Route::get('/edit', [ProfileController::class, 'showProfileEdit'])->name('profile.edit');
+    Route::get('/edit', [ProfileController::class, 'showProfileEdit'])->name('profile.update');
+    Route::post('/edit/post', [ProfileController::class, 'updateProfile'])->name('profile.update.update');
 });
 
 // Courses

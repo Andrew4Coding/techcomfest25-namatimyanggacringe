@@ -36,7 +36,7 @@
                     <!-- Password -->
                     <label for="password" class="block text-sm">Password</label>
                     <input type="password" name="password" id="password" required class="input w-full border p-2 rounded mb-4"
-                        placeholder="password"
+                        placeholder="Password"
                     >
         
                     <!-- Remember Me -->

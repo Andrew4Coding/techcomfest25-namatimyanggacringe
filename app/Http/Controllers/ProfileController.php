@@ -12,41 +12,33 @@ class ProfileController extends Controller
         return view('profile.profile');
     }
 
+    public function showProfileEdit()
+    {
+        return view('profile.profile_edit');
+    }
+
     public function updateProfile(Request $request)
     {
+
         try {
 
             $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255',
-                'phone' => 'required|string|max:15',
-                'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'phone_number' => 'required|string|max:15',
             ]);
     
             $user = $request->user();
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->phone = $request->phone;
-    
-            $profilePicture = $user->profile_picture;
-    
-            // Delete old image from AWS S3
-            if ($request->hasFile('profile_picture') && $profilePicture) {
-                Storage::disk('s3')->delete($profilePicture);
-            }
-            
-            if ($request->hasFile('profile_picture')) {
-                $fileName = $profilePicture->getClientOriginalName();
-                $filePath = $profilePicture->storeAs('profile_pictures', $fileName, 's3');
-            }
-    
-            $user->profile_picture = $filePath ?? null;
+            $user->phone_number = $request->phone_number;
     
             $user->save();
-    
-            return redirect()->back()->with('success', 'Profile updated successfully');
+
+            return redirect()->route('profile')->with('success', 'Profile updated successfully');
         }
         catch (\Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', 'An error occurred while updating profile');
         }
     }
