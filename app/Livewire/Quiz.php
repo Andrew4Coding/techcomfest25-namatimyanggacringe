@@ -101,7 +101,7 @@ class Quiz extends Component
      */
     public function submit()
     {
-        // change submission flage
+        // change submission flag
         $this->submission->done = true;
         $this->submission->save();
 
@@ -138,64 +138,62 @@ class Quiz extends Component
     public function mount(): void
     {
         // check whether the regex matched and the id given is valid id
-        if (preg_match($this->uuidRegex, $this->id)) {
+        if (!preg_match($this->uuidRegex, $this->id)) return; // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
 
-            // check whether the quiz is found
-            try {
-                // fetch quiz from database
-                $this->quiz = QuizModel::with('questions', 'questions.questionChoices')->withCount('questions')->findOrFail($this->id);
+        // check whether the quiz is found
+        try {
+            // fetch quiz from database
+            $this->quiz = QuizModel::with('questions', 'questions.questionChoices')->withCount('questions')->findOrFail($this->id);
 
-                // FIXME: LOGIC UNTUK TIDAK BOLEH MASUK
-                $curDate = strtotime(date("Y-m-d h:i:sa"));
-                if (strtotime($this->quiz['start']) > $curDate or strtotime($this->quiz['finish']) <= $curDate) {
-                    echo "Tidak boleh masuk";
-                    // ini kalau mau "back"
-                    // $this->redirectIntended('/');
+            // FIXME: LOGIC UNTUK TIDAK BOLEH MASUK
+            $curDate = strtotime(date("Y-m-d h:i:sa"));
+            if (strtotime($this->quiz['start']) > $curDate or strtotime($this->quiz['finish']) <= $curDate) {
+                echo "Tidak boleh masuk";
+                // ini kalau mau "back"
+                // $this->redirectIntended('/');
+            }
+
+            // check whether the student already has any submission, if not then
+            // create new submission item
+            $this->submission = QuizSubmission::firstOrCreate([
+                'quiz_id' => $this->id,
+                'student_id' => Auth::user()->userable_id,
+            ]);
+
+            // FIXME: BENERIN GUE MALAS :V
+            if ($this->submission->done) {
+                echo "Tidak boleh masuk";
+                // ini kalau mau "back"
+                // $this->redirectIntended('/');
+            }
+
+            // get first question
+            $this->curQuestion = $this->quiz['questions'][$this->page - 1];
+
+            // get question count
+            $this->questionCount = $this->quiz->questions_count;
+
+            // iterate each questions
+            foreach ($this->quiz->questions as $question) {
+                // set each flag to false
+                $this->flagged[$question->id] = false;
+
+                // fetch previous submission item, if any
+                $fetched = QuizSubmissionItem::where([
+                    'question_id' => $question->id,
+                    'quiz_submission_id' => $this->submission->id,
+                ])->first();
+
+                // if there's from the previous submission, mark it
+                if ($fetched !== null && $fetched->flagged) {
+                    $this->flagged[$question->id] = true;
                 }
+            }
 
-                // check whether the student already has any submission, if not then
-                // create new submission item
-                $this->submission = QuizSubmission::firstOrCreate([
-                    'quiz_id' => $this->id,
-                    'student_id' => Auth::user()->userable_id,
-                    ]);
+            // check if quiz is valid
+            $this->isValid = true;
 
-                // FIXME: BENERIN GUE MALAS :V
-                if ($this->submission->done) {
-                    echo "Tidak boleh masuk";
-                    // ini kalau mau "back"
-                    // $this->redirectIntended('/');
-                }
-
-                // get first question
-                $this->curQuestion = $this->quiz['questions'][$this->page - 1];
-
-                // get question count
-                $this->questionCount = $this->quiz->questions_count;
-
-                // iterate each questions
-                foreach ($this->quiz->questions as $question)
-                {
-                    // set each flag to false
-                    $this->flagged[$question->id] = false;
-
-                    // fetch previous submission item, if any
-                    $fetched = QuizSubmissionItem::where([
-                            'question_id' => $question->id,
-                            'quiz_submission_id' => $this->submission->id,
-                        ])->first();
-
-                    // if there's from the previous submission, mark it
-                    if ($fetched !== null && $fetched->flagged) {
-                        $this->flagged[$question->id] = true;
-                    }
-                }
-
-                // check if quiz is valid
-                $this->isValid = true;
-
-            } catch (ModelNotFoundException $e) {}  // FIXME: maybe ini bisa ditambahin error handling yang lebih biak
-        }
+        } catch (ModelNotFoundException $e) {}  // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
     }
 
     // render the quiz

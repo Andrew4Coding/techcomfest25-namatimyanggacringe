@@ -32,42 +32,43 @@
         </section>
     </section>
 
-    {{-- Right Section: Current Question --}}
-    @if($curQuestion->question_type === \App\Enums\QuestionType::MultipleChoice)
-        <livewire:quiz.multiple-choice
-            :page="$page"
-            :questionCount="$questionCount"
-            :question="$curQuestion"
-            :submissionId="$submission->id"
-            wire:key="question-{{ $page }}"
-        />
-        ui
-    @elseif($curQuestion->question_type === \App\Enums\QuestionType::ShortAnswer)
-        <livewire:quiz.short-answer
-            :page="$page"
-            :questionCount="$questionCount"
-            :question="$curQuestion"
-            :submissionId="$submission->id"
-            wire:key="question-{{ $page }}"
-        />
-    @elseif($curQuestion->question_type === \App\Enums\QuestionType::MultiSelect)
-        <livewire:quiz.multi-select
-            :page="$page"
-            :questionCount="$questionCount"
-            :question="$curQuestion"
-            :submissionId="$submission->id"
-            wire:key="question-{{ $page }}"
-        />
-    @elseif($curQuestion->question_type === \App\Enums\QuestionType::Essay)
-        <livewire:quiz.essay
-            :page="$page"
-            :questionCount="$questionCount"
-            :question="$curQuestion"
-            :submissionId="$submission->id"
-            wire:key="question-{{ $page }}"
-        />
-    @endif
+        {{-- Right Section: Current Question --}}
+        @if($curQuestion->question_type === \App\Enums\QuestionType::MultipleChoice)
+            <livewire:quiz.multiple-choice
+                :page="$page"
+                :questionCount="$questionCount"
+                :question="$curQuestion"
+                :submissionId="$submission->id"
+                wire:key="question-{{ $page }}"
+            />
+            ui
+        @elseif($curQuestion->question_type === \App\Enums\QuestionType::ShortAnswer)
+            <livewire:quiz.short-answer
+                :page="$page"
+                :questionCount="$questionCount"
+                :question="$curQuestion"
+                :submissionId="$submission->id"
+                wire:key="question-{{ $page }}"
+            />
+        @elseif($curQuestion->question_type === \App\Enums\QuestionType::MultiSelect)
+            <livewire:quiz.multi-select
+                :page="$page"
+                :questionCount="$questionCount"
+                :question="$curQuestion"
+                :submissionId="$submission->id"
+                wire:key="question-{{ $page }}"
+            />
+        @elseif($curQuestion->question_type === \App\Enums\QuestionType::Essay)
+            <livewire:quiz.essay
+                :page="$page"
+                :questionCount="$questionCount"
+                :question="$curQuestion"
+                :submissionId="$submission->id"
+                wire:key="question-{{ $page }}"
+            />
+        @endif
 
+{{--FIXME: INI KALAU USERNYA TIDAK VALDI--}}
     @else
     <h1>Tes</h1>
     @endif
