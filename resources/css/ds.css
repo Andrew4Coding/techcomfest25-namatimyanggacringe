@@ -73,9 +73,13 @@
 }
 
 .input, .textarea, .select {
-    @apply border border-gray-500 rounded-lg focus:outline-none focus:border-blue-500 mt-2
+    @apply border bg-gray-100 rounded-lg focus:outline-none focus:border-blue-500 mt-2 px-5 w-full
+
 }
 
+label {
+    @apply text-[#17194C]/75
+}
 
 h1 {
     @apply text-4xl font-semibold leading-normal

@@ -25,7 +25,7 @@
             style="background-color: {{ $theme['primary'] }}; color: {{ $theme['secondary'] }};">
 
             <!-- Adjusted Image Styling -->
-            <div class="absolute inset-0 pointer-events-none top-10 left-20" >
+            <div class="absolute inset-0 pointer-events-none top-10 left-20">
                 <img src="{{ asset('subject-mascots/' . $course->subject . '.png') }}" alt="Icon"
                     class="w-80 object-contain z-0">
             </div>
@@ -49,6 +49,29 @@
                                     <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
                                 </a>
                             @endif
+                        @else
+                            <button
+                                onclick="document.getElementById('unenroll_course_modal_{{ $course->id }}').showModal();">
+                                <x-lucide-door-open class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
+                            </button>
+                            <dialog id="unenroll_course_modal_{{ $course->id }}" class="modal text-black">
+                                <div class="modal-box">
+                                    <h3 class="font-bold text-lg">Confirm Unenrollment</h3>
+                                    <p>Are you sure you want to unenroll from this Course?</p>
+                                    <div class="modal-action">
+                                        <button type="button" class="btn"
+                                            onclick="document.getElementById('unenroll_course_modal_{{ $course->id }}').close();">Cancel</button>
+                                        <form method="POST"
+                                            action="{{ route('course.unenroll', ['courseId' => $course->id]) }}">
+                                            @csrf
+                                            <button type="submit" class="btn btn-error">Unenroll</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <form method="dialog" class="modal-backdrop">
+                                    <button>close</button>
+                                </form>
+                            </dialog>
                         @endif
 
                         @if ($isEdit)

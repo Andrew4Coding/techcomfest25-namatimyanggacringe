@@ -63,7 +63,7 @@ Route::prefix('courses')->middleware(['auth'])->group(function () {
     Route::get('/', [CourseController::class, 'showCourses'])->name('courses');
     Route::get('/{id}', [CourseController::class, 'showCourse'])->name('course.show');
     Route::post('/enroll', [CourseController::class, 'enrollCourse'])->name('course.enroll');
-    Route::post('/unenroll', [CourseController::class, 'unenrollCourse'])->name('course.unenroll');
+    Route::post('/unenroll/{courseId}', [CourseController::class, 'unenrollCourse'])->name('course.unenroll');
 
     Route::middleware([TeacherMiddleware::class])->group(function () {
         // Course
