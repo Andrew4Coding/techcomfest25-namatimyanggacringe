@@ -19,16 +19,34 @@
     </div>
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            @foreach ($courses as $course)
             <div class="swiper-slide max-w-2xl flex flex-col space-y-5">
-                <div class="w-full min-h-[300px] bg-white rounded-2xl shadow-smooth">
-                </div>
+                <img class="w-full min-h-[300px] rounded-2xl shadow-smooth" src="{{ asset('asset_landing/carousel-1.png') }}"  alt=""/>
                 <div class="course-card">
-                    <h3>{{ $course['title'] }}</h3>
-                    <p>{{ $course['description'] }}</p>
+                    <h3>kocik</h3>
+                    <p>kocik</p>
                 </div>
             </div>
-            @endforeach
+            <div class="swiper-slide max-w-2xl flex flex-col space-y-5">
+                <img class="w-full min-h-[300px] rounded-2xl shadow-smooth" src="{{ asset('asset_landing/carousel-2.png') }}"  alt=""/>
+                <div class="course-card">
+                    <h3>kocik</h3>
+                    <p>kocik</p>
+                </div>
+            </div>
+            <div class="swiper-slide max-w-2xl flex flex-col space-y-5">
+                <img class="w-full min-h-[300px] rounded-2xl shadow-smooth" src="{{ asset('asset_landing/carousel-3.png') }}"  alt=""/>
+                <div class="course-card">
+                    <h3>kocik</h3>
+                    <p>kocik</p>
+                </div>
+            </div>
+            <div class="swiper-slide max-w-2xl flex flex-col space-y-5">
+                <img class="w-full min-h-[300px] rounded-2xl shadow-smooth" src="{{ asset('asset_landing/carousel-4.png') }}"  alt=""/>
+                <div class="course-card">
+                    <h3>kocik</h3>
+                    <p>kocik</p>
+                </div>
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
