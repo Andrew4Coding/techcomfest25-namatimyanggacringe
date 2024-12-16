@@ -20,31 +20,21 @@
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-slide max-w-2xl flex flex-col space-y-5">
-                <img class="w-full min-h-[300px] rounded-2xl shadow-smooth" src="{{ asset('asset_landing/carousel-1.png') }}"  alt=""/>
+                <img class="w-full min-h-[300px] rounded-2xl shadow-smooth" src="{{ asset('asset_landing/ai-flashcard.png') }}"  alt=""/>
                 <div class="course-card">
-                    <h3>kocik</h3>
-                    <p>kocik</p>
+                    <h3>Solusi lengkap untuk pendidikan modern.</h3>
                 </div>
             </div>
             <div class="swiper-slide max-w-2xl flex flex-col space-y-5">
-                <img class="w-full min-h-[300px] rounded-2xl shadow-smooth" src="{{ asset('asset_landing/carousel-2.png') }}"  alt=""/>
+                <img class="w-full min-h-[300px] rounded-2xl shadow-smooth" src="{{ asset('asset_landing/lms-siswa.png') }}"  alt=""/>
                 <div class="course-card">
-                    <h3>kocik</h3>
-                    <p>kocik</p>
+                    <h3>LMS all-in-one untuk siswa dan guru</h3>
                 </div>
             </div>
             <div class="swiper-slide max-w-2xl flex flex-col space-y-5">
                 <img class="w-full min-h-[300px] rounded-2xl shadow-smooth" src="{{ asset('asset_landing/carousel-3.png') }}"  alt=""/>
                 <div class="course-card">
-                    <h3>kocik</h3>
-                    <p>kocik</p>
-                </div>
-            </div>
-            <div class="swiper-slide max-w-2xl flex flex-col space-y-5">
-                <img class="w-full min-h-[300px] rounded-2xl shadow-smooth" src="{{ asset('asset_landing/carousel-4.png') }}"  alt=""/>
-                <div class="course-card">
-                    <h3>kocik</h3>
-                    <p>kocik</p>
+                    <h3>Personalisasi belajar dengan AI</h3>
                 </div>
             </div>
         </div>
