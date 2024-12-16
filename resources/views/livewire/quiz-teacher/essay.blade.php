@@ -4,9 +4,12 @@
         <div class="w-full">
             {{-- Pertanyaan dan nomor --}}
             <div class="flex items-center gap-2">
-                <h2 class="card-title">
-                    {{ $question->content }}
-                </h2>
+                <div>
+                    <small>Essay</small>
+                    <h2 class="card-title">
+                        {{ $question->content }}
+                    </h2>
+                </div>
                 <button
                     onclick="edit_choice_{{ str_replace('-', '_', $question->id) }}.showModal()"
                 >
@@ -30,7 +33,7 @@
 
             {{-- Aksi --}}
             <div class="card-actions mt-4 gap-4 flex flex-col">
-                <textarea wire:model="answer" class="textarea w-full"></textarea>
+                <textarea wire:model="answer" class="textarea w-full min-h-40" ></textarea>
                 <button wire:click="updateAnswer" class="btn btn-primary self-end">Simpan</button>
             </div>
         </div>

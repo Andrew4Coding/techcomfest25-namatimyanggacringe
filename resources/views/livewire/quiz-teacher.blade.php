@@ -61,7 +61,7 @@
             <div class="modal-action">
                 <form method="dialog" class="w-full">
                     <!-- if there is a button in form, it will close the modal -->
-                    <button wire:click="addQuestion" class="btn w-full">Tambah</button>
+                    <button wire:click="addQuestion" class="btn btn-primary w-full">Tambah</button>
                 </form>
             </div>
         </div>

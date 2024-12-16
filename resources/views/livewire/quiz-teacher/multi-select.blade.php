@@ -5,9 +5,12 @@
             {{-- Pertanyaan dan nomor --}}
             <div class="flex items-start">
                 {{-- Pertanyaan dan nomor --}}
-                <h2 class="card-title mb-6">
-                    {{ $question->content }}
-                </h2>
+                <div>
+                    <small>Multiselect</small>
+                    <h2 class="card-title mb-6">
+                        {{ $question->content }}
+                    </h2>
+                </div>
                 <button
                     onclick="edit_choice_{{ str_replace('-', '_', $question->id) }}.showModal()"
                 >
@@ -65,7 +68,7 @@
                             <div class="modal-action">
                                 <form method="dialog">
                                     <!-- if there is a button in form, it will close the modal -->
-                                    <button wire:click="updateChoice('{{ $question->questionChoices[$i]->id }}')" class="btn">Simpan</button>
+                                       <button wire:click="updateChoice('{{ $question->questionChoices[$i]->id }}')" class="btn">Simpan</button>
                                 </form>
                             </div>
                         </div>
@@ -86,7 +89,7 @@
 
                         class="btn btn-error self-center"
                     >
-                        D
+                        <x-lucide-trash class="w-4 h-4" />
                     </button>
                 @endfor
                 <button wire:click="addChoice" class="btn w-full btn-accent cursor-pointer justify-start">

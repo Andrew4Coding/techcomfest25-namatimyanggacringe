@@ -4,9 +4,12 @@
         <div class="w-full">
             {{-- Pertanyaan dan nomor --}}
             <div class="flex items-center gap-2">
-                <h2 class="card-title">
-                    {{ $question->content }}
-                </h2>
+                <div>
+                    <small>Multiple Choices</small>
+                    <h2 class="card-title">
+                        {{ $question->content }}
+                    </h2>
+                </div>
                 <button
                     onclick="edit_choice_{{ str_replace('-', '_', $question->id) }}.showModal()"
                 >
@@ -54,7 +57,7 @@
                                 <div class="modal-action">
                                     <form method="dialog">
                                         <button wire:click="updateChoice('{{ $question->questionChoices[$i]->id }}')"
-                                            class="btn">Simpan</button>
+                                            class="btn btn-primary">Simpan</button>
                                     </form>
                                 </div>
                             </div>
