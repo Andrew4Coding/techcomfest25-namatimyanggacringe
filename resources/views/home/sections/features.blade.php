@@ -3,67 +3,49 @@
         [
             'title' => 'Learning Management System (LMS)',
             'description' =>
+                'Akses materi pelajaran dan kerjakan tugas dengan mudah! Semua pelajaran, kuis, dan ujian terorganisir rapi dalam satu platform, membantu Anda belajar lebih terstruktur dan mandiri.',
+            'image' => 'asset_landing/lms-siswa.png',
+        ],
+        [
+            'title' => 'Dashboard Tracker',
+            'description' =>
+                'Tahu apa yang harus dikerjakan selanjutnya! Dengan dashboard pribadi, Anda bisa melacak progres belajar, melihat jadwal ujian mendatang, grafik nilai, dan rekomendasi belajar yang disesuaikan dengan kebutuhanmu.',
+            'image' => 'asset_landing/dasbor-siswa.png',
+        ],
+        [
+            'title' => 'AI Flashcards & Question Generator',
+            'description' =>
+                'Dapatkan flashcard otomatis dan soal latihan yang dihasilkan langsung dari materi PDF. Dengan bantuan AI, siswa dapat mempersiapkan ujian atau kuis lebih efisien, mengulang materi secara terstruktur, serta menjawab pertanyaan yang relevan untuk meningkatkan pemahaman.',
+            'image' => 'asset_landing/ai-flashcard.png',
+        ],
+        [
+            'title' => 'Learning Management System (LMS)',
+            'description' =>
                 'Mengelola pembelajaran jadi lebih mudah! Dengan LMS kami, guru bisa mengunggah materi, membuat kuis, dan ujian dengan cepat. Semua tugas dan ujian siswa bisa dikelola dalam satu platform yang efisien dan terstruktur.',
-            'image' => 'path/to/lms-image.jpg',
+            'image' => 'asset_landing/lms-guru.png',
         ],
         [
-            'title' => 'Analisis Data Pendidikan',
+            'title' => 'Dashboard Tracker',
             'description' =>
-                'Dapatkan wawasan mendalam tentang performa siswa dengan analisis data kami. Identifikasi kekuatan dan kelemahan siswa untuk meningkatkan strategi pengajaran.',
-            'image' => 'path/to/analisis-image.jpg',
+                'Pantau progres siswa secara real-time! Dashboard kami menyajikan grafik data, ranking kelas, jadwal harian, dan deadline tugas. Semua yang Anda butuhkan untuk memberikan umpan balik tepat waktu dan mendukung perkembangan siswa.',
+            'image' => 'asset_landing/dasbor-guru.png',
         ],
         [
-            'title' => 'Platform Kolaborasi',
+            'title' => 'AI-powered Content Extraction',
             'description' =>
-                'Fasilitasi kolaborasi antara siswa dan guru dengan platform kami. Diskusi, proyek kelompok, dan komunikasi jadi lebih mudah dan terorganisir.',
-            'image' => 'path/to/kolaborasi-image.jpg',
+                'Maksimalkan waktu Anda dengan teknologi AI! Cukup unggah materi PDF, dan biarkan AI menganalisisnya untuk menghasilkan soal ujian dan kuis yang relevan. Menjadi lebih efektif dalam membuat soal yang sesuai dengan materi.',
+            'image' => 'asset_landing/ai-powered.png',
         ],
         [
-            'title' => 'Perpustakaan Digital',
+            'title' => 'AI Essay Checker',
             'description' =>
-                'Akses ribuan buku dan jurnal akademik secara online. Perpustakaan digital kami memudahkan siswa dan guru untuk menemukan referensi yang mereka butuhkan.',
-            'image' => 'path/to/perpustakaan-image.jpg',
-        ],
-        [
-            'title' => 'Sistem Penilaian Otomatis',
-            'description' =>
-                'Hemat waktu dengan sistem penilaian otomatis kami. Ujian dan tugas siswa dapat dinilai secara cepat dan akurat.',
-            'image' => 'path/to/penilaian-image.jpg',
-        ],
-        [
-            'title' => 'Pembelajaran Adaptif',
-            'description' =>
-                'Sesuaikan materi pembelajaran dengan kebutuhan masing-masing siswa. Pembelajaran adaptif kami memastikan setiap siswa mendapatkan pengalaman belajar yang optimal.',
-            'image' => 'path/to/adaptif-image.jpg',
-        ],
-        [
-            'title' => 'Manajemen Kelas',
-            'description' =>
-                'Atur jadwal, absensi, dan kegiatan kelas dengan mudah. Manajemen kelas kami membantu guru untuk tetap terorganisir dan efisien.',
-            'image' => 'path/to/manajemen-image.jpg',
-        ],
-        [
-            'title' => 'Pelatihan Guru',
-            'description' =>
-                'Tingkatkan keterampilan mengajar dengan pelatihan guru kami. Dapatkan akses ke berbagai kursus dan workshop untuk pengembangan profesional.',
-            'image' => 'path/to/pelatihan-image.jpg',
-        ],
-        [
-            'title' => 'Portal Orang Tua',
-            'description' =>
-                'Libatkan orang tua dalam proses pendidikan dengan portal kami. Orang tua dapat memantau perkembangan anak mereka dan berkomunikasi dengan guru.',
-            'image' => 'path/to/portal-image.jpg',
-        ],
-        [
-            'title' => 'Keamanan Data',
-            'description' =>
-                'Pastikan data siswa dan sekolah aman dengan solusi keamanan data kami. Kami menggunakan teknologi terbaru untuk melindungi informasi penting.',
-            'image' => 'path/to/keamanan-image.jpg',
+                'Pengecekan esai otomatis yang menghemat waktu! Dengan AI, esai siswa akan diperiksa dan diberi umpan balik secara instan. Anda bisa melakukan cross-check dengan mudah, memastikan esai dinilai objektif dan akurat.',
+            'image' => 'asset_landing/ai-essay-checker.png',
         ],
     ];
 
-    $studentFeatures = array_slice($features, 0, 5);
-    $teacherFeatures = array_slice($features, 5);
+    $studentFeatures = array_slice($features, 0, 3);
+    $teacherFeatures = array_slice($features, 3);
 @endphp
 
 <section class="flex flex-col items-center my-20 gap-10">
@@ -78,7 +60,7 @@
             Murid
         </button>
         <button id="teacherTab" class="btn btn-outline px-20 w-full" onclick="showFeatures('teacher')">
-            Guru
+            Pengajar
         </button>
     </div>
 

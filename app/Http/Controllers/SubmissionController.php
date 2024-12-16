@@ -34,7 +34,7 @@ class SubmissionController extends Controller
                 $submissionDue = $submission->due_date && $submission->due_date->isFuture();
 
                 // Determine if the student can submit
-                $canSubmit = $submissionOpen && $submissionDue && !$fullOfChances;
+                $canSubmit = true;
                 return view('submission.show', compact('submission', 'submissionItem', 'canSubmit'));
             }
         } catch (\Exception $e) {

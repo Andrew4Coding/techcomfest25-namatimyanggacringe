@@ -46,14 +46,9 @@ Route::post('/login', [LoginController::class, 'login']);
 // Logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
 Route::middleware(['auth'])->group(function () {
-
     Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
     Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
-
-
-
     Route::post('/upload/{courseId}', [UploadFileController::class, 'uploadFile'])->name('course.upload.file');
 });
 
@@ -98,21 +93,19 @@ Route::prefix('quiz')->middleware(['auth'])->group(function () {
     Route::get('/submit/{quizId}', [QuizController::class, 'submitQuiz'])->name('quiz.submit');
 
     Route::get('/check/{quizId}', QuizSolution::class)->name('quiz.solution');
-//    Route::get('/{courseId}/create', [QuizController::class, 'showQuizCreation'])->name('quiz.alter');
-//    Route::get('/{courseId}/edit/{id}', [QuizController::class, 'showQuizAlteration'])->name('quiz.alter');
-//
-//    Route::post('/generate', [QuizController::class, 'generateQuestionsFromPDF'])->name('quiz.generate');
-//    Route::post('/parse', [QuizController::class, 'parseQuestionsFromCSV'])->name('quiz.parse');
+    //    Route::get('/{courseId}/create', [QuizController::class, 'showQuizCreation'])->name('quiz.alter');
+    //    Route::get('/{courseId}/edit/{id}', [QuizController::class, 'showQuizAlteration'])->name('quiz.alter');
+    //
+    //    Route::post('/generate', [QuizController::class, 'generateQuestionsFromPDF'])->name('quiz.generate');
+    //    Route::post('/parse', [QuizController::class, 'parseQuestionsFromCSV'])->name('quiz.parse');
 
-//    Route::middleware([TeacherMiddleware::class])->group(function () { FIXME
-        Route::middleware([])->group(function () {
-        // Teacher Quiz Editor
-        Route::get('/edit/{quizId}', QuizTeacher::class)->name('quiz.edit');
+    //    Route::middleware([TeacherMiddleware::class])->group(function () { FIXME
+    // Teacher Quiz Editor
+    Route::get('/edit/{quizId}', QuizTeacher::class)->name('quiz.edit');
 
-        Route::post('/{courseSectionId}/store', [QuizController::class, 'store'])->name('quiz.store');
-//        Route::put('/{id}/update', [QuizController::class, 'update'])->name('quiz.update');
-//        Route::delete('/{id}/delete', [QuizController::class, 'destroy'])->name('quiz.delete');
-    });
+    Route::post('/{courseSectionId}/store', [QuizController::class, 'store'])->name('quiz.store');
+    //        Route::put('/{id}/update', [QuizController::class, 'update'])->name('quiz.update');
+    //        Route::delete('/{id}/delete', [QuizController::class, 'destroy'])->name('quiz.delete');
 });
 
 // Forum
@@ -152,9 +145,8 @@ Route::prefix('attendance')->middleware(['auth'])->group(function () {
     });
 });
 
-Route::get('/upload-pdf', [UploadFileController::class, 'showFileForm'])->name('pdf.upload.form');
-Route::post('/upload-pdf', [UploadFileController::class, 'processUpload'])->name('pdf.upload.process');
-
+// Route::get('/upload-pdf', [UploadFileController::class, 'showFileForm'])->name('pdf.upload.form');
+// Route::post('/upload-pdf', [UploadFileController::class, 'processUpload'])->name('pdf.upload.process');
 
 // FlashCard
 Route::prefix('flashcard')->middleware(['auth'])->group(function () {
@@ -165,9 +157,10 @@ Route::prefix('flashcard')->middleware(['auth'])->group(function () {
     Route::put('/update/{id}', [FlashCardController::class, 'update'])->name('flashcard.update');
 });
 
-
 // Course Item Progress
-Route::post('/course-item/check/{courseItemId}', [CourseItemProgressController::class, 'checkCourseItem'])->name('course.item.check');
+Route::middleware(['auth'])->group(function () {
+    Route::post('/course-item/check/{courseItemId}', [CourseItemProgressController::class, 'checkCourseItem'])->name('course.item.check');
+});
 
 // Dashboard
 Route::prefix('dashboard')->middleware(['auth'])->group(function () {

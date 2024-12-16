@@ -49,7 +49,7 @@ class DashboardController extends Controller
 
                         $totalAssignment += 1;
 
-                        foreach ($courseItem->submissionItems as $submissionItem) {
+                        foreach ($courseItem->courseItemable->submissionItems as $submissionItem) {
                             $submissionSum += $submissionItem->grade ?? 0;
                         }
                     }
@@ -129,7 +129,14 @@ class DashboardController extends Controller
             $submissionSum = 0;
 
             foreach ($course->courseSections as $courseSection) {
+                if ($courseSection->is_public === false) {
+                    continue;
+                }
                 foreach ($courseSection->courseItems as $courseItem) {
+                    if ($courseItem->is_public === false) {
+                        continue;
+                    }
+                    
                     $totalCourseItem += 1;
                     $courseItemProgressCount += $courseItem->courseItemProgress ? 1 : 0;
 
@@ -140,7 +147,7 @@ class DashboardController extends Controller
 
                         $totalAssignment += 1;
 
-                        foreach ($courseItem->submissionItems as $submissionItem) {
+                        foreach ($courseItem->courseItemable->submissionItems as $submissionItem) {
                             $submissionSum += $submissionItem->grade ?? 0;
                         }
                     }
