@@ -10,13 +10,14 @@
 
         @if (!$flashcards->isEmpty())
             <button class="btn btn-primary" onclick="document.getElementById('add_flashcard_modal').showModal()">
+                <x-lucide-file class="w-4 h-4" />
                 Import Document
             </button>
         @endif
 
 
     </section>
-    <section class="grid grid-cols-1 md:grid-cols-3">
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-5">
         @foreach ($flashcards as $flashcard)
             @php
                 $selected_theme = $flashcard->subject;
