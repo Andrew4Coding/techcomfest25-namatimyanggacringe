@@ -7,6 +7,20 @@
                 <h2 class="card-title">
                     {{ $question->content }}
                 </h2>
+                <button
+                    onclick="edit_choice_{{ str_replace('-', '_', $question->id) }}.showModal()"
+                >
+                    <x-lucide-pencil class="w-4 h-4 hover:text-red-500 duration-300 hover:rotate-12" />
+                </button>
+                <dialog id="edit_choice_{{ str_replace('-', '_', $question->id) }}" class="modal">
+                    <div class="modal-box">
+                        <input type="text" wire:model.blur="content" placeholder="Pertanyaan..." class="input input-bordered w-full max-w-xs" required>
+                    </div>
+                    <form method="dialog">
+                        <!-- if there is a button in form, it will close the modal -->
+                        <button class="btn">Selesai</button>
+                    </form>
+                </dialog>
                 <button wire:click="$parent.deleteQuestion('{{ $question->id }}')">
                     <x-lucide-trash class="w-4 h-4 hover:text-red-500 duration-300 hover:rotate-12" />
                 </button>
@@ -25,7 +39,7 @@
                                 name="radio-{{ $question->questionChoices[$i]->id }}" class="hidden"
                                 value="{{ $question->questionChoices[$i]->id }}" />
                         </label>
-    
+
                         <dialog wire:key="dialog-{{ $question->questionChoices[$i]->id }}"
                             id="my_modal_{{ str_replace('-', '_', $question->questionChoices[$i]->id) }}" class="modal">
                             <div class="modal-box">
@@ -43,7 +57,7 @@
                                 </div>
                             </div>
                         </dialog>
-    
+
                         <div class="flex items-center gap-2 mt-2 md:mt-0">
                             {{-- Edit Button --}}
                             <button wire:key="button-edit-{{ $question->questionChoices[$i]->id }}" class="btn self-center"

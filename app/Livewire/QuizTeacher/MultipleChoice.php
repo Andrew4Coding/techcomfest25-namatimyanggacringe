@@ -17,6 +17,8 @@ class MultipleChoice extends Component
 
     public string $answer;
 
+    public string $content;
+
     protected $rules = [
         'choices.*.content' => 'required|string|max:255',
         'answer' => 'required|exists:question_choices,id',
@@ -32,8 +34,11 @@ class MultipleChoice extends Component
             ];
         })->toArray();
 
+
         // Initialize the answer if it's set
         $this->answer = $this->question->answer;
+
+        $this->content = $this->question->content;
     }
 
     /**
@@ -79,6 +84,12 @@ class MultipleChoice extends Component
         $this->validateOnly('answer');
 
         $this->question->answer = $this->answer;
+        $this->question->save();
+    }
+
+    public function updatedContent()
+    {
+        $this->question->content = $this->content;
         $this->question->save();
     }
 
