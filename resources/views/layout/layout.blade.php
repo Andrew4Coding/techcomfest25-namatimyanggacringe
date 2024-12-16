@@ -927,7 +927,7 @@
         @php
             $isAuth = request()->is('login') || request()->is('register') || request()->is('register/teacher') || request()->is('register/student');
         @endphp
-        <main class="w-full overflow-y-scroll overflow-x-hidden {{ $isAuth ? '' : 'px-5 md:px-20 py-20' }} bg-[#F6F5FF]">
+        <main class="w-full overflow-y-scroll overflow-x-hidden {{ $isAuth ? '' : 'px-5 md:px-20 py-10 md:py-20' }} bg-[#F6F5FF]">
             @yield('content')
         </main>
     </div>

@@ -96,3 +96,7 @@ h1 {
 .badge {
     @apply border-none
 }
+
+th {
+    @apply font-medium
+}
