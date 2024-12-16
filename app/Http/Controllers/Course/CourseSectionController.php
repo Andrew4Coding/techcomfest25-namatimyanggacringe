@@ -53,7 +53,7 @@ class CourseSectionController extends Controller
         }
     }
 
-    public function toggleVisibility(string $id): RedirectResponse
+    public function toggleVisibility(Request $request, string $id)
     {
         try {
             $courseSection = CourseSection::findOrFail($id);
@@ -66,10 +66,9 @@ class CourseSectionController extends Controller
                 $courseItem->save();
             }
 
-            return redirect()->back();
+            return response()->json(['success' => true, 'is_public' => $courseSection->is_public, 'message' => 'Course section visibility updated']);
         } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->withErrors(['error' => 'Error updating course section visibility']);
+            return response()->json(['success' => false, 'error' => 'Error updating course section visibility'], 500);
         }
     }
 }
