@@ -24,6 +24,7 @@ class QuestionFactory extends Factory
 //            'answer' => $this->faker->paragraph(),
 //            'question_type' => $this->faker->randomElement(QuestionType::class),
             'answer' => $this->faker->randomElement(['a', 'b', 'c', 'd', 'e']),
+            'weight' => $this->faker->randomNumber(1),
             'question_type' => $this->faker->randomElement(QuestionType::class),
             'quiz_id' => Quiz::factory(),
         ];

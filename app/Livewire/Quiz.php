@@ -43,6 +43,8 @@ class Quiz extends Component
     // array of flagged question
     public array $flagged = [];
 
+    public int $totalAnswered = 0;
+
     /**
      * @param $page
      * @return void
@@ -107,7 +109,7 @@ class Quiz extends Component
         $this->submission->save();
 
         // back, if not exists then move to the index page.
-        $this->redirectIntended('/');
+        $this->redirect("/quiz/submit/$this->id");
     }
 
 
@@ -215,8 +217,12 @@ class Quiz extends Component
                 }
             }
 
+            $this->totalAnswered = $this->submission->quizSubmissionItems()->count();
+
             // check if quiz is valid
             $this->isValid = true;
+
+            echo $this->submission->quizSubmissionItems()->get();
 
         } catch (ModelNotFoundException $e) {
             $this->redirectIntended('/');

@@ -95,19 +95,21 @@ Route::prefix('courses')->middleware(['auth'])->group(function () {
 Route::prefix('quiz')->middleware(['auth'])->group(function () {
     Route::get('/', Quiz::class)->name('quiz.show');
 
-    Route::get('/{courseId}/create', [QuizController::class, 'showQuizCreation'])->name('quiz.alter');
-    Route::get('/{courseId}/edit/{id}', [QuizController::class, 'showQuizAlteration'])->name('quiz.alter');
+    Route::get('/submit/{quizId}', [QuizController::class, 'submitQuiz'])->name('quiz.submit');
 
-    Route::post('/generate', [QuizController::class, 'generateQuestionsFromPDF'])->name('quiz.generate');
-    Route::post('/parse', [QuizController::class, 'parseQuestionsFromCSV'])->name('quiz.parse');
+//    Route::get('/{courseId}/create', [QuizController::class, 'showQuizCreation'])->name('quiz.alter');
+//    Route::get('/{courseId}/edit/{id}', [QuizController::class, 'showQuizAlteration'])->name('quiz.alter');
+//
+//    Route::post('/generate', [QuizController::class, 'generateQuestionsFromPDF'])->name('quiz.generate');
+//    Route::post('/parse', [QuizController::class, 'parseQuestionsFromCSV'])->name('quiz.parse');
 
     Route::middleware([TeacherMiddleware::class])->group(function () {
         // Teacher Quiz Editor
         Route::get('/{id}/edit', QuizTeacher::class)->name('quiz.edit');
 
-        Route::post('/{courseSectionId}/store', [QuizController::class, 'store'])->name('quiz.store');
-        Route::put('/{id}/update', [QuizController::class, 'update'])->name('quiz.update');
-        Route::delete('/{id}/delete', [QuizController::class, 'destroy'])->name('quiz.delete');
+//        Route::post('/{courseSectionId}/store', [QuizController::class, 'store'])->name('quiz.store');
+//        Route::put('/{id}/update', [QuizController::class, 'update'])->name('quiz.update');
+//        Route::delete('/{id}/delete', [QuizController::class, 'destroy'])->name('quiz.delete');
     });
 });
 

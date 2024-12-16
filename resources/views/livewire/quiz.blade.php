@@ -1,10 +1,15 @@
-<main class="px-20 h-[100vh] flex py-24 gap-20 bg-gray-50">
+<main class="px-20 flex flex-col py-10 gap-20">
     @if($isValid)
     {{-- Left Section: Question Navigation --}}
-    <section class="flex flex-col w-1/4 gap-4">
-        <div id="timer" class="text-gray-700 bg-white px-4 py-2 rounded-lg shadow-md">
-            Time Left: <span wire:poll.500ms id="time-left">{{ $timeLeft }}</span>
+        <div class="flex w-full justify-start items-center">
+            <h3 class="text-xl w-44 mr-12">{{ $quiz->courseItem->name }}</h3>
+            <div class="flex items-center">
+                <span class="w-10 flex items-center">{{ intdiv($page * 100, $questionCount) }}%</span>
+                <progress class="progress h-3 w-56" value="{{ $page }}" max="{{ $questionCount }}"></progress>
+            </div>
+            <span wire:poll.500ms id="time-left" class="ml-auto text-gray-800">{{ $timeLeft }}</span>
         </div>
+        <section class="flex flex-col w-1/4 gap-4">
         <section class="h-full w-full bg-white p-6 shadow-md rounded-lg">
             {{-- Timer --}}
 
@@ -41,7 +46,6 @@
                 :submissionId="$submission->id"
                 wire:key="question-{{ $page }}"
             />
-            ui
         @elseif($curQuestion->question_type === \App\Enums\QuestionType::ShortAnswer)
             <livewire:quiz.short-answer
                 :page="$page"

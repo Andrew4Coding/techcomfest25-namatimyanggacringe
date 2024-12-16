@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('answer')->default("");
             $table->float('score')->default(0);
             $table->boolean('flagged')->default(false);
+            $table->text('feedback')->default("");
 
             $table->uuid('quiz_submission_id');
             $table->uuid('question_id');
