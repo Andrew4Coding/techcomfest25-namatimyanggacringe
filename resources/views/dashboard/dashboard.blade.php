@@ -16,5 +16,9 @@
 @endphp
 @extends('layout.layout')
 @section('content')
-    @include('dashboard.sections.teacher')
+    @if (Auth::user()->userable_type === 'App\Models\Student')
+        @include('dashboard.sections.student')
+    @else
+        @include('dashboard.sections.teacher')
+    @endif
 @endsection
