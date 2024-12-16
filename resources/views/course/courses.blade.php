@@ -4,7 +4,7 @@
         <div class="space-y-2 mb-4 md:mb-0">
             <h1 class="text-3xl font-semibold">Course List</h1>
             <p class="font-medium gradient-blue text-transparent bg-clip-text">
-                Semangad yaa!
+                Semangat yahh!
             </p>
         </div>
 

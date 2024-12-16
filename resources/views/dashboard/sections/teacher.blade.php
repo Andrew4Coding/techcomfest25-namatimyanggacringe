@@ -72,8 +72,8 @@
         <h3 class="mb-5">Deadline Terdekat</h3>
         @if (!$deadlines || count($deadlines) === 0)
             <div class="p-5 w-full h-full flex items-center justify-center flex-col min-h-72 text-center gap-2">
-                <img src="{{ asset('mindora-mascot.png') }}" alt="No Deadlines" class="w-[150px]">
-                <h4 class="font-medium">Tidak ada deadline</h4>
+                <img src="{{ asset('mascot-nunjuk.png') }}" alt="No Deadlines" class="w-[150px]">
+                <h4 class="font-medium">Tidak Ada Deadline</h4>
                 <p class="text-gray-400 text-sm">Belum ada deadline tugas yang mendekat</p>
             </div>
         @else
@@ -110,7 +110,7 @@
 
         @if (!$students || count($students) === 0)
             <div class="p-5 w-full h-full flex items-center justify-center flex-col min-h-72 text-center gap-2">
-                <img src="{{ asset('mindora-mascot.png') }}" alt="No Students" class="w-[150px]">
+                <img src="{{ asset('mascot-nyari.png') }}" alt="No Students" class="w-[150px]">
                 <h4 class="font-medium">Tidak ada murid yang terdaftar</h4>
                 <p class="text-sm text-gray-400">Sebar kode kelas untuk menerima murid</p>
             </div>

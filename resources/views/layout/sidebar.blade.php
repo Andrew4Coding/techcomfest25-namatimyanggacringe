@@ -30,14 +30,6 @@
                     </button>
                 </div>
             </a>
-            <a href="/">
-                <div class="tooltip tooltip-right" data-tip="Dashboard">
-                    <button
-                        class="hover:bg-[#E3ECF1] hover:scale-[102%] flex items-center justify-center duration-300  rounded-full w-14 h-14">
-                        <x-lucide-file class="w-6 h-6" />
-                    </button>
-                </div>
-            </a>
         </div>
         <div class="flex flex-col h-full items-end justify-end gap-5">
             <div class="tooltip tooltip-right" data-tip="Logout">

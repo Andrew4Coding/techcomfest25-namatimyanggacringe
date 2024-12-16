@@ -41,13 +41,25 @@ class DashboardController extends Controller
                     $totalCourseItem += 1;
                     $courseItemProgressCount += $courseItem->courseItemProgress ? 1 : 0;
 
-                    if ($courseItem->courseItemable_type === Submission::class) {
-                        $assignmentProgressCount += 1;
-                        $totalAssignment += $courseItem->courseItemProgress ? 1 : 0;
+                    if ($courseItem->course_itemable_type  === Submission::class) {
+
+                        if ($courseItem->courseItemProgress) {
+                            $assignmentProgressCount += 1;
+                        }
+
+                        $totalAssignment += 1;
 
                         foreach ($courseItem->submissionItems as $submissionItem) {
                             $submissionSum += $submissionItem->grade ?? 0;
                         }
+                    }
+
+                    else if ($courseItem->course_itemable_type === Quiz::class) {
+                        if ($courseItem->courseItemProgress) {
+                            $assignmentProgressCount += 1;
+                        }
+
+                        $totalAssignment += 1;
                     }
                 }
             }
@@ -121,13 +133,24 @@ class DashboardController extends Controller
                     $totalCourseItem += 1;
                     $courseItemProgressCount += $courseItem->courseItemProgress ? 1 : 0;
 
-                    if ($courseItem->courseItemable_type === Submission::class) {
-                        $assignmentProgressCount += 1;
-                        $totalAssignment += $courseItem->courseItemProgress ? 1 : 0;
+                    if ($courseItem->course_itemable_type === Submission::class) {
+                        if ($courseItem->courseItemProgress) {
+                            $assignmentProgressCount += 1;
+                        }
+
+                        $totalAssignment += 1;
 
                         foreach ($courseItem->submissionItems as $submissionItem) {
                             $submissionSum += $submissionItem->grade ?? 0;
                         }
+                    }
+
+                    else if ($courseItem->course_itemable_type === Quiz::class) {
+                        if ($courseItem->courseItemProgress) {
+                            $assignmentProgressCount += 1;
+                        }
+
+                        $totalAssignment += 1;
                     }
                 }
             }
@@ -170,6 +193,9 @@ class DashboardController extends Controller
         usort($deadlines, function ($a, $b) {
             return strtotime($a['submission']->due_date) - strtotime($b['submission']->due_date);
         });
+
+        // Filter top 3 closest deadlines
+        $deadlines = array_slice($deadlines, 0, 5);
 
         // Show All Pesan Dari guru
         $studentMessages = StudentMessage::where('student_id', $user->userable->id)->get();
