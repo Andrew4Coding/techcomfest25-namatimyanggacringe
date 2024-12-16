@@ -118,6 +118,7 @@
             @foreach ($students as $student)
                 <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border-2 border-gray-50">
 
+                     {{ $stud
                     @if ($student->user->profile_picture)
                         <img src="{{ $student->user->profile_picture }}" alt="{{ $student->user->name }}"
                             class="w-12 h-12 rounded-full mr-4">
