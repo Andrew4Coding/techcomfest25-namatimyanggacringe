@@ -15,17 +15,28 @@ class MultiSelect extends Component
 
     public array $choices = [];
 
+    public string $content;
+
+
     public array $answers;
+    public string $content;
 
     protected $rules = [
         'choices.*.content' => 'required|string|max:255',
         'answer' => 'required|exists:question_choices,id',
     ];
 
+    public function updatedContent()
+    {
+        $this->question->content = $this->content;
+        $this->question->save();
+    }
+
     public function mount()
     {
         // Initialize the answer if it's set
         $this->answers = explode(',', $this->question->answer);
+        $this->content = $this->question->content;
     }
 
     /**

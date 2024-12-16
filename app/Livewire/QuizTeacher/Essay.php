@@ -15,10 +15,21 @@ class Essay extends Component
 
     public string $answer;
 
+    public string $content;
+
+
     public function mount()
     {
         // Initialize the answer if it's set
         $this->answer = $this->question->answer;
+        $this->content = $this->question->content;
+
+    }
+
+    public function updatedContent()
+    {
+        $this->question->content = $this->content;
+        $this->question->save();
     }
 
     /**
