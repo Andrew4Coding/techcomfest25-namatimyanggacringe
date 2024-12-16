@@ -49,7 +49,7 @@
 
         <dialog id="delete_courseitem_modal_{{ $item->id }}" class="modal">
             <div class="modal-box">
-                <h3 class="font-semibold text-lg">Confirm Deletion</h3>
+                <h3 class="font-semibold text-lg">Konfirmasi Penghapusan</h3>
                 <p>Are you sure you want to delete this Course Item?</p>
                 <div class="modal-action">
                     <button type="button" class="btn"
@@ -214,7 +214,7 @@
                     <input type="datetime-local" name="start" id="start" class="input input-bordered w-full" required />
                 </div>
                 <div class="mb-4">
-                    <label for="duration" class="block text-sm font-medium text-gray-700">Duration (minutes)</label>
+                    <label for="duration" class="block text-sm font-medium text-gray-700">Durasi (Menit)</label>
                     <input type="number" name="duration" id="duration" class="input input-bordered w-full" required min="1" />
                 </div>
                 <div class="modal-action">
@@ -231,7 +231,7 @@
 
 <dialog id="delete_section_modal_{{ $section->id }}" class="modal">
     <div class="modal-box">
-        <h3 class="font-semibold text-lg">Confirm Deletion</h3>
+        <h3 class="font-semibold text-lg">Konfirmasi Penghapusan</h3>
         <p>Are you sure you want to delete this section?</p>
         <div class="modal-action">
             <button type="button" class="btn"

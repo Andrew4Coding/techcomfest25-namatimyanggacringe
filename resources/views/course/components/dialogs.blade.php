@@ -1,7 +1,7 @@
 <dialog id="edit_course_modal" class="modal">
     <div class="modal-box">
         <h3 class="font-semibold text-lg">Edit Kelas</h3>
-        <form method="POST" action="{{ route('course.update', ['id' => $course->id]) }}" onsubmit="disableSubmitButton(this)">
+        <form method="POST" action="{{ route('course.update', ['id' => $course->id]) }}">
             @csrf
             @method('PUT')
             <div class="mb-4">
@@ -32,12 +32,12 @@
 
 <dialog id="delete_course_modal_{{ $course->id }}" class="modal">
     <div class="modal-box">
-        <h3 class="font-semibold text-lg">Confirm Deletion</h3>
+        <h3 class="font-semibold text-lg">Konfirmasi Penghapusan</h3>
         <p>Are you sure you want to delete this Course?</p>
         <div class="modal-action">
             <button type="button" class="btn"
                 onclick="document.getElementById('delete_course_modal_{{ $course->id }}').close();">Batalkan</button>
-            <form method="POST" action="{{ route('course.delete', ['id' => $course->id]) }}" onsubmit="disableSubmitButton(this)">
+            <form method="POST" action="{{ route('course.delete', ['id' => $course->id]) }}">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-error">Delete</button>
@@ -52,7 +52,7 @@
 <dialog id="add_section_modal" class="modal">
     <div class="modal-box">
         <h3 class="font-semibold text-lg">Buat Section Baru</h3>
-        <form method="POST" action="{{ route('course.section.create', ['id' => $course->id]) }}" id="course-section-form" onsubmit="disableSubmitButton(this)">
+        <form method="POST" action="{{ route('course.section.create', ['id' => $course->id]) }}" id="course-section-form">
             @csrf
             <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700">Nama Section</label>
@@ -73,11 +73,3 @@
         <button>close</button>
     </form>
 </dialog>
-
-<script>
-    function disableSubmitButton(form) {
-        const submitButton = form.querySelector('button[type="submit"]');
-        submitButton.disabled = true;
-        submitButton.innerText = 'Submitting...';
-    }
-</script>
