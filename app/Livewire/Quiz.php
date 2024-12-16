@@ -167,7 +167,11 @@ class Quiz extends Component
         // check whether the quiz is found
         try {
             // fetch quiz from database
-            $this->quiz = QuizModel::with('questions', 'questions.questionChoices')->withCount('questions')->findOrFail($this->id);
+            $this->quiz = QuizModel
+                ::with('questions', 'questions.questionChoices')
+                ->withCount('questions')
+                ->where('id', $this->id)
+                ->firstOrFail();
 
             // FIXME: LOGIC UNTUK TIDAK BOLEH MASUK
             $curDate = strtotime(date("Y-m-d h:i:sa"));
@@ -179,10 +183,10 @@ class Quiz extends Component
 
             // check whether the student already has any submission, if not then
             // create new submission item
-            $this->submission = QuizSubmission::firstOrCreate([
-                'quiz_id' => $this->id,
-                'student_id' => Auth::user()->userable_id,
-            ]);
+            $this->submission = QuizSubmission
+                ::where('quiz_id', $this->id)
+                ->where('student_id', Auth::user()->userable_id)
+                ->firstOrCreate();
 
             // FIXME: BENERIN GUE MALAS :V
             if (
@@ -206,10 +210,10 @@ class Quiz extends Component
                 $this->flagged[$question->id] = false;
 
                 // fetch previous submission item, if any
-                $fetched = QuizSubmissionItem::where([
-                    'question_id' => $question->id,
-                    'quiz_submission_id' => $this->submission->id,
-                ])->first();
+                $fetched = QuizSubmissionItem
+                    ::where('quiz_submission_id', $this->submission->id)
+                    ->where('question_id', $question->id)
+                    ->first();
 
                 // if there's from the previous submission, mark it
                 if ($fetched !== null && $fetched->flagged) {
