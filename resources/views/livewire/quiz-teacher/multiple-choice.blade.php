@@ -33,7 +33,7 @@
                 @for ($i = 0; $i < count($choices); $i++)
                     <div class="w-full flex flex-col md:flex-row items-start md:items-center">
                         <label wire:key="choices-{{ $question->questionChoices[$i]->id }}"
-                            class="btn h-fit btn-outline flex-1 justify-start"
+                            class="btn h-fit flex-1 justify-start"
                             @if (!($question->questionChoices[$i]->id === $answer)) btn-outline @endif">
                             <span class="mr-2 font-bold block">{{ $this->toLetter($i) }}</span>
                             <span class="text-left leading-4">{{ $question->questionChoices[$i]->content }}</span>
