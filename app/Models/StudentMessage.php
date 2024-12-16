@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FlashCard extends Model
+class StudentMessage extends Model
 {
     use HasUuids, HasFactory;
 
@@ -15,19 +15,8 @@ class FlashCard extends Model
 
     protected $fillable = [
         'id',
-        'name',
-        'description',
-        'subject',
-        'user_id',
+        'student_id',
+        'teacher_id',
+        'message',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function FlashCardItem()
-    {
-        return $this->hasMany(FlashCardItem::class);
-    }
 }

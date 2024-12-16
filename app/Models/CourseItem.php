@@ -19,7 +19,7 @@ class CourseItem extends Model
     public $fillable = [
         'name',
         'description',
-        'isPublic',
+        'is_public',
         'course_section_id',
     ];
 
@@ -37,5 +37,10 @@ class CourseItem extends Model
     public function courseItemable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function courseItemProgress()
+    {
+        return $this->hasOne(CourseItemProgress::class);
     }
 }

@@ -11,24 +11,23 @@ use Illuminate\Http\Request;
 
 class CourseItemController extends Controller
 {
-    public function createCourseItem(Request $request, string $course_section_id) 
+    public function createCourseItem(Request $request, string $course_section_id)
     {
-        try {            
+        try {
             $type = $request->query('type');
-    
+
             if ($type == "material") {
                 // Validate input
                 $request->validate([
                     'name' => ['required', 'string'],
-                    'description' => ['required', 'string'],
                     'file' => ['required', 'file'],
                 ]);
-    
+
                 // Upload file to aws 
                 $file = $request->file('file');
                 $fileName = $file->getClientOriginalName();
                 $filePath = $file->storeAs("uploads/{$course_section_id}", $fileName, 's3');
-    
+
                 $url = env('AWS_URL') . $filePath;
 
                 $newCourseItem = new Material();
@@ -49,13 +48,12 @@ class CourseItemController extends Controller
             } else {
                 return redirect()->back()->withErrors(['error' => 'Invalid type']);
             }
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
-    public function deleteCourseItem(string $id) 
+    public function deleteCourseItem(string $id)
     {
         try {
             $courseItem = CourseItem::findOrFail($id);
@@ -68,16 +66,16 @@ class CourseItemController extends Controller
         }
     }
 
-    public function toggleVisibility(string $id) 
+    public function toggleVisibility(string $id)
     {
         try {
             $courseItem = CourseItem::findOrFail($id);
-            $courseItem->isPublic = !$courseItem->isPublic;
+            $courseItem->is_public = !$courseItem->is_public;
             $courseItem->save();
 
-            return redirect()->back();
+            return response()->json(['success' => true, 'is_public' => $courseItem->is_public, 'message' => 'Visibility toggled successfully']);
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Error toggling visibility']);
+            return response()->json(['success' => false, 'error' => 'Error toggling visibility'], 500);
         }
     }
 }

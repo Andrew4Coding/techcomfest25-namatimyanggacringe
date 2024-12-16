@@ -20,8 +20,8 @@
                     </button>
                 </div>
             </a>
-            <a href="/">
-                <div class="tooltip tooltip-right" data-tip="Dashboard">
+            <a href="/flashcard">
+                <div class="tooltip tooltip-right" data-tip="Flashcard">
                     <button class="btn rounded-full w-14 h-14">
                         <x-lucide-atom class="w-6 h-6" />
                     </button>
@@ -36,9 +36,6 @@
             </a>
         </div>
         <div class="flex flex-col h-full items-end justify-end">
-            <button class="btn rounded-full w-14 h-14 bg-white border-none ">
-                <x-lucide-settings class="w-6 h-6" />
-            </button>
             <div class="tooltip tooltip-right" data-tip="Logout">
                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
                     <button class="btn rounded-full w-14 h-14 bg-white border-none ">

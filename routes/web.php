@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseItemController;
 use App\Http\Controllers\Course\CourseSectionController;
+use App\Http\Controllers\CourseItemProgressController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FlashCardController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ProfileController;
@@ -45,9 +47,6 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard.dashboard');
-    });
 
     Route::get('/chat', [ChatController::class, 'showChat'])->name('chat.show');
     Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.send');
@@ -157,5 +156,21 @@ Route::post('/upload-pdf', [UploadFileController::class, 'processUpload'])->name
 // FlashCard
 Route::prefix('flashcard')->middleware(['auth'])->group(function () {
     Route::get('/', [FlashCardController::class, 'show'])->name('flashcard.show');
+    Route::get('/{id}', [FlashCardController::class, 'index'])->name('flashcard.index');
     Route::post('/create', [FlashCardController::class, 'create'])->name('flashcard.create');
+    Route::delete('/delete/{id}', [FlashCardController::class, 'delete'])->name('flashcard.delete');
+    Route::put('/update/{id}', [FlashCardController::class, 'update'])->name('flashcard.update');
+});
+
+
+// Course Item Progress
+Route::post('/course-item/check/{courseItemId}', [CourseItemProgressController::class, 'checkCourseItem'])->name('course.item.check');
+
+// Dashboard
+Route::prefix('dashboard')->middleware(['auth'])->group(function () {
+    Route::get('/', [DashboardController::class, 'show'])->name('dashboard');
+    
+    Route::middleware([TeacherMiddleware::class])->group(function () {
+        Route::post('/sendMessage/{studentId}', [DashboardController::class, 'sendStudentMessage'])->name('dashboard.teacher.send');
+    });
 });
