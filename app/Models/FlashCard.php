@@ -15,13 +15,15 @@ class FlashCard extends Model
 
     protected $fillable = [
         'id',
-        'file_url',
+        'name',
+        'description',
         'subject',
+        'user_id',
     ];
 
-    public function student()
+    public function user()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(User::class);
     }
 
     public function FlashCardItem()

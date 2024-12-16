@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->uuid('flash_card_id');
             $table->foreign('flash_card_id')->references('id')
-                ->on('forum_replies');
+                ->on('flash_cards');
             $table->timestamps();
         });
     }
