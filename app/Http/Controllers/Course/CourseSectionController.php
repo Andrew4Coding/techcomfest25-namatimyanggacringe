@@ -16,7 +16,6 @@ class CourseSectionController extends Controller
             $course = Course::findOrFail($id);
             $course->courseSections()->create([
                 'name' => $request->input('name'),
-                'description' => $request->input('description'),
             ]);
 
             return redirect()->route('course.show.edit', ['id' => $course->id, 'course' => $course]);
@@ -44,7 +43,6 @@ class CourseSectionController extends Controller
             $courseSection = CourseSection::findOrFail($id);
             $courseSection->update([
                 'name' => $request->input('name'),
-                'description' => $request->input('description'),
             ]);
 
             return redirect()->back();
@@ -54,23 +52,22 @@ class CourseSectionController extends Controller
         }
     }
 
-    public function toggleVisibility(string $id): RedirectResponse
+    public function toggleVisibility(Request $request, string $id)
     {
         try {
             $courseSection = CourseSection::findOrFail($id);
-            $courseSection->isPublic = !$courseSection->isPublic;
+            $courseSection->is_public = !$courseSection->is_public;
             $courseSection->save();
 
             // Hide all course items inside the section
             foreach ($courseSection->courseItems as $courseItem) {
-                $courseItem->isPublic = $courseSection->isPublic;
+                $courseItem->is_public = $courseSection->is_public;
                 $courseItem->save();
             }
 
-            return redirect()->back();
+            return response()->json(['success' => true, 'is_public' => $courseSection->is_public, 'message' => 'Course section visibility updated']);
         } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->withErrors(['error' => 'Error updating course section visibility']);
+            return response()->json(['success' => false, 'error' => 'Error updating course section visibility'], 500);
         }
     }
 }

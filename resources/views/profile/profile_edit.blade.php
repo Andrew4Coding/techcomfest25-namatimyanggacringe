@@ -12,8 +12,12 @@
             </p>
         </div>
     </section>
-    <main class="flex items-center justify-center w-full">
+    <main class="flex items-center justify-center w-full relative">
+        <img src="{{ asset('lanyard-left.png') }}" alt="Mascot" class="absolute w-80 hidden md:block -top-[350px] -translate-x-16 z-0">
+
         <div class="text-center flex flex-col items-center bg-white rounded-3xl shadow-smooth p-10 relative">
+            <img src="{{ asset('lanyard-right.png') }}" alt="Mascot" class="absolute w-80 hidden md:block -top-[360px] translate-x-20 z-10">
+
             <img src="{{ asset('mindora-icon.png') }}" alt="Mascot" class="absolute w-12 h-auto left-5 top-10">
             <img src="{{ asset('mindora-mascot.png') }}" alt="Mascot" class="absolute w-20 h-auto right-10 top-32 rotate-12">
             

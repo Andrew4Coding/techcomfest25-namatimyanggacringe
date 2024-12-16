@@ -61,16 +61,15 @@ class CourseController extends Controller
 
     public function showCourses(Request $request): View
     {
-        $courses = Course::get();
         $user = Auth::user();
 
         if ($user && $user->userable_type == 'App\Models\Student') {
-            $courses = $user->userable->courses;
+            $courses = $user->userable->courses()->orderBy('created_at', 'desc')->get();
             return view('course.courses', compact('courses'));
         }
 
         // Get courses by teacher id
-        $courses = Course::where('teacher_id', $user->userable->id)->get();
+        $courses = Course::where('teacher_id', $user->userable->id)->orderBy('created_at', 'desc')->get();
 
         return view('course.courses', compact('courses'));
     }
@@ -80,24 +79,33 @@ class CourseController extends Controller
         string $id
     ): View {
         $course = Course::findOrFail($id);
-        $courseSections = CourseSection::with('courseItems')->where('course_id', $id)->orderBy('created_at', 'asc')->get();
+        $courseSections = CourseSection::with(['courseItems', 'courseItems.courseItemProgress' => function ($query) {
+            $query->where('user_id', Auth::id());
+        }])->where('course_id', $id)->orderBy('created_at', 'asc')->get();
 
         // Hide private course sections if user is a student
         if (Auth::user()->userable_type == 'App\Models\Student') {
             $courseSections = $courseSections->filter(function ($courseSection) {
-                return $courseSection->isPublic;
+                return $courseSection->is_public;
             });
 
             // Filter course items too
             $courseSections = $courseSections->map(function ($courseSection) {
                 $courseSection->courseItems = $courseSection->courseItems->filter(function ($courseItem) {
-                    return $courseItem->isPublic;
+                    return $courseItem->is_public;
+                })->map(function ($courseItem) {
+                    if (!$courseItem->courseItemProgress) {
+                        $courseItem->is_completed = false;
+                    } else {
+                        $courseItem->is_completed = $courseItem->courseItemProgress->is_completed;
+                    }
+                    return $courseItem;
                 });
 
                 return $courseSection;
             });
         }
-        
+
         $tab = $request->input('tab');
 
         $isEdit = false;
@@ -181,7 +189,7 @@ class CourseController extends Controller
 
         try {
             // Make sure class code is unique
-            if (Course::where('class_code', $request->input('class_code'))->exists()) {
+            if (Course::where('class_code', $request->input('class_code'))->where('id', '!=', $id)->exists()) {
                 return redirect()->back()->withErrors(['error' => 'Class code already exists']);
             }
             

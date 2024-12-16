@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('flash_cards', function (Blueprint $table) {
+        Schema::create('course_item_progress', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->enum('subject', ['sosiologi', 'ekonomi', 'bahasa', 'geografi', 'matematika', 'sejarah', 'ipa'])->nullable();
+            $table->uuid('course_item_id');
             $table->uuid('user_id');
-            $table->foreign('user_id')->references('id')
-                ->on('users');
+            $table->boolean('is_completed')->default(false);
+
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('course_item_id')->references('id')->on('course_items')->cascadeOnDelete();
+
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('flash_cards');
+        Schema::dropIfExists('course_item_progress');
     }
 };

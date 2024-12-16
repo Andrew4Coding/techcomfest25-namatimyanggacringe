@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Course;
 
 use App\Http\Controllers\Controller;
-use App\Livewire\Quiz;
 use App\Models\Course;
 use App\Models\CourseItem;
 use App\Models\CourseSection;
 use App\Models\Material;
+use App\Models\Quiz;
 use Illuminate\Http\Request;
 
 class CourseItemController extends Controller
@@ -21,11 +21,10 @@ class CourseItemController extends Controller
                 // Validate input
                 $request->validate([
                     'name' => ['required', 'string'],
-                    'description' => ['required', 'string'],
                     'file' => ['required', 'file'],
                 ]);
 
-                // Upload file to aws if exists
+                // Upload file to aws
                 $file = $request->file('file');
                 $fileName = $file->getClientOriginalName();
                 $filePath = $file->storeAs("uploads/{$course_section_id}", $fileName, 's3');
@@ -47,18 +46,12 @@ class CourseItemController extends Controller
                 $course = Course::findOrFail($course_section->course_id);
 
                 return redirect()->route('course.show.edit', ['id' => $course->id]);
-            } else if ($type === "submission") {
-
-            } else if ($type === "forum") {
-
-            } else if ($type === "attendance") {
-
-            } else if ($type === "quiz") {
-                // Validate input
+            } else if ($type === 'quiz') {
                 $request->validate([
                     'name' => ['required', 'string'],
                     'description' => ['required', 'string'],
-                    'file' => ['file'],
+                    'start' => ['required', 'string'],
+                    'end' => ['required', 'string'],
                 ]);
 
                 $newCourseItem = new Quiz();
@@ -69,22 +62,20 @@ class CourseItemController extends Controller
                     'course_section_id' => $course_section_id,
                 ]);
 
-                // default value
-                $newCourseItem->save([
-                    'start' => date('Y-m-d H:i:s'),
-                    'finish' => date('Y-m-d H:i:s'),
-                    'duration' => 3600
-                ]);
-
                 $course_section = CourseSection::findOrFail($course_section_id);
                 $course = Course::findOrFail($course_section->course_id);
+
+                $newCourseItem->save([
+                   'start' => $request->input('start'),
+                   'end' => $request->input('end'),
+                   'duration' => 3600,
+                ]);
 
                 return redirect()->route('quiz.edit', ['id' => $newCourseItem->id]);
             } else {
                 return redirect()->back()->withErrors(['error' => 'Invalid type']);
             }
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
@@ -106,12 +97,12 @@ class CourseItemController extends Controller
     {
         try {
             $courseItem = CourseItem::findOrFail($id);
-            $courseItem->isPublic = !$courseItem->isPublic;
+            $courseItem->is_public = !$courseItem->is_public;
             $courseItem->save();
 
-            return redirect()->back();
+            return response()->json(['success' => true, 'is_public' => $courseItem->is_public, 'message' => 'Visibility toggled successfully']);
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Error toggling visibility']);
+            return response()->json(['success' => false, 'error' => 'Error toggling visibility'], 500);
         }
     }
 }
