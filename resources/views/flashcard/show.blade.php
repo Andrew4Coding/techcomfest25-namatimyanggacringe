@@ -41,7 +41,7 @@
                     </div>
                     <div class="modal-action">
                         <button type="button" class="btn"
-                            onclick="document.getElementById('add_flashcard_modal').close()">Cancel</button>
+                            onclick="document.getElementById('add_flashcard_modal').close()">Batalkan</button>
                         <button type="submit" class="btn btn-primary">Add</button>
                     </div>
                 </form>

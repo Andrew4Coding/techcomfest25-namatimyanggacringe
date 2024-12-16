@@ -71,7 +71,7 @@ class CourseItemController extends Controller
     {
         try {
             $courseItem = CourseItem::findOrFail($id);
-            $courseItem->isPublic = !$courseItem->isPublic;
+            $courseItem->is_public = !$courseItem->is_public;
             $courseItem->save();
 
             return redirect()->back();

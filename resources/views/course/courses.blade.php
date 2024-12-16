@@ -9,7 +9,7 @@
         </div>
 
         {{-- If User is a teacher --}}
-        @if (Auth::user()->userable_type == 'App\Models\Teacher')
+        @if (Auth::user()->userable_type == 'App\Models\Teacher' && !$courses->isEmpty())
             <button onclick="add_course_modal.showModal()" class="btn btn-primary">
                 <x-lucide-plus class="w-6 h-6" />
                 Tambah Kelas
@@ -32,7 +32,7 @@
                         Belum ada Kelas Saat ini
                     </h1>
                     <p
-                        class="font-medium bg-gradient-to-r from-[#3A4EC1] via-[#5298ED] to-[#945AC6] text-transparent bg-clip-text">
+                        class="font-medium gradient-blue text-transparent bg-clip-text">
                         Belajar menjadi menyenangkan dan praktis.
                     </p>
                     @if (Auth::user()->userable_type == 'App\Models\Teacher')
@@ -57,7 +57,7 @@
 
     <dialog id="add_course_modal" class="modal">
         <div class="modal-box">
-            <h3 class="font-semibold text-lg">Create new Course</h3>
+            <h3 class="font-semibold text-lg">Buat Kelas Baru</h3>
             <form method="POST" action="{{ route('course.create') }}" id="add_course_form">
                 @csrf
                 <div class="mb-4">
@@ -86,8 +86,8 @@
                     </select>
                 </div>
                 <div class="modal-action">
-                    <button type="button" class="btn" onclick="document.getElementById('add_course_modal').close();">Cancel</button>
-                    <button type="submit" class="btn btn-primary">+ Create</button>
+                    <button type="button" class="btn" onclick="document.getElementById('add_course_modal').close();">Batalkan</button>
+                    <button type="submit" class="btn btn-primary">+ Buat</button>
                 </div>
             </form>
         </div>
@@ -107,7 +107,7 @@
                         required />
                 </div>
                 <div class="modal-action">
-                    <button type="button" class="btn" onclick="hideModal('enroll_class_modal')">Cancel</button>
+                    <button type="button" class="btn" onclick="hideModal('enroll_class_modal')">Batalkan</button>
                     <button type="submit" class="btn btn-primary">Enroll</button>
                 </div>
             </form>

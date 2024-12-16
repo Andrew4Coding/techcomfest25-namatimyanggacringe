@@ -23,7 +23,7 @@
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn"
-                        onclick="document.getElementById('password_modal').close();">Cancel</button>
+                        onclick="document.getElementById('password_modal').close();">Batalkan</button>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
 

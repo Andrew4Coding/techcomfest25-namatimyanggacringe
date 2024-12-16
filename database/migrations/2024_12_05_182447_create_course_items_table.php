@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->string('name');
             $table->text('description')->nullable();
-            $table->boolean('isPublic')->default(true);
+            $table->boolean('is_public')->default(true);
 
             $table->uuid('course_section_id');
 

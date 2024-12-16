@@ -32,9 +32,9 @@
                     class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required>
             </div>
 
-            <!-- Quiz Description -->
+            <!-- Quiz Deskripsi -->
             <div class="mb-4">
-                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Deskripsi</label>
                 <textarea name="description" id="description" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                     rows="4" required></textarea>
             </div>

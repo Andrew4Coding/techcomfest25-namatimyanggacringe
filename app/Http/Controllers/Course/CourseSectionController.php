@@ -57,12 +57,12 @@ class CourseSectionController extends Controller
     {
         try {
             $courseSection = CourseSection::findOrFail($id);
-            $courseSection->isPublic = !$courseSection->isPublic;
+            $courseSection->is_public = !$courseSection->is_public;
             $courseSection->save();
 
             // Hide all course items inside the section
             foreach ($courseSection->courseItems as $courseItem) {
-                $courseItem->isPublic = $courseSection->isPublic;
+                $courseItem->is_public = $courseSection->is_public;
                 $courseItem->save();
             }
 

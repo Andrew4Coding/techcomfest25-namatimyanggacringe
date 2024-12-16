@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="modal-action">
                                     <button type="button" class="btn"
-                                        onclick="document.getElementById('grade_submission_modal_{{ $item->id }}').close();">Cancel</button>
+                                        onclick="document.getElementById('grade_submission_modal_{{ $item->id }}').close();">Batalkan</button>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </form>
@@ -108,7 +108,7 @@
                     value="{{ $submission->courseItem->name }}" required />
             </div>
             <div class="mb-4">
-                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                 <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full" required>{{ $submission->courseItem->description }}</textarea>
             </div>
             <div class="mb-4">
@@ -140,8 +140,8 @@
             </div>
             <div class="modal-action">
                 <button type="button" class="btn"
-                    onclick="document.getElementById('edit_submission_modal').close();">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save Changes</button>
+                    onclick="document.getElementById('edit_submission_modal').close();">Batalkan</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </form>
     </div>

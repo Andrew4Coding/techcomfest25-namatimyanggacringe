@@ -56,11 +56,11 @@
                             </button>
                             <dialog id="unenroll_course_modal_{{ $course->id }}" class="modal text-black">
                                 <div class="modal-box">
-                                    <h3 class="font-semibold text-lg">Confirm Unenrollment</h3>
-                                    <p>Are you sure you want to unenroll from this Course?</p>
+                                    <h3 class="font-semibold text-lg">Konfirmasi Unenrollment</h3>
+                                    <p>Apakah Anda yakin ingin keluar dari kelas ini?</p>
                                     <div class="modal-action">
                                         <button type="button" class="btn"
-                                            onclick="document.getElementById('unenroll_course_modal_{{ $course->id }}').close();">Cancel</button>
+                                            onclick="document.getElementById('unenroll_course_modal_{{ $course->id }}').close();">Batalkan</button>
                                         <form method="POST"
                                             action="{{ route('course.unenroll', ['courseId' => $course->id]) }}">
                                             @csrf

@@ -19,7 +19,7 @@ class CourseItem extends Model
     public $fillable = [
         'name',
         'description',
-        'isPublic',
+        'is_public',
         'course_section_id',
     ];
 

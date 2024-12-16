@@ -9,7 +9,7 @@
                     <form method="POST" action="{{ route('course.section.toggle', ['id' => $section->id]) }}">
                         @csrf
                         <button type="submit">
-                            @if ($section->isPublic)
+                            @if ($section->is_public)
                                 <div class="tooltip tooltip-top" data-tip="Hide from students">
                                     <x-lucide-eye
                                         class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12" />
@@ -53,7 +53,7 @@
                 <p>Are you sure you want to delete this Course Item?</p>
                 <div class="modal-action">
                     <button type="button" class="btn"
-                        onclick="document.getElementById('delete_courseitem_modal_{{ $item->id }}').close();">Cancel</button>
+                        onclick="document.getElementById('delete_courseitem_modal_{{ $item->id }}').close();">Batalkan</button>
                     <form method="POST" action="{{ route('course.item.delete', ['id' => $item->id]) }}">
                         @csrf
                         @method('DELETE')
@@ -104,8 +104,8 @@
                     <input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
                 </div>
                 <div class="modal-action">
-                    <button type="button" class="btn" onclick="add_section_modal.close()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">+ Create</button>
+                    <button type="button" class="btn" onclick="add_section_modal.close()">Batalkan</button>
+                    <button type="submit" class="btn btn-primary">+ Buat</button>
                 </div>
             </form>
         </div>
@@ -147,8 +147,8 @@
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn"
-                        onclick="document.getElementById('add_submission_modal_{{ $section->id }}').close();">Cancel</button>
-                    <button type="submit" class="btn btn-primary">+ Create</button>
+                        onclick="document.getElementById('add_submission_modal_{{ $section->id }}').close();">Batalkan</button>
+                    <button type="submit" class="btn btn-primary">+ Buat</button>
                 </div>
             </form>
         </div>
@@ -166,8 +166,8 @@
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn"
-                        onclick="document.getElementById('add_forum_modal_{{ $section->id }}').close();">Cancel</button>
-                    <button type="submit" class="btn btn-primary">+ Create</button>
+                        onclick="document.getElementById('add_forum_modal_{{ $section->id }}').close();">Batalkan</button>
+                    <button type="submit" class="btn btn-primary">+ Buat</button>
                 </div>
             </form>
         </div>
@@ -189,8 +189,8 @@
                     <input type="text" name="password" id="password" class="input input-bordered w-full" required />
                 </div>
                 <div class="modal-action">
-                    <button type="button" class="btn" onclick="add_section_modal.close()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">+ Create</button>
+                    <button type="button" class="btn" onclick="add_section_modal.close()">Batalkan</button>
+                    <button type="submit" class="btn btn-primary">+ Buat</button>
                 </div>
             </form>
         </div>
@@ -218,8 +218,8 @@
                     <input type="number" name="duration" id="duration" class="input input-bordered w-full" required min="1" />
                 </div>
                 <div class="modal-action">
-                    <button type="button" class="btn" onclick="document.getElementById('add_quiz_modal_{{ $section->id }}').close();">Cancel</button>
-                    <button type="submit" class="btn btn-primary">+ Create</button>
+                    <button type="button" class="btn" onclick="document.getElementById('add_quiz_modal_{{ $section->id }}').close();">Batalkan</button>
+                    <button type="submit" class="btn btn-primary">+ Buat</button>
                 </div>
             </form>
         </div>
@@ -235,7 +235,7 @@
         <p>Are you sure you want to delete this section?</p>
         <div class="modal-action">
             <button type="button" class="btn"
-                onclick="document.getElementById('delete_section_modal_{{ $section->id }}').close();">Cancel</button>
+                onclick="document.getElementById('delete_section_modal_{{ $section->id }}').close();">Batalkan</button>
             <form method="POST" action="{{ route('course.section.delete', ['id' => $section->id]) }}">
                 @csrf
                 @method('DELETE')
@@ -265,8 +265,8 @@
             </div>
             <div class="modal-action">
                 <button type="button" class="btn"
-                    onclick="document.getElementById('edit_section_modal_{{ $section->id }}').close();">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save Changes</button>
+                    onclick="document.getElementById('edit_section_modal_{{ $section->id }}').close();">Batalkan</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </form>
     </div>

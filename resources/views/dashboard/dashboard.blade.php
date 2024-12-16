@@ -16,31 +16,5 @@
 @endphp
 @extends('layout.layout')
 @section('content')
-    <div>
-        <h1 class="text-3xl font-bold">Hello, {{ Auth::user()->name }}</h1>
-        <p class="font-medium gradient-blue text-transparent bg-clip-text">
-            Siap untuk mengecek progres murid?
-        </p>
-        <section class="bg-[#FCFCFC] rounded-2xl p-10 space-y-5">
-            <h3>Study Goals</h3>
-            <div class="grid grid-cols-3 gap-5">
-                @foreach ($studyGoals as $goal)
-                    <div class="bg-yellow-200 p-10 rounded-lg shadow-md">
-                        <p>{{ $goal->description }}</p>
-                    </div>
-                @endforeach
-                <div class="bg-white border-2 p-10 rounded-lg shadow-md flex items-center justify-center">
-                    <div class="w-20 h-20 flex items-center justify-center bg-gray-50 rounded-full">
-                        <x-lucide-plus class="w-6 h-6" />
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="bg-[#FCFCFC] shadow-md rounded-xl p-10 space-y-5">
-            <h3>Pesan dari Wali Kelas</h3>
-            <div class="bg-[#F6F9FA] shadow-md p-5 rounded-xl text-[#3A4449] min-h-[150px]">
-                Good Job! Pertahankan terus semangatmu yaa.
-            </div>
-        </section>
-    </div>
+    @include('dashboard.sections.teacher')
 @endsection

@@ -61,16 +61,15 @@ class CourseController extends Controller
 
     public function showCourses(Request $request): View
     {
-        $courses = Course::get();
         $user = Auth::user();
 
         if ($user && $user->userable_type == 'App\Models\Student') {
-            $courses = $user->userable->courses;
+            $courses = $user->userable->courses()->orderBy('created_at', 'desc')->get();
             return view('course.courses', compact('courses'));
         }
 
         // Get courses by teacher id
-        $courses = Course::where('teacher_id', $user->userable->id)->get();
+        $courses = Course::where('teacher_id', $user->userable->id)->orderBy('created_at', 'desc')->get();
 
         return view('course.courses', compact('courses'));
     }
@@ -87,13 +86,13 @@ class CourseController extends Controller
         // Hide private course sections if user is a student
         if (Auth::user()->userable_type == 'App\Models\Student') {
             $courseSections = $courseSections->filter(function ($courseSection) {
-                return $courseSection->isPublic;
+                return $courseSection->is_public;
             });
 
             // Filter course items too
             $courseSections = $courseSections->map(function ($courseSection) {
                 $courseSection->courseItems = $courseSection->courseItems->filter(function ($courseItem) {
-                    return $courseItem->isPublic;
+                    return $courseItem->is_public;
                 })->map(function ($courseItem) {
                     if (!$courseItem->courseItemProgress) {
                         $courseItem->is_completed = false;

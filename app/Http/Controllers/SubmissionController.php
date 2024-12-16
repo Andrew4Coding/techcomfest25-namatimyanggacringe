@@ -48,7 +48,6 @@ class SubmissionController extends Controller
         try {
             $request->validate([
                 'name' => ['required', 'string'],
-                'description' => ['string'],
                 'content' => ['required', 'string'],
                 'opened_at' => ['required', 'date'],
                 'due_date' => ['required', 'date'],

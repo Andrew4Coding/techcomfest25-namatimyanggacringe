@@ -92,7 +92,7 @@
             <form method="POST" action="{{ route('course.item.toggle', ['id' => $item->id]) }}">
                 @csrf
                 <button type="submit">
-                    @if ($item->isPublic)
+                    @if ($item->is_public)
                         <div class="tooltip tooltip-top" data-tip="Hide from students">
                             <x-lucide-eye class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12" />
                         </div>

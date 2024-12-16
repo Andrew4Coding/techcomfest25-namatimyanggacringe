@@ -63,13 +63,13 @@
                     <input type="text" name="title" id="title" class="input input-bordered w-full" required />
                 </div>
                 <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                     <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full" required></textarea>
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn"
-                        onclick="document.getElementById('add_discussion_modal').close();">Cancel</button>
-                    <button type="submit" class="btn btn-primary">+ Create</button>
+                        onclick="document.getElementById('add_discussion_modal').close();">Batalkan</button>
+                    <button type="submit" class="btn btn-primary">+ Buat</button>
                 </div>
             </form>
         </div>

@@ -7,7 +7,7 @@
             {{ $forumDiscussion->title }}
         </h1>
 
-        <!-- Discussion Description -->
+        <!-- Discussion Deskripsi -->
         <p class="text-gray-600 text-lg mb-8">
             {{ $forumDiscussion->description }}
         </p>
