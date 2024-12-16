@@ -17,7 +17,7 @@
                 </h1>
             </div>
         </section>
-        <section class="flex items-start lg:items-center justify-center mb-20 lg:mb-0">
+        <section class="flex flex-col items-center justify-center mb-20 lg:mb-0">
             <div class="w-96">
                 <div class="mb-8 text-center lg:text-left">
                     <h1 class="text-3xl font-semibold mb-2">What are your role?</h1>
