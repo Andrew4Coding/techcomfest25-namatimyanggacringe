@@ -1,13 +1,15 @@
 <div class="card bg-base-100 w-full shadow-xl">
-    <div class="card-body flex-row items-start">
-        <span class="px-4 py-2 mr-2 mt-1 bg-black/10 rounded">{{ $num }}</span>
-        <div>
+    <div class="card-body flex flex-col md:flex-row gap-4 items-start w-full">
+        <span class="min-w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">{{ $num }}</span>
+        <div class="w-full">
             {{-- Pertanyaan dan nomor --}}
-            <div class="flex items-start">
-                {{-- Pertanyaan dan nomor --}}
-                <h2 class="card-title mb-6">
-                    {{ $question->content }}
-                </h2>
+            <div class="flex items-center gap-2">
+                <div>
+                    <small>Short Answer</small>
+                    <h2 class="card-title">
+                        {{ $question->content }}
+                    </h2>
+                </div>
                 <button
                     onclick="edit_choice_{{ str_replace('-', '_', $question->id) }}.showModal()"
                 >
@@ -28,9 +30,10 @@
                     <x-lucide-trash class="w-4 h-4 hover:text-red-500 duration-300 hover:rotate-12" />
                 </button>
             </div>
-            {{--Aksi--}}
-            <div class="card-actions mt-4 gap-4 flex-col">
-                <input wire:model="answer" class="input w-full" />
+
+            {{-- Aksi --}}
+            <div class="card-actions mt-4 gap-4 flex flex-col">
+                <textarea wire:model="answer" class="textarea w-full min-h-40"></textarea>
                 <button wire:click="updateAnswer" class="btn btn-primary self-end">Simpan</button>
             </div>
         </div>

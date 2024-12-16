@@ -5,9 +5,12 @@
             {{-- Pertanyaan dan nomor --}}
             <div class="flex items-start">
                 {{-- Pertanyaan dan nomor --}}
-                <h2 class="card-title mb-6">
-                    {{ $question->content }}
-                </h2>
+                <div>
+                    <small>Multiselect</small>
+                    <h2 class="card-title mb-6">
+                        {{ $question->content }}
+                    </h2>
+                </div>
                 <button
                     onclick="edit_choice_{{ str_replace('-', '_', $question->id) }}.showModal()"
                 >
