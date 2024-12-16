@@ -17,7 +17,7 @@
 
 
     </section>
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-10">
         @foreach ($flashcards as $flashcard)
             @php
                 $selected_theme = $flashcard->subject;

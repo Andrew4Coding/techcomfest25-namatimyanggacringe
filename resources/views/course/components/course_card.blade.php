@@ -12,7 +12,7 @@
             <div class="absolute inset-0 flex items-center justify-center -bottom-20">
                 <img src="{{ asset('subject-mascots/' . $course->subject . '.png') }}" alt="Icon" class="w-80 h-full object-contain">
             </div>
-            <div class="flex justify-between">
+            <div class="flex justify-between z-50">
                 <div class="font-bold text-xl mb-2"
                     style="color: {{ $theme['tertiary'] }}"
                 >{{ $course->name }}</div>
