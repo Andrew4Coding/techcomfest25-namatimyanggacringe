@@ -948,6 +948,7 @@
             </ul>
         </div>
     @endif
+{{ var_export(\Illuminate\Support\Facades\App::environment('production'))}}
 </body>
 
 </html>

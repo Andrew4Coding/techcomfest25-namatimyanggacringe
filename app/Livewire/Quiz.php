@@ -135,9 +135,12 @@ class Quiz extends Component
      */
     protected function getTimeLeft(): int
     {
+        if (!isset($this->submission)) return 0;
+
         // subtract duration from progress
-        $progress = strtotime(date("Y-m-d h:i:sa") - strtotime($this->submission->getCreatedAtColumn()));
+        $progress = strtotime(date("Y-m-d h:i:sa")) - strtotime($this->submission->created_at);
         return $this->quiz->duration - $progress;
+//        return 3600 - $progress;
     }
 
     /**
@@ -215,14 +218,17 @@ class Quiz extends Component
             // check if quiz is valid
             $this->isValid = true;
 
-        } catch (ModelNotFoundException $e) {}  // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
+        } catch (ModelNotFoundException $e) {
+            $this->redirectIntended('/');
+            return;
+        }  // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
     }
 
     // render the quiz
     public function render()
     {
         return view('livewire.quiz', [
-            'timeLeft' => $this->getTimeLeft(),  // get the actual time for wire:poll, ini fungsi timer realtime
+            'timeLeft' => $this->getTimeLeftFormatted(),  // get the actual time for wire:poll, ini fungsi timer realtime
         ]);
     }
 }
