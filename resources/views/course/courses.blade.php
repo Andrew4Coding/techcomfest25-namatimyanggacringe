@@ -11,22 +11,23 @@
         {{-- If User is a teacher --}}
         @if (Auth::user()->userable_type == 'App\Models\Teacher')
             <button onclick="add_course_modal.showModal()" class="btn btn-primary">
-                Add Course
+                <x-lucide-plus class="w-6 h-6" />
+                Tambah Kelas
             </button>
         @else
             @if (!$courses->isEmpty())
                 <button onclick="enroll_class_modal.showModal()" class="btn btn-primary px-10">
-                    Enroll a Class
+                    Daftar Kelas
                 </button>
             @endif
         @endif
     </section>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[50vh] py-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[70vh] py-4">
         @if ($courses->isEmpty())
             <div class="w-full flex flex-col gap-4 items-center justify-center col-span-1 sm:col-span-2 lg:col-span-3">
                 <div class="flex flex-col items-center gap-2 text-center">
-                    <img src="{{ asset('mindora-mascot.png') }}" alt="Icon" class="hidden lg:flex">
+                    <img src="{{ asset('mindora-mascot.png') }}" alt="Icon" class="w-52 h-auto">
                     <h1 class="text-xl font-medium">
                         Belum ada Kelas Saat ini
                     </h1>
@@ -36,6 +37,7 @@
                     </p>
                     @if (Auth::user()->userable_type == 'App\Models\Teacher')
                         <button class="btn btn-primary" onclick="add_course_modal.showModal()">
+                            <x-lucide-plus class="w-6 h-6" />
                             Tambah Kelas
                         </button>
                     @else
@@ -55,7 +57,7 @@
 
     <dialog id="add_course_modal" class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg">Create new Course</h3>
+            <h3 class="font-semibold text-lg">Create new Course</h3>
             <form method="POST" action="{{ route('course.create') }}" id="add_course_form">
                 @csrf
                 <div class="mb-4">
@@ -63,13 +65,13 @@
                     <input type="text" name="name" id="name" class="input input-bordered w-full" required />
                 </div>
                 <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi (Opsional)</label>
                     <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="mb-4">
-                    <label for="class_code" class="block text-sm font-medium text-gray-700">Kode Kelas (5 Digit)</label>
+                    <label for="class_code" class="block text-sm font-medium text-gray-700">Kode Kelas (5 Digit Huruf / Angka)</label>
                     <input name="class_code" id="class_code" class="input input-bordered w-full" required
-                        pattern="[A-Za-z]{5}" title="Class code must be 5 letters" />
+                        pattern="[A-Za-z0-9]{5}" title="Class code must be 5 letters or numbers" />
                 </div>
                 <div class="mb-4">
                     <label for="subject" class="block text-sm font-medium text-gray-700">Mata Pelajaran Terkait</label>
@@ -84,7 +86,7 @@
                     </select>
                 </div>
                 <div class="modal-action">
-                    <button type="button" class="btn" onclick="hideModal('add_course_modal')">Cancel</button>
+                    <button type="button" class="btn" onclick="document.getElementById('add_course_modal').close();">Cancel</button>
                     <button type="submit" class="btn btn-primary">+ Create</button>
                 </div>
             </form>
@@ -96,7 +98,7 @@
 
     <dialog id="enroll_class_modal" class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg">Enroll in a Class</h3>
+            <h3 class="font-semibold text-lg">Enroll in a Class</h3>
             <form method="POST" action="{{ route('course.enroll') }}" id="enroll_class_form">
                 @csrf
                 <div class="mb-4">

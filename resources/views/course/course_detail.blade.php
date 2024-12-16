@@ -56,7 +56,7 @@
                             </button>
                             <dialog id="unenroll_course_modal_{{ $course->id }}" class="modal text-black">
                                 <div class="modal-box">
-                                    <h3 class="font-bold text-lg">Confirm Unenrollment</h3>
+                                    <h3 class="font-semibold text-lg">Confirm Unenrollment</h3>
                                     <p>Are you sure you want to unenroll from this Course?</p>
                                     <div class="modal-action">
                                         <button type="button" class="btn"
@@ -106,39 +106,6 @@
             if (sessionStorage.getItem('error')) {
                 alert(sessionStorage.getItem('error'));
             }
-        });
-
-        document.getElementById('upload-pdf-button').addEventListener('click', function() {
-            var form = document.getElementById('upload-pdf-form');
-            var formData = new FormData(form);
-
-            console.log('Uploading PDF...');
-
-            fetch("{{ route('course.upload.file', ['courseId' => $course->id]) }}", {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                    },
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-
-                    if (data['file_path']) {
-                        alert('PDF uploaded successfully');
-                        const cleaned = data.file_path.replace(/\\/g, "/");
-                        const url = "https://techcomfest.s3.ap-southeast-2.amazonaws.com/" + cleaned;
-                        console.log(new URL(url).href);
-
-                    } else {
-                        alert('Failed to upload PDF');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while uploading the PDF');
-                });
         });
 
         function copyToClipboard(text) {

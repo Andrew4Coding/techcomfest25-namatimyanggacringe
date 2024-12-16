@@ -5,9 +5,11 @@
                 <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
                     <x-lucide-file class="w-4 h-4" />
                 </div>
-                <div>
-                    <p class="font-semibold">{{ $item['name'] }}</p>
-                    <p>{{ $item['description'] }}</p>
+                <div class="flex flex-col justify-center">
+                    <p class="font-medium">{{ $item['name'] }}</p>
+                    @if ($item['description'])
+                        <p>{{ $item['description'] }}</p>
+                    @endif
                 </div>
             </div>
             <a href="{{ $item->courseItemable->file_url }}" target="_blank">
@@ -26,9 +28,11 @@
                     <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
                         <x-lucide-archive class="w-4 h-4 text-white" />
                     </div>
-                    <div>
-                        <p class="font-semibold">{{ $item['name'] }}</p>
-                        <p>{{ $item['description'] }}</p>
+                    <div class="flex flex-col justify-center">
+                        <p class="font-medium">{{ $item['name'] }}</p>
+                        @if ($item['description'])
+                            <p>{{ $item['description'] }}</p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -40,9 +44,11 @@
                     <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
                         <x-lucide-message-square class="w-4 h-4 text-white" />
                     </div>
-                    <div>
-                        <p class="font-semibold">{{ $item['name'] }}</p>
-                        <p>{{ $item['description'] }}</p>
+                    <div class="flex flex-col justify-center">
+                        <p class="font-medium">{{ $item['name'] }}</p>
+                        @if ($item['description'])
+                            <p>{{ $item['description'] }}</p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -54,9 +60,11 @@
                     <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
                         <x-lucide-user class="w-4 h-4 text-white" />
                     </div>
-                    <div>
-                        <p class="font-semibold">{{ $item['name'] }}</p>
-                        <p>{{ $item['description'] }}</p>
+                    <div class="flex flex-col justify-center">
+                        <p class="font-medium">{{ $item['name'] }}</p>
+                        @if ($item['description'])
+                            <p>{{ $item['description'] }}</p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -68,9 +76,11 @@
                     <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
                         <x-lucide-clipboard class="w-4 h-4 text-white" />
                     </div>
-                    <div>
-                        <p class="font-semibold">{{ $item['name'] }}</p>
-                        <p>{{ $item['description'] }}</p>
+                    <div class="flex flex-col justify-center">
+                        <p class="font-medium">{{ $item['name'] }}</p>
+                        @if ($item['description'])
+                            <p>{{ $item['description'] }}</p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -98,5 +108,38 @@
                 <x-lucide-trash onclick="document.getElementById('delete_courseitem_modal_{{ $item->id }}').showModal();" class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12" />
             </div>
         </div>
+    @else
+    <div class="tooltip tooltip-top">
+        <div class="flex items-center mr-5">
+            <input type="checkbox" class="checkbox checkbox-primary h-5 w-5 text-blue-600" {{ $item->courseItemProgress && $item->courseItemProgress->is_completed ? 'checked' : '' }} onchange="toggleCompletion('{{ $item->id }}', this.checked)" id="completion-checkbox-{{ $item->id }}">
+        </div>
+    </div>
+    <script>
+        function toggleCompletion(courseItemId, isChecked) {
+            const checkbox = document.getElementById(`completion-checkbox-${courseItemId}`);
+            checkbox.disabled = true;
+            fetch(`/course-item/check/${courseItemId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ is_completed: isChecked })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    location.reload();
+                } else {
+                    console.error(data.error);
+                    checkbox.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                checkbox.disabled = false;
+            });
+        }
+    </script>
     @endif
 </div>

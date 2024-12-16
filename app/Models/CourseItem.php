@@ -38,4 +38,9 @@ class CourseItem extends Model
     {
         return $this->morphTo();
     }
+
+    public function courseItemProgress()
+    {
+        return $this->hasOne(CourseItemProgress::class);
+    }
 }

@@ -18,14 +18,9 @@
 @section('content')
     <div>
         <h1 class="text-3xl font-bold">Hello, {{ Auth::user()->name }}</h1>
-        <p class="font-medium bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
-            Siap untuk melanjutkan perjalanan belajarmu?
+        <p class="font-medium gradient-blue text-transparent bg-clip-text">
+            Siap untuk mengecek progres murid?
         </p>
-        <section class="grid grid-cols-2">
-            <div>
-                <h2>Tugas Berikutnya</h2>
-            </div>
-        </section>
         <section class="bg-[#FCFCFC] rounded-2xl p-10 space-y-5">
             <h3>Study Goals</h3>
             <div class="grid grid-cols-3 gap-5">

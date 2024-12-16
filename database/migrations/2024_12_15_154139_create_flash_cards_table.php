@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('flash_cards', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('file_url');
-
+            $table->enum('subject', ['sosiologi', 'ekonomi', 'bahasa', 'geografi', 'matematika', 'sejarah', 'ipa'])->nullable();
             $table->uuid('student_id');
             $table->foreign('student_id')->references('id')
                 ->on('students');

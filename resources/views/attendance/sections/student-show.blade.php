@@ -6,7 +6,7 @@
     </button>
     <dialog id="password_modal" class="modal">
         <div class="modal-box">
-            <h3 class="font-bold text-lg">Enter Password</h3>
+            <h3 class="font-semibold text-lg">Enter Password</h3>
             <form method="POST" action="{{ route('attendance.submit', ['id' => $attendance->id]) }}">
                 @csrf
                 <div class="form-control">

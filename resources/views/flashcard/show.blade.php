@@ -14,7 +14,7 @@
 
         <dialog id="add_flashcard_modal" class="modal">
             <div class="modal-box">
-                <h3 class="font-bold text-lg">Add New Flashcard</h3>
+                <h3 class="font-semibold text-lg">Add New Flashcard</h3>
                 <form method="POST" action="{{ route('flashcard.create') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-4">
@@ -23,8 +23,21 @@
                             placeholder="Nama Flashcard" required />
                     </div>
                     <div class="mb-4">
+                        <label for="subject" class="block text-sm font-medium text-gray-700">Mata Pelajaran Terkait</label>
+                        <select name="subject" id="subject" class="select select-bordered w-full" required>
+                            <option value="sosiologi">Sosiologi</option>
+                            <option value="ekonomi">Ekonomi</option>
+                            <option value="bahasa">Bahasa</option>
+                            <option value="geografi">Geografi</option>
+                            <option value="matematika">Matematika</option>
+                            <option value="sejarah">Sejarah</option>
+                            <option value="ipa">IPA</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
                         <label for="file" class="block text-sm font-medium text-gray-700">Upload File</label>
-                        <input type="file" name="file" id="file" class="file-input file-input-primary w-full" required />
+                        <input type="file" name="file" id="file" class="file-input file-input-primary w-full"
+                            required />
                     </div>
                     <div class="modal-action">
                         <button type="button" class="btn"
@@ -37,5 +50,21 @@
                 <button>close</button>
             </form>
         </dialog>
+    </section>
+    <section>
+        @foreach ($flashcards as $flashcard)
+            <div>
+                HELLO
+            </div>
+        @endforeach
+
+        @if ($flashcards->isEmpty())
+            <div class="flex flex-col items-center justify-center space-y-4 h-full min-h-[500px]">
+                <img src="{{ asset('mindora-mascot.png') }}" alt="Icon" class="w-52 h-auto">
+                <h1 class="text-xl font-medium">
+                    Belum ada Flash Card Saat ini
+                </h1>
+            </div>
+        @endif
     </section>
 @endsection

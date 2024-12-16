@@ -80,7 +80,9 @@ class CourseController extends Controller
         string $id
     ): View {
         $course = Course::findOrFail($id);
-        $courseSections = CourseSection::with('courseItems')->where('course_id', $id)->orderBy('created_at', 'asc')->get();
+        $courseSections = CourseSection::with(['courseItems', 'courseItems.courseItemProgress' => function ($query) {
+            $query->where('user_id', Auth::id());
+        }])->where('course_id', $id)->orderBy('created_at', 'asc')->get();
 
         // Hide private course sections if user is a student
         if (Auth::user()->userable_type == 'App\Models\Student') {
@@ -92,12 +94,19 @@ class CourseController extends Controller
             $courseSections = $courseSections->map(function ($courseSection) {
                 $courseSection->courseItems = $courseSection->courseItems->filter(function ($courseItem) {
                     return $courseItem->isPublic;
+                })->map(function ($courseItem) {
+                    if (!$courseItem->courseItemProgress) {
+                        $courseItem->is_completed = false;
+                    } else {
+                        $courseItem->is_completed = $courseItem->courseItemProgress->is_completed;
+                    }
+                    return $courseItem;
                 });
 
                 return $courseSection;
             });
         }
-        
+
         $tab = $request->input('tab');
 
         $isEdit = false;

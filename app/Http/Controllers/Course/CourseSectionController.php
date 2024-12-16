@@ -16,7 +16,6 @@ class CourseSectionController extends Controller
             $course = Course::findOrFail($id);
             $course->courseSections()->create([
                 'name' => $request->input('name'),
-                'description' => $request->input('description'),
             ]);
 
             return redirect()->route('course.show.edit', ['id' => $course->id, 'course' => $course]);
@@ -45,7 +44,6 @@ class CourseSectionController extends Controller
             $courseSection = CourseSection::findOrFail($id);
             $courseSection->update([
                 'name' => $request->input('name'),
-                'description' => $request->input('description'),
             ]);
 
             return redirect()->back();

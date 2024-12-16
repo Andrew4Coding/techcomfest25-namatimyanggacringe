@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\CourseItemController;
 use App\Http\Controllers\Course\CourseSectionController;
+use App\Http\Controllers\CourseItemProgressController;
 use App\Http\Controllers\FlashCardController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ProfileController;
@@ -157,3 +158,7 @@ Route::prefix('flashcard')->middleware(['auth'])->group(function () {
     Route::get('/', [FlashCardController::class, 'show'])->name('flashcard.show');
     Route::post('/create', [FlashCardController::class, 'create'])->name('flashcard.create');
 });
+
+
+// Course Item Progress
+Route::post('/course-item/check/{courseItemId}', [CourseItemProgressController::class, 'checkCourseItem'])->name('course.item.check');

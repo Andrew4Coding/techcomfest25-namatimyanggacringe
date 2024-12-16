@@ -59,7 +59,7 @@
                     </button>
                     <dialog id="grade_submission_modal_{{ $item->id }}" class="modal">
                         <div class="modal-box">
-                            <h3 class="font-bold text-lg">Grade Submission</h3>
+                            <h3 class="font-semibold text-lg">Grade Submission</h3>
                             <form method="POST"
                                 action="{{ route('submission.grade', ['submissionItemId' => $item->id]) }}">
                                 @csrf
@@ -98,7 +98,7 @@
 <!-- Edit Submission Modal -->
 <dialog id="edit_submission_modal" class="modal">
     <div class="modal-box">
-        <h3 class="font-bold text-lg">Edit Submission Detail</h3>
+        <h3 class="font-semibold text-lg">Edit Submission Detail</h3>
         <form method="POST" action="{{ route('submission.update', $submission->id) }}">
             @csrf
             @method('PUT')

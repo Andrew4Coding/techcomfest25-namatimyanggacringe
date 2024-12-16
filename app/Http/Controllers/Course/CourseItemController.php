@@ -20,7 +20,6 @@ class CourseItemController extends Controller
                 // Validate input
                 $request->validate([
                     'name' => ['required', 'string'],
-                    'description' => ['required', 'string'],
                     'file' => ['required', 'file'],
                 ]);
     

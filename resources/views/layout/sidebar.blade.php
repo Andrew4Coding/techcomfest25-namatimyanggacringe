@@ -20,8 +20,8 @@
                     </button>
                 </div>
             </a>
-            <a href="/">
-                <div class="tooltip tooltip-right" data-tip="Dashboard">
+            <a href="/flashcard">
+                <div class="tooltip tooltip-right" data-tip="Flashcard">
                     <button class="btn rounded-full w-14 h-14">
                         <x-lucide-atom class="w-6 h-6" />
                     </button>

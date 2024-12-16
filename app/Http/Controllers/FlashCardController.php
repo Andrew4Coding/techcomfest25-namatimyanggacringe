@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FlashCard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Spatie\PdfToText\Pdf;
@@ -10,7 +11,8 @@ class FlashCardController extends Controller
 {
     public function show()
     {
-        return view('flashcard.show');
+        $flashcards = FlashCard::all();
+        return view('flashcard.show', compact('flashcards'));
     }
 
     public function create(Request $request)
