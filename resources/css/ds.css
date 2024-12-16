@@ -100,3 +100,8 @@ h1 {
 th {
     @apply font-medium
 }
+
+
+#file-upload-button {
+    @apply bg-[#017AE4]
+}

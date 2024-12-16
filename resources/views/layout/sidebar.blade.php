@@ -67,7 +67,7 @@
         </div>
     </div>
     <button @click="open = !open"
-        class="absolute z-50 top-10 left-5 md:left-9 transform -translate-y-1/2 bg-white rounded-full p-3 hover:scale-105 duration-150">
+        class="absolute z-50 top-14 left-4 md:left-9 transform -translate-y-1/2 bg-white rounded-full p-3 hover:scale-105 duration-150">
         <img src="{{ asset('mindora-icon.png') }}" alt="Icon" class="min-w-8 h-8">
     </button>
 </div>
