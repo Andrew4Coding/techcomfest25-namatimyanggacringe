@@ -140,8 +140,7 @@
                 </div>
                 <div class="mb-4">
                     <label for="file_types" class="block text-sm font-medium text-gray-700">Accepted File Types</label>
-                    <input type="text" name="file_types" id="file_types" class="input input-bordered w-full"
-                        required />
+                    <input type="text" name="file_types" id="file_types" class="input input-bordered w-full" />
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn"

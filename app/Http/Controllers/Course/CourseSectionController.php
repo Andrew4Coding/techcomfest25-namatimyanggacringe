@@ -21,7 +21,6 @@ class CourseSectionController extends Controller
 
             return redirect()->route('course.show.edit', ['id' => $course->id, 'course' => $course]);
         } catch (\Exception $e) {
-            dd($e);
             return redirect()->back()->withErrors(['error' => 'Error creating course section']);
         }
     }

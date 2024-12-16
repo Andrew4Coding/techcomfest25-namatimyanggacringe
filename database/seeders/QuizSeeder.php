@@ -36,6 +36,13 @@ class QuizSeeder extends Seeder
             'question_type' => QuestionType::Essay,
         ]);
 
+        $question2 = Question::factory(9)->create()->each(function (Question $question) {
+            $choices = QuestionChoice::factory(3)->make()->each(function (QuestionChoice $choice) use ($question) {
+                $choice->question_id = $question->id;
+                $choice->save();
+            });
+        });
+
         $teacher = Teacher::factory()->createOne();
         $course = Course::factory()->createOne([
             'teacher_id' => $teacher->id,
@@ -45,6 +52,7 @@ class QuizSeeder extends Seeder
         ]);
 
         $quiz->questions()->save($question);
+        $quiz->questions()->saveMany($question2);
         $quiz->courseItem()->create([
             'name' => "Kuis 1",
             'description' => "Kuis 1",

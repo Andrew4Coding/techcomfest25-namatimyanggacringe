@@ -111,7 +111,6 @@ json
      */
     public function handle(): void
     {
-        Log::info("Kocik");
         try {
             // Exit early if submission is already marked as done
             if (!$this->submission->done) {

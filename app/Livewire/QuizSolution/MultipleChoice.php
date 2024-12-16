@@ -25,10 +25,10 @@ class MultipleChoice extends Component
         $this->question = $question;
         $this->submissionId = $submissionId;
 
-        $this->submissionItem = QuizSubmissionItem::first([
-            'question_id' => $this->question->id,
-            'quiz_submission_id' => $this->submissionId,
-        ]);
+        $this->submissionItem = QuizSubmissionItem
+            ::where('question_id', $question->id)
+            ->where('quiz_submission_id', $submissionId)
+            ->first();
 
         if ($this->submissionItem->answer !== null) {
             $this->answer = $this->submissionItem->answer;

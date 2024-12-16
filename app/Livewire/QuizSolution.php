@@ -15,9 +15,6 @@ use App\Models\Quiz as QuizModel;
 
 class QuizSolution extends Component
 {
-    // get id from query params
-    #[Url]
-    public string $id = '';
 
     // uuid regex for filtering valid uuid
     private string $uuidRegex = "/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/";
@@ -96,10 +93,10 @@ class QuizSolution extends Component
      *
      * mount is used for mounting the component when it first loaded.
      */
-    public function mount(): void
+    public function mount(string $quizId): void
     {
         // check whether the regex matched and the id given is valid id
-        if (!preg_match($this->uuidRegex, $this->id)) {
+        if (!preg_match($this->uuidRegex, $quizId)) {
             $this->redirectIntended("/");
             return;
         } // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
@@ -113,7 +110,11 @@ class QuizSolution extends Component
         // check whether the quiz is found
         try {
             // fetch quiz from database
-            $this->quiz = QuizModel::with('questions', 'questions.questionChoices')->withCount('questions')->findOrFail($this->id);
+            $this->quiz = QuizModel
+                ::with('questions', 'questions.questionChoices')
+                ->withCount('questions')
+                ->where('id', $quizId)
+                ->firstOrFail();
 
             // get first question
             $this->curQuestion = $this->quiz['questions'][$this->page - 1];
@@ -121,11 +122,14 @@ class QuizSolution extends Component
             // get question count
             $this->questionCount = $this->quiz->questions_count;
 
+            echo Auth::user()->userable_id;
+
             // check submission
-            $this->submission = QuizSubmission::first([
-                'quiz_id' => $this->id,
-                'student_id' => Auth::user()->userable_id,
-            ]);
+            $this->submission = QuizSubmission
+                ::where('quiz_id', $quizId)
+                ->where('student_id', Auth::user()->userable_id)
+                ->first();
+
 
             // iterate each questions to mark flagged
             foreach ($this->quiz->questions as $question) {
@@ -145,7 +149,8 @@ class QuizSolution extends Component
             // check if quiz is valid
             $this->isValid = true;
 
-        } catch (ModelNotFoundException $e) {}  // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
+        } catch (ModelNotFoundException $e) {
+        }  // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
     }
 
     // render the quiz

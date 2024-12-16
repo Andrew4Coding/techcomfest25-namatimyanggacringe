@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Course;
 
 use App\Http\Controllers\Controller;
+use App\Livewire\Quiz;
 use App\Models\Course;
 use App\Models\CourseItem;
 use App\Models\CourseSection;
@@ -11,11 +12,11 @@ use Illuminate\Http\Request;
 
 class CourseItemController extends Controller
 {
-    public function createCourseItem(Request $request, string $course_section_id) 
+    public function createCourseItem(Request $request, string $course_section_id)
     {
-        try {            
+        try {
             $type = $request->query('type');
-    
+
             if ($type == "material") {
                 // Validate input
                 $request->validate([
@@ -23,12 +24,12 @@ class CourseItemController extends Controller
                     'description' => ['required', 'string'],
                     'file' => ['required', 'file'],
                 ]);
-    
-                // Upload file to aws 
+
+                // Upload file to aws if exists
                 $file = $request->file('file');
                 $fileName = $file->getClientOriginalName();
                 $filePath = $file->storeAs("uploads/{$course_section_id}", $fileName, 's3');
-    
+
                 $url = env('AWS_URL') . $filePath;
 
                 $newCourseItem = new Material();
@@ -46,6 +47,39 @@ class CourseItemController extends Controller
                 $course = Course::findOrFail($course_section->course_id);
 
                 return redirect()->route('course.show.edit', ['id' => $course->id]);
+            } else if ($type === "submission") {
+
+            } else if ($type === "forum") {
+
+            } else if ($type === "attendance") {
+
+            } else if ($type === "quiz") {
+                // Validate input
+                $request->validate([
+                    'name' => ['required', 'string'],
+                    'description' => ['required', 'string'],
+                    'file' => ['file'],
+                ]);
+
+                $newCourseItem = new Quiz();
+
+                $newCourseItem->courseItem()->create([
+                    'name' => $request->input('name'),
+                    'description' => $request->input('description'),
+                    'course_section_id' => $course_section_id,
+                ]);
+
+                // default value
+                $newCourseItem->save([
+                    'start' => date('Y-m-d H:i:s'),
+                    'finish' => date('Y-m-d H:i:s'),
+                    'duration' => 3600
+                ]);
+
+                $course_section = CourseSection::findOrFail($course_section_id);
+                $course = Course::findOrFail($course_section->course_id);
+
+                return redirect()->route('quiz.edit', ['id' => $newCourseItem->id]);
             } else {
                 return redirect()->back()->withErrors(['error' => 'Invalid type']);
             }
@@ -55,7 +89,7 @@ class CourseItemController extends Controller
         }
     }
 
-    public function deleteCourseItem(string $id) 
+    public function deleteCourseItem(string $id)
     {
         try {
             $courseItem = CourseItem::findOrFail($id);
@@ -68,7 +102,7 @@ class CourseItemController extends Controller
         }
     }
 
-    public function toggleVisibility(string $id) 
+    public function toggleVisibility(string $id)
     {
         try {
             $courseItem = CourseItem::findOrFail($id);

@@ -18,7 +18,9 @@
                     type="radio" name="answer" id="answer-{{ $choice->id }}" value="{{ $choice->id }}"
                     class="answer-radio h-5 w-5 text-blue-500 focus:ring-blue-400 border-gray-300"
                 >
-                <label for="answer-{{ $choice->id }}" class="text-gray-700 text-lg cursor-pointer">
+                <label
+                    for="answer-{{ $choice->id }}"
+                    class="text-gray-700 text-lg cursor-pointer @if($question->answer === $choice->id) bg-green-300/70 @endif">
                     {{ $choice['content'] }}
                 </label>
             </div>

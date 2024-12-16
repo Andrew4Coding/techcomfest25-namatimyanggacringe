@@ -26,9 +26,22 @@ class UserSeeder extends Seeder
             'profile_picture' => null,
         ];
 
+        $data2 = [
+            'name' => 'Andrew Devito Arjo',
+            'email' => 'b@co',
+            'verified' => 1,
+            'phone_number' => '1234567890',
+            'password' => Hash::make('dummy123'),
+            'profile_picture' => null,
+        ];
+
         $newUser = new Student();
         $newUser->save();
         $newUser->user()->create($data);
+
+        $newUser2 = new Teacher();
+        $newUser2->save();
+        $newUser2->user()->create($data2);
 
         $data = [
             'name' => 'Andrew Devito Aryo',

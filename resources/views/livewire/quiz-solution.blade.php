@@ -2,9 +2,6 @@
     @if($isValid)
         {{-- Left Section: Question Navigation --}}
         <section class="flex flex-col w-1/4 gap-4">
-            <div id="timer" class="text-gray-700 bg-white px-4 py-2 rounded-lg shadow-md">
-                Time Left: <span wire:poll.500ms id="time-left">{{ $timeLeft }}</span>
-            </div>
             <section class="h-full w-full bg-white p-6 shadow-md rounded-lg">
                 {{-- Timer --}}
 
