@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->text('content');
             $table->text('answer');
-            $table->integer('weight');
+            $table->integer('weight')->default(1);
             $table->enum('question_type', ['multiple_choice', 'short_answer', 'essay', 'multi_select']);
 
             $table->uuid('quiz_id');
