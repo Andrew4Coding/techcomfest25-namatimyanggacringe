@@ -71,7 +71,7 @@ class CourseItemController extends Controller
                 $course_section = CourseSection::findOrFail($course_section_id);
                 $course = Course::findOrFail($course_section->course_id);
 
-                return redirect()->route('quiz.edit', ['id' => $newCourseItem->id]);
+                return redirect()->route('quiz.edit', ['quizId' => $newCourseItem->id]);
             } else {
                 return redirect()->back()->withErrors(['error' => 'Invalid type']);
             }
