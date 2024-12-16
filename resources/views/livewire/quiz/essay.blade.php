@@ -28,16 +28,16 @@
                 </svg>
             Flag Question
         </label>
-        <button wire:click="$parent.prev" class="btn @if($page <= 1) btn-disabled @else btn-primary @endif">
-            Tombol Back
+        <button wire:click="$parent.prev" class="btn w-1/4 @if($page <= 1) btn-disabled @else btn-primary @endif">
+            Back
         </button>
         @if($page >= $questionCount)
-            <button wire:click="$parent.submit" class="btn btn-success">
-                Tombol Submit
+            <button wire:click="$parent.submit" class="btn w-1/4 btn-success">
+                Submit
             </button>
         @else
-            <button wire:click="$parent.next" class="btn btn-primary">
-                Tombol Next
+            <button wire:click="$parent.next" class="btn w-1/4 btn-primary">
+                Next
             </button>
         @endif
     </div>

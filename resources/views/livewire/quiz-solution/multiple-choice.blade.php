@@ -1,38 +1,68 @@
 <section class="bg-white flex-1 p-10 shadow-md rounded-lg relative">
-    {{-- Question and Pagination Info --}}
+    {{-- Informasi Pertanyaan dan Pagination --}}
     <div class="flex justify-between items-center">
         <h1 id="question-content" class="text-2xl font-bold">{{ $question['content'] }}</h1>
         <span class="text-sm text-gray-500">Question {{ $page }} / {{ $questionCount }}</span>
     </div>
 
-    {{-- Answer Options  --}}
+    {{-- Pilihan Jawaban --}}
     @foreach($question['questionChoices'] as $choice)
+        @php
+            $isCorrect = $choice->id === $question->answer;
+            $isSelected = $choice->id === $submissionItem->answer;
+        @endphp
+
         <div
             wire:key="{{ $choice->id }}"
             id="answer-box" class="mt-6 space-y-4"
         >
             <div
-                class="flex items-center gap-4"
+                class="flex items-center gap-4
+                @if($isCorrect) bg-green-100 border border-green-400 rounded
+                @elseif($isSelected && !$isCorrect) bg-red-100 border border-red-400 rounded
+                @endif
+                p-2"
             >
                 <input
-                    type="radio" name="answer" id="answer-{{ $choice->id }}" value="{{ $choice->id }}"
+                    type="radio"
+                    wire:model.change="answer"
+                    name="answer"
+                    id="answer-{{ $choice->id }}"
+                    value="{{ $choice->id }}"
                     class="answer-radio h-5 w-5 text-blue-500 focus:ring-blue-400 border-gray-300"
+                    @disabled(true) {{-- Menonaktifkan input setelah submit --}}
                 >
-                <label
-                    for="answer-{{ $choice->id }}"
-                    class="text-gray-700 text-lg cursor-pointer @if($question->answer === $choice->id) bg-green-300/70 @endif">
+                <label for="answer-{{ $choice->id }}" class="text-gray-700 text-lg cursor-pointer flex items-center">
                     {{ $choice['content'] }}
+                    @if($isCorrect)
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span class="text-green-600 ml-1">Benar</span>
+                    @elseif($isSelected && !$isCorrect)
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        <span class="text-red-600 ml-1">Salah</span>
+                    @endif
                 </label>
             </div>
         </div>
     @endforeach
 
-    {{-- Actions: Flag, Next, Submit --}}
+    {{-- Feedback --}}
+    <div class="w-full mt-10 flex flex-col items-start bg-black/10 p-3 rounded">
+        <h2 class="text-lg font-semibold">Feedback</h2>
+        <p class="block mt-4">
+            {{ $submissionItem->feedback }}
+        </p>
+    </div>
+
+    {{-- Aksi: Flag, Back, Next --}}
     <div class="mt-10 flex justify-between items-center">
-        {{-- Flag Question Button --}}
-        <label class="flex items-center gap-2 px-4 py-2 rounded-lg @if($flagged)  text-yellow-100 bg-yellow-400 hover:bg-yellow-500 @else text-yellow-500 bg-yellow-100 hover:bg-yellow-200 @endif">
-            <input type="checkbox" class="hidden"
-            />
+        {{-- Tombol Flag Pertanyaan --}}
+        <label class="flex items-center gap-2 px-4 py-2 rounded-lg @if($flagged) text-yellow-100 bg-yellow-400 hover:bg-yellow-500 @else text-yellow-500 bg-yellow-100 hover:bg-yellow-200 @endif">
+            <input wire:model.change="flagged" type="checkbox" class="hidden" />
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                  stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -40,17 +70,11 @@
             </svg>
             Flag Question
         </label>
-        <button wire:click="$parent.prev" class="btn @if($page <= 1) btn-disabled @else btn-primary @endif">
-            Tombol Back
+        <button wire:click="$parent.prev" class="btn w-1/4 @if($page <= 1) btn-disabled @else btn-primary @endif">
+            Back
         </button>
-        @if($page >= $questionCount)
-            <button wire:click="$parent.submit" class="btn btn-success">
-                Tombol Submit
-            </button>
-        @else
-            <button wire:click="$parent.next" class="btn btn-primary">
-                Tombol Next
-            </button>
-        @endif
+        <button wire:click="$parent.next" class="btn w-1/4 @if($page >= $questionCount) btn-disabled @else btn-primary @endif">
+            Next
+        </button>
     </div>
 </section>

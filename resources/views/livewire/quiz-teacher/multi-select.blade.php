@@ -41,7 +41,7 @@
                             wire:key="choices-{{ $question->questionChoices[$i]->id }}"
                             class="btn h-fit flex-1 justify-start mr-4
                         {{--Check if answer--}}
-                        @if(!(in_array($question->questionChoices[$i]->id, $answers))) btn-success @endif"
+                        @if(in_array($question->questionChoices[$i]->id, $answers)) btn-success @endif"
                         >
                             <span class="mr-2 font-bold block">{{ $this->toLetter($i) }}</span>
                             <span

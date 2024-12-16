@@ -15,6 +15,7 @@ class MultipleChoice extends Component
 
     public QuizSubmissionItem $submissionItem;
     public string $submissionId;
+    public string $answer;
 
     public bool $flagged;
 

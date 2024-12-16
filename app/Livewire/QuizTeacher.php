@@ -83,7 +83,8 @@ class QuizTeacher extends Component
         if (!preg_match($this->uuidRegex, $quizId)) return; // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
 
         if (Auth::user()->userable_type === Student::class) {
-            $this->redirect('quiz?id=' . $quizId);
+            $this->redirectIntended("/quiz?id=$quizId");
+            $this->redirect("/quiz?id=$quizId", true);
             return;
         }
 

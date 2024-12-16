@@ -76,7 +76,7 @@ class MultiSelect extends Component
     /**
      * Updates the answer when changed
      */
-    public function updatedAnswer()
+    public function updatedAnswers()
     {
         // transform answer to a string
         $this->question->answer = implode(',', $this->answers);

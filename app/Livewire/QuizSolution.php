@@ -116,13 +116,12 @@ class QuizSolution extends Component
                 ->where('id', $quizId)
                 ->firstOrFail();
 
+
             // get first question
             $this->curQuestion = $this->quiz['questions'][$this->page - 1];
 
             // get question count
             $this->questionCount = $this->quiz->questions_count;
-
-            echo Auth::user()->userable_id;
 
             // check submission
             $this->submission = QuizSubmission
