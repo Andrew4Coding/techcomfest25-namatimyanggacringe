@@ -189,7 +189,7 @@ class CourseController extends Controller
 
         try {
             // Make sure class code is unique
-            if (Course::where('class_code', $request->input('class_code'))->exists()) {
+            if (Course::where('class_code', $request->input('class_code'))->where('id', '!=', $id)->exists()) {
                 return redirect()->back()->withErrors(['error' => 'Class code already exists']);
             }
             

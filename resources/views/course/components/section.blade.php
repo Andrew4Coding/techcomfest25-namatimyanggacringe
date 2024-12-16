@@ -23,40 +23,40 @@
                     <script>
                         function toggleSection(sectionId) {
                             fetch(`{{ route('course.section.toggle', ['id' => $section->id]) }}`, {
-                                method: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({})
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    location.reload();
-                                } else {
-                                    alert('Failed to toggle section visibility.');
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                alert('An error occurred. Please try again.');
-                            });
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({})
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        location.reload();
+                                    } else {
+                                        alert('Failed to toggle section visibility.');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('An error occurred. Please try again.');
+                                });
                         }
                     </script>
                     <div class="tooltip tooltip-top" data-tip="Edit Section">
                         <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
                             onclick="document.getElementById('edit_section_modal_{{ $section->id }}').showModal();" />
                     </div>
+                    <div class="tooltip tooltip-top" data-tip="Add Course Item">
+                        <x-lucide-plus class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
+                            onclick="document.getElementById('add_course_item_modal_{{ $section->id }}').showModal();" />
+                    </div>
                     <div class="tooltip tooltip-top" data-tip="Delete Section">
                         <x-lucide-trash
                             class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12"
                             onclick="document.getElementById('delete_section_modal_{{ $section->id }}').showModal();" />
-                    </div>
-                    <div class="tooltip tooltip-top" data-tip="Add Course Item">
-                        <x-lucide-plus-circle class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
-                            onclick="document.getElementById('add_course_item_modal_{{ $section->id }}').showModal();" />
                     </div>
                 @endif
             </div>
@@ -116,7 +116,8 @@
                     <input type="text" name="name" id="name" class="input input-bordered w-full" required />
                 </div>
                 <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi (Opsional)</label>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi
+                        (Opsional)</label>
                     <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="mb-4">
@@ -137,10 +138,12 @@
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Item</label>
-                    <input type="text" name="name" id="name" class="input input-bordered w-full" required />
+                    <input type="text" name="name" id="name" class="input input-bordered w-full"
+                        required />
                 </div>
                 <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi (Opsional)</label>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi
+                        (Opsional)</label>
                     <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="mb-4">
@@ -161,10 +164,12 @@
                 {{-- Max attemps --}}
                 <div class="mb-4">
                     <label for="attempts" class="block text-sm font-medium text-gray-700">Attempts</label>
-                    <input type="number" name="max_attempts" id="attempts" class="input input-bordered w-full" required min="0" />
+                    <input type="number" name="max_attempts" id="attempts" class="input input-bordered w-full"
+                        required min="0" />
                 </div>
                 <div class="mb-4">
-                    <label for="file_types" class="block text-sm font-medium text-gray-700">Accepted File Types</label>
+                    <label for="file_types" class="block text-sm font-medium text-gray-700">Accepted File
+                        Types</label>
                     <input type="text" name="file_types" id="file_types" class="input input-bordered w-full"
                         required />
                 </div>
@@ -184,7 +189,8 @@
                         required />
                 </div>
                 <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi (Opsional)</label>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi
+                        (Opsional)</label>
                     <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="modal-action">
@@ -201,15 +207,18 @@
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Item</label>
-                    <input type="text" name="name" id="name" class="input input-bordered w-full" required />
+                    <input type="text" name="name" id="name" class="input input-bordered w-full"
+                        required />
                 </div>
                 <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi (Opsional)</label>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi
+                        (Opsional)</label>
                     <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="mb-4">
                     <label for="password" class="block text-sm font-medium text-gray-700">Password Absensi</label>
-                    <input type="text" name="password" id="password" class="input input-bordered w-full" required />
+                    <input type="text" name="password" id="password" class="input input-bordered w-full"
+                        required />
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn" onclick="add_section_modal.close()">Batalkan</button>
@@ -222,10 +231,12 @@
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Item</label>
-                    <input type="text" name="name" id="name" class="input input-bordered w-full" required />
+                    <input type="text" name="name" id="name" class="input input-bordered w-full"
+                        required />
                 </div>
                 <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi (Opsional)</label>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi
+                        (Opsional)</label>
                     <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="mb-4">
@@ -234,14 +245,17 @@
                 </div>
                 <div class="mb-4">
                     <label for="start" class="block text-sm font-medium text-gray-700">Start</label>
-                    <input type="datetime-local" name="start" id="start" class="input input-bordered w-full" required />
+                    <input type="datetime-local" name="start" id="start" class="input input-bordered w-full"
+                        required />
                 </div>
                 <div class="mb-4">
                     <label for="duration" class="block text-sm font-medium text-gray-700">Durasi (Menit)</label>
-                    <input type="number" name="duration" id="duration" class="input input-bordered w-full" required min="1" />
+                    <input type="number" name="duration" id="duration" class="input input-bordered w-full"
+                        required min="1" />
                 </div>
                 <div class="modal-action">
-                    <button type="button" class="btn" onclick="document.getElementById('add_quiz_modal_{{ $section->id }}').close();">Batalkan</button>
+                    <button type="button" class="btn"
+                        onclick="document.getElementById('add_quiz_modal_{{ $section->id }}').close();">Batalkan</button>
                     <button type="submit" class="btn btn-primary">+ Buat</button>
                 </div>
             </form>
