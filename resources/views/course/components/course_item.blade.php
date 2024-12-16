@@ -99,7 +99,7 @@
                 @endif
             </div>
 
-            <div class="tooltip tooltip-top" data-tip="Delete Course Item">
+            <div class="tooltip tooltip-top" data-tip="Hapus Course Item">
                 <x-lucide-trash
                     onclick="document.getElementById('delete_courseitem_modal_{{ $item->id }}').showModal();"
                     class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12" />

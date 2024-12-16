@@ -40,7 +40,7 @@
             <form method="POST" action="{{ route('course.delete', ['id' => $course->id]) }}">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-error">Delete</button>
+                <button type="submit" class="btn btn-error">Hapus</button>
             </form>
         </div>
     </div>

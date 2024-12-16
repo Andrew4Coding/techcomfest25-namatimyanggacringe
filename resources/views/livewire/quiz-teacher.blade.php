@@ -49,7 +49,7 @@
     <dialog id="question_add_modal" class="modal">
         <div class="modal-box">
             <h3 class="text-lg font-medium">Pilih jenis soal</h3>
-            <select wire:model="questionType" class="select select-bordered w-full">
+            <select wire:model="questionType" class="select w-full">
                 <option value="{{ \App\Enums\QuestionType::MultipleChoice }}">Multiple Choice</option>
                 <option value="{{ \App\Enums\QuestionType::ShortAnswer }}">Short Answer</option>
                 <option value="{{ \App\Enums\QuestionType::MultiSelect }}">Multi Select</option>

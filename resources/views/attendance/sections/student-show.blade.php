@@ -15,7 +15,7 @@
                 </div>
                 <div class="form-control mt-4">
                     <label for="status" class="label">Status</label>
-                    <select id="status" name="status" class="select select-bordered" required>
+                    <select id="status" name="status" class="select" required>
                         <option value="present">Hadir</option>
                         <option value="absent">Tidak Hadir</option>
                         <option value="late">Terlambat</option>

@@ -47,7 +47,7 @@
                                         action="{{ route('flashcard.delete', ['id' => $flashcard->id]) }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-error">Delete</button>
+                                        <button type="submit" class="btn btn-error">Hapus</button>
                                     </form>
                                 </div>
                             </div>
@@ -75,7 +75,7 @@
                                     <div class="mb-4">
                                         <label for="subject" class="block text-sm font-medium text-gray-700">Mata Pelajaran
                                             Terkait</label>
-                                        <select name="subject" id="subject" class="select select-bordered w-full"
+                                        <select name="subject" id="subject" class="select w-full"
                                             required>
                                             <option value="sosiologi">Sosiologi</option>
                                             <option value="ekonomi">Ekonomi</option>
@@ -88,8 +88,8 @@
                                     </div>
                                     <div class="modal-action">
                                         <button type="button" class="btn"
-                                            onclick="document.getElementById('edit_flashcard_modal_{{ $flashcard->id }}').close();">Cancel</button>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                            onclick="document.getElementById('edit_flashcard_modal_{{ $flashcard->id }}').close();">Batalkan</button>
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
                                     </div>
                                 </form>
                             </div>

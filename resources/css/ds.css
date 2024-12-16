@@ -65,7 +65,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-500;
+    @apply bg-blue-500;
 }
 
 .modal-box {
@@ -73,7 +73,7 @@
 }
 
 .input, .textarea, .select {
-    @apply border bg-gray-100 rounded-lg focus:outline-none focus:border-blue-500 px-5 w-full
+    @apply border bg-gray-100 rounded-lg focus:outline-none focus:border-blue-500 px-5 w-full text-sm font-normal
 
 }
 

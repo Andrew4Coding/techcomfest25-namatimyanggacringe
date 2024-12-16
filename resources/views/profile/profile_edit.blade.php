@@ -49,7 +49,7 @@
                 <div class="flex gap-2 items-center w-full">
                     <a href="/profile" class="w-1/2">
                         <button class="btn btn-outline w-full">
-                            Cancel
+                            Batalkan
                         </button>
                     </a>
                     <button type="submit" class="btn btn-primary w-1/2">

@@ -75,7 +75,7 @@
                 </div>
                 <div class="mb-4">
                     <label for="subject" class="block text-sm font-medium text-gray-700">Mata Pelajaran Terkait</label>
-                    <select name="subject" id="subject" class="select select-bordered w-full" required>
+                    <select name="subject" id="subject" class="select w-full" required>
                         <option value="sosiologi">Sosiologi</option>
                         <option value="ekonomi">Ekonomi</option>
                         <option value="bahasa">Bahasa</option>

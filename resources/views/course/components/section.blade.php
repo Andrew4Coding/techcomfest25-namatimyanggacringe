@@ -49,11 +49,11 @@
                         <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
                             onclick="document.getElementById('edit_section_modal_{{ $section->id }}').showModal();" />
                     </div>
-                    <div class="tooltip tooltip-top" data-tip="Add Course Item">
+                    <div class="tooltip tooltip-top" data-tip="Tambah Course Item">
                         <x-lucide-plus class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
                             onclick="document.getElementById('add_course_item_modal_{{ $section->id }}').showModal();" />
                     </div>
-                    <div class="tooltip tooltip-top" data-tip="Delete Section">
+                    <div class="tooltip tooltip-top" data-tip="Hapus Section">
                         <x-lucide-trash
                             class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12"
                             onclick="document.getElementById('delete_section_modal_{{ $section->id }}').showModal();" />
@@ -80,7 +80,7 @@
                     <form method="POST" action="{{ route('course.item.delete', ['id' => $item->id]) }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-error">Delete</button>
+                        <button type="submit" class="btn btn-error">Hapus</button>
                     </form>
                 </div>
             </div>
@@ -97,7 +97,7 @@
         <h3 class="font-semibold text-lg">Buat Course Item Baru</h3>
         <div class="mb-4">
             <label for="item_type" class="block text-sm font-medium text-gray-700">Tipe Item</label>
-            <select name="item_type" id="item_type" class="select select-bordered w-full" required>
+            <select name="item_type" id="item_type" class="select w-full" required>
                 <option value="material">Material</option>
                 <option value="submission">Submisi</option>
                 <option value="forum">Forum</option>
@@ -285,7 +285,7 @@
             <form method="POST" action="{{ route('course.section.delete', ['id' => $section->id]) }}">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-error">Delete</button>
+                <button type="submit" class="btn btn-error">Hapus</button>
             </form>
         </div>
     </div>
