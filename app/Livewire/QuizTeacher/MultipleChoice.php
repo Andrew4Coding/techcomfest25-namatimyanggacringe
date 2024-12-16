@@ -19,11 +19,6 @@ class MultipleChoice extends Component
 
     public string $content;
 
-    protected $rules = [
-        'choices.*.content' => 'required|string|max:255',
-        'answer' => 'required|exists:question_choices,id',
-    ];
-
     public function mount()
     {
         // Initialize the choices array with existing question choices
@@ -81,8 +76,6 @@ class MultipleChoice extends Component
      */
     public function updatedAnswer()
     {
-        $this->validateOnly('answer');
-
         $this->question->answer = $this->answer;
         $this->question->save();
     }
@@ -106,8 +99,6 @@ class MultipleChoice extends Component
             session()->flash('error', 'Choice not found.');
             return;
         }
-
-        $this->validateOnly("choices.$choiceIndex.content");
 
         $choice = QuestionChoice::find($choiceId);
         if ($choice) {

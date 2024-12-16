@@ -186,7 +186,12 @@ class Quiz extends Component
             $this->submission = QuizSubmission
                 ::where('quiz_id', $this->id)
                 ->where('student_id', Auth::user()->userable_id)
-                ->firstOrCreate();
+                ->firstOrNew([
+                    'quiz_id' => $this->id,
+                    'student_id' => Auth::user()->userable_id,
+                ]);
+
+            $this->submission->save();
 
             // FIXME: BENERIN GUE MALAS :V
             if (

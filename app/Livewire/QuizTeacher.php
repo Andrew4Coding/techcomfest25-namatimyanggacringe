@@ -6,6 +6,8 @@ use App\Enums\QuestionType;
 use App\Models\Question;
 use App\Models\QuestionChoice;
 use App\Models\Quiz as QuizModel;
+use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Reactive;
@@ -75,10 +77,16 @@ class QuizTeacher extends Component
      * @param string $id "quiz ID"
      * @return void
      */
-    public function mount(string $quizId): void
+    public function mount(string $quizId)
     {
-        // check whether the regex matched and the id given is valid id
+        // check whether the regex matched and the id given is valid id'
         if (!preg_match($this->uuidRegex, $quizId)) return; // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
+
+        if (Auth::user()->userable_type === Student::class) {
+            $this->redirect('quiz?id=' . $quizId);
+            return;
+        }
+
 
         // check whether the quiz is found
         try {

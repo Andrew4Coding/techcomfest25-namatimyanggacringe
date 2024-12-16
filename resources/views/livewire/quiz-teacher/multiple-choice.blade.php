@@ -35,13 +35,14 @@
             <div class="card-actions mt-4 gap-4 flex flex-col">
                 @for ($i = 0; $i < count($choices); $i++)
                     <div class="w-full flex flex-col md:flex-row items-start md:items-center">
-                        <label wire:key="choices-{{ $question->questionChoices[$i]->id }}"
-                            class="btn h-fit flex-1 justify-start"
-                            @if (!($question->questionChoices[$i]->id === $answer)) btn-outline @endif">
+                        <label wire:key="choices-{{ $question->questionChoices[$i]->id }}-{{ $i }}"
+                            class="btn h-fit flex-1 justify-start mr-4
+                            @if ($question->questionChoices[$i]->id === $answer) btn-success @endif">
+
                             <span class="mr-2 font-bold block">{{ $this->toLetter($i) }}</span>
                             <span class="text-left leading-4">{{ $question->questionChoices[$i]->content }}</span>
                             <input wire:model.change="answer" type="radio"
-                                name="radio-{{ $question->questionChoices[$i]->id }}" class="hidden"
+                                name="radio-{{ $question->id }}" class="hidden"
                                 value="{{ $question->questionChoices[$i]->id }}" />
                         </label>
 

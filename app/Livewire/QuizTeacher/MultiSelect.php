@@ -78,8 +78,6 @@ class MultiSelect extends Component
      */
     public function updatedAnswer()
     {
-        $this->validateOnly('answer');
-
         // transform answer to a string
         $this->question->answer = implode(',', $this->answers);
         $this->question->save();
@@ -98,8 +96,6 @@ class MultiSelect extends Component
             session()->flash('error', 'Choice not found.');
             return;
         }
-
-        $this->validateOnly("choices.$choiceIndex.content");
 
         $choice = QuestionChoice::find($choiceId);
         if ($choice) {
