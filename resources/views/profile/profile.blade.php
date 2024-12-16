@@ -16,7 +16,7 @@
         <img src="{{ asset('lanyard-left.png') }}" alt="Mascot" class="absolute w-80 hidden md:block -top-[350px] -translate-x-16 z-0">
 
         <div class="text-center flex flex-col items-center bg-white rounded-3xl shadow-smooth p-10 relative">
-            <img src="{{ asset('lanyard-right.png') }}" alt="Mascot" class="absolute w-80 hidden md:block -top-[320px] translate-x-20 z-10">
+            <img src="{{ asset('lanyard-right.png') }}" alt="Mascot" class="absolute w-80 hidden md:block -top-[310px] translate-x-20 z-10">
 
             <img src="{{ asset('mindora-icon.png') }}" alt="Mascot" class="absolute w-12 h-auto left-5 top-10">
             <img src="{{ asset('mindora-mascot.png') }}" alt="Mascot" class="absolute w-32 h-auto right-5 top-40 rotate-12">

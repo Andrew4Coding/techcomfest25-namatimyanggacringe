@@ -30,7 +30,7 @@
 
             {{-- Aksi --}}
             <div class="card-actions mt-4 gap-4 flex flex-col">
-                <textarea wire:model="answer" class="textarea w-full"></textarea>
+                <textarea wire:model="answer" class="textarea w-full min-h-40" ></textarea>
                 <button wire:click="updateAnswer" class="btn btn-primary self-end">Simpan</button>
             </div>
         </div>

@@ -54,6 +54,14 @@
 @endphp
 
 <section class="flex flex-col items-center my-20 gap-10">
+    <div class="flex w-full justify-center gap-5 items-center">
+        <button class="btn btn-primary">
+            Murid
+        </button>
+        <button class="btn btn-outline">
+            Guru
+        </button>
+    </div>
     <div class="max-w-2xl space-y-4 text-center">
         <h3 class="font-semibold text-2xl">"Data dan Teknologi untuk Pendidikan yang Lebih Baik."</h3>
         <p class="text-[#17194C]">
@@ -62,7 +70,8 @@
     </div>
 
     @foreach ($features as $index => $feature)
-        <div class="w-full flex flex-col-reverse md:flex-col lg:flex-row gap-10 {{ $index % 2 == 0 ? '' : 'lg:flex-row-reverse' }}">
+        <div
+            class="w-full flex flex-col-reverse md:flex-col lg:flex-row gap-10 {{ $index % 2 == 0 ? '' : 'lg:flex-row-reverse' }}">
             <div class="max-w-xl space-y-5 text-center md:text-left">
                 <h3 class="font-semibold text-xl">{{ $feature['title'] }}</h3>
                 <p class="leading-relaxed">

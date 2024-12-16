@@ -19,7 +19,6 @@ class MultiSelect extends Component
 
 
     public array $answers;
-    public string $content;
 
     protected $rules = [
         'choices.*.content' => 'required|string|max:255',

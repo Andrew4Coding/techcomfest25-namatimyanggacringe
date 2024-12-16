@@ -54,7 +54,7 @@
                                 <div class="modal-action">
                                     <form method="dialog">
                                         <button wire:click="updateChoice('{{ $question->questionChoices[$i]->id }}')"
-                                            class="btn">Simpan</button>
+                                            class="btn btn-primary">Simpan</button>
                                     </form>
                                 </div>
                             </div>

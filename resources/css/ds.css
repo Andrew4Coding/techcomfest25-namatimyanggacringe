@@ -26,31 +26,6 @@
     @apply bg-transparent border-none text-[#017AE4] hover:bg-[#017AE4]/10 hover:text-[#017AE4];
 }
 
-.course-green {
-    @apply bg-[#C6E4DC] text-[#39816E]
-}
-
-.course-yellow {
-    @apply bg-[#F7EDC9] text-[#705801]
-}
-
-.course-red {
-    @apply bg-[#F9D1D1] text-[#8B2C2C]
-}
-
-.course-blue {
-    @apply bg-[#C6E4DC] text-[#39816E]
-}
-
-.course-purple {
-    @apply bg-[#E9D8FD] text-[#6C5DD3]
-}
-
-.course-brown {
-    @apply bg-[#F5E1D3] text-[#7F5A3F]
-}
-
-
 /* Custom scrollbar */
 ::-webkit-scrollbar {
     width: 12px;
@@ -73,7 +48,7 @@
 }
 
 .input, .textarea, .select {
-    @apply border bg-gray-100 rounded-lg focus:outline-none focus:border-blue-500 px-5 w-full text-sm font-normal
+    @apply border bg-gray-100 rounded-lg focus:outline-none focus:border-blue-500 px-5 py-2 w-full text-sm font-normal
 
 }
 
