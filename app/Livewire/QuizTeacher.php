@@ -75,21 +75,24 @@ class QuizTeacher extends Component
      * @param string $id "quiz ID"
      * @return void
      */
-    public function mount(string $id): void
+    public function mount(string $quizId): void
     {
         // check whether the regex matched and the id given is valid id
-        if (!preg_match($this->uuidRegex, $id)) return; // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
+        if (!preg_match($this->uuidRegex, $quizId)) return; // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
 
         // check whether the quiz is found
         try {
             $this->quiz = QuizModel::with('questions', 'questions.questionChoices')
                 ->withCount('questions')
-                ->first($id);
+                ->where('id', $quizId)
+                ->firstOrFail();
 
             // check if quiz is valid
             $this->isValid = true;
 
-        } catch (ModelNotFoundException $e) {}  // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
+        } catch (ModelNotFoundException $e) {
+            $this->redirectIntended('/');
+        }  // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
     }
 
     public function render()

@@ -227,7 +227,11 @@
             </form>
         </div>
         <div id="quiz_fields" class="hidden">
-            <form method="POST">
+            <form
+                method="POST"
+                action="{{ route('course.item.create', ['course_section_id' => $section->id, 'type' => 'quiz']) }}"
+                enctype="multipart/form-data"
+            >
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Item</label>

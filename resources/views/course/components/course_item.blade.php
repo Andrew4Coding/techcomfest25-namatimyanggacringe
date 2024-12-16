@@ -67,7 +67,7 @@
             </div>
         </a>
     @elseif ($item->course_itemable_type === 'App\Models\Quiz')
-        <a href="{{ route('quiz.show', ['quizId' => $item->courseItemable->id]) }}" class="w-full">
+        <a href="{{ route('quiz.edit', ['quizId' => $item->courseItemable->id]) }}" class="w-full">
             <div class="w-full flex items-center gap-4 mt-5 justify-between">
                 <div class="flex gap-4">
                     <div class="w-10 h-10 flex items-center justify-center">

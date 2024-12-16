@@ -107,7 +107,7 @@ Route::prefix('quiz')->middleware(['auth'])->group(function () {
 //    Route::middleware([TeacherMiddleware::class])->group(function () { FIXME
         Route::middleware([])->group(function () {
         // Teacher Quiz Editor
-        Route::get('/edit/{id}', QuizTeacher::class)->name('quiz.edit');
+        Route::get('/edit/{quizId}', QuizTeacher::class)->name('quiz.edit');
 
         Route::post('/{courseSectionId}/store', [QuizController::class, 'store'])->name('quiz.store');
 //        Route::put('/{id}/update', [QuizController::class, 'update'])->name('quiz.update');
@@ -172,7 +172,7 @@ Route::post('/course-item/check/{courseItemId}', [CourseItemProgressController::
 // Dashboard
 Route::prefix('dashboard')->middleware(['auth'])->group(function () {
     Route::get('/', [DashboardController::class, 'show'])->name('dashboard');
-    
+
     Route::middleware([TeacherMiddleware::class])->group(function () {
         Route::post('/sendMessage/{studentId}', [DashboardController::class, 'sendStudentMessage'])->name('dashboard.teacher.send');
     });

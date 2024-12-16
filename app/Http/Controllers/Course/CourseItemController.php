@@ -46,15 +46,21 @@ class CourseItemController extends Controller
                 $course = Course::findOrFail($course_section->course_id);
 
                 return redirect()->route('course.show.edit', ['id' => $course->id]);
-            } else if ($type === 'quiz') {
+            } else if ($type == "quiz") {
                 $request->validate([
                     'name' => ['required', 'string'],
                     'description' => ['required', 'string'],
                     'start' => ['required', 'string'],
-                    'end' => ['required', 'string'],
+                    'finish' => ['required', 'string'],
                 ]);
 
-                $newCourseItem = new Quiz();
+                $newCourseItem = new Quiz([
+                    'start' => $request->input('start'),
+                    'finish' => $request->input('finish'),
+                    'duration' => 3600,
+                ]);
+
+                $newCourseItem->save();
 
                 $newCourseItem->courseItem()->create([
                     'name' => $request->input('name'),
@@ -64,12 +70,6 @@ class CourseItemController extends Controller
 
                 $course_section = CourseSection::findOrFail($course_section_id);
                 $course = Course::findOrFail($course_section->course_id);
-
-                $newCourseItem->save([
-                   'start' => $request->input('start'),
-                   'end' => $request->input('end'),
-                   'duration' => 3600,
-                ]);
 
                 return redirect()->route('quiz.edit', ['id' => $newCourseItem->id]);
             } else {
