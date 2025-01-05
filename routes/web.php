@@ -154,13 +154,15 @@ Route::post('/upload-pdf', [UploadFileController::class, 'processUpload'])->name
 // FlashCard
 Route::prefix('flashcard')->middleware(['auth'])->group(function () {
     Route::get('/', [FlashCardController::class, 'show'])->name('flashcard.show');
+    Route::get('/{id}', [FlashCardController::class, 'index'])->name('flashcard.index');
     Route::post('/create', [FlashCardController::class, 'create'])->name('flashcard.create');
+    Route::delete('/delete/{id}', [FlashCardController::class, 'delete'])->name('flashcard.delete');
+    Route::put('/update/{id}', [FlashCardController::class, 'update'])->name('flashcard.update');
 });
 
 
 // Course Item Progress
 Route::post('/course-item/check/{courseItemId}', [CourseItemProgressController::class, 'checkCourseItem'])->name('course.item.check');
-
 
 // Dashboard
 Route::prefix('dashboard')->middleware(['auth'])->group(function () {
