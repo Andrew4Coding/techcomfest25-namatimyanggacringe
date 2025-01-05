@@ -29,7 +29,7 @@
                     class="w-80 h-full max-h-52 object-contain">
             </div>
             <div class="flex justify-between">
-                <div class="font-bold text-xl mb-2 z-50" style="color: {{ $theme['tertiary'] }}">{{ $course->name }}</div>
+                <div class="font-bold text-xl mb-2 z-30" style="color: {{ $theme['tertiary'] }}">{{ $course->name }}</div>
                 <div class="font-medium px-5 rounded-full w-fit h-fit flex items-center text-white z-20"
                     style="background-color: {{ $theme['secondary'] }}; }}">{{ $course->class_code }}</div>
             </div>
