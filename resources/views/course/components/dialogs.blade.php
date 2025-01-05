@@ -33,7 +33,7 @@
 <dialog id="delete_course_modal_{{ $course->id }}" class="modal">
     <div class="modal-box">
         <h3 class="font-semibold text-lg">Konfirmasi Penghapusan</h3>
-        <p>Are you sure you want to delete this Course?</p>
+        <p>Apakah kamu yakin untuk Course ini?</p>
         <div class="modal-action">
             <button type="button" class="btn"
                 onclick="document.getElementById('delete_course_modal_{{ $course->id }}').close();">Batalkan</button>

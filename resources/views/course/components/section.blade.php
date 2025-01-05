@@ -73,7 +73,7 @@
         <dialog id="delete_courseitem_modal_{{ $item->id }}" class="modal">
             <div class="modal-box">
                 <h3 class="font-semibold text-lg">Konfirmasi Penghapusan</h3>
-                <p>Are you sure you want to delete this Course Item?</p>
+                <p>Apakah kamu yakin untuk menghapus Course Item ini?</p>
                 <div class="modal-action">
                     <button type="button" class="btn"
                         onclick="document.getElementById('delete_courseitem_modal_{{ $item->id }}').close();">Batalkan</button>
@@ -269,7 +269,7 @@
 <dialog id="delete_section_modal_{{ $section->id }}" class="modal">
     <div class="modal-box">
         <h3 class="font-semibold text-lg">Konfirmasi Penghapusan</h3>
-        <p>Are you sure you want to delete this section?</p>
+        <p>Apakah kamu yakin untuk menghapus section ini?</p>
         <div class="modal-action">
             <button type="button" class="btn"
                 onclick="document.getElementById('delete_section_modal_{{ $section->id }}').close();">Batalkan</button>
