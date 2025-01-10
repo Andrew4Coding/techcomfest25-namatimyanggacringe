@@ -93,19 +93,12 @@ Route::prefix('quiz')->middleware(['auth'])->group(function () {
     Route::get('/submit/{quizId}', [QuizController::class, 'submitQuiz'])->name('quiz.submit');
 
     Route::get('/check/{quizId}', QuizSolution::class)->name('quiz.solution');
-    //    Route::get('/{courseId}/create', [QuizController::class, 'showQuizCreation'])->name('quiz.alter');
-    //    Route::get('/{courseId}/edit/{id}', [QuizController::class, 'showQuizAlteration'])->name('quiz.alter');
-    //
-    //    Route::post('/generate', [QuizController::class, 'generateQuestionsFromPDF'])->name('quiz.generate');
-    //    Route::post('/parse', [QuizController::class, 'parseQuestionsFromCSV'])->name('quiz.parse');
 
-    //    Route::middleware([TeacherMiddleware::class])->group(function () { FIXME
-    // Teacher Quiz Editor
-    Route::get('/edit/{quizId}', QuizTeacher::class)->name('quiz.edit');
 
+    Route::middleware([TeacherMiddleware::class])->group(function () {
+        Route::get('/edit/{quizId}', QuizTeacher::class)->name('quiz.edit');
+    });
     Route::post('/{courseSectionId}/store', [QuizController::class, 'store'])->name('quiz.store');
-    //        Route::put('/{id}/update', [QuizController::class, 'update'])->name('quiz.update');
-    //        Route::delete('/{id}/delete', [QuizController::class, 'destroy'])->name('quiz.delete');
 });
 
 // Forum

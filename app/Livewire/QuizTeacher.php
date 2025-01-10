@@ -45,6 +45,7 @@ class QuizTeacher extends Component
         // if the selected type is multiple choice or multiselect, create new choices
         if ($this->questionType === QuestionType::MultipleChoice or $this->questionType === QuestionType::MultiSelect)
         {
+            // create new default choice
             $newChoice = QuestionChoice::create([
                 'content' => 'Pilihan 1',
                 'question_id' => $newQuestion->id,
@@ -53,12 +54,14 @@ class QuizTeacher extends Component
             $newQuestion->questionChoices()->save($newChoice);
         }
 
+        // save new question
         $this->quiz->questions()->save($newQuestion);
 
         $this->questionType = QuestionType::MultipleChoice;
-
     }
 
+
+    // delete question
     public function deleteQuestion($id)
     {
         Question::destroy($id);
@@ -70,7 +73,7 @@ class QuizTeacher extends Component
 
     public function back()
     {
-        $this->redirectIntended('/');
+        $this->redirectIntended();
     }
 
     /**

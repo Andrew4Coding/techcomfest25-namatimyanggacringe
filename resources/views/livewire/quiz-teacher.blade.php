@@ -1,6 +1,7 @@
+@php use App\Enums\QuestionType; @endphp
 <main class="px-20 flex flex-col ">
     <button wire:click="back" class="btn btn-primary self-end">
-        <x-lucide-save class="w-4 h-4" />
+        <x-lucide-save class="w-4 h-4"/>
         Simpan
     </button>
     <div class="flex flex-col items-center gap-2 mb-8">
@@ -10,28 +11,28 @@
     <section class="flex flex-col gap-10">
         @foreach($quiz->questions as $index => $question)
             @php $i = $index + 1; @endphp
-            @if($question->question_type === \App\Enums\QuestionType::MultipleChoice)
+            @if($question->question_type === QuestionType::MultipleChoice)
                 <livewire:quiz-teacher.multiple-choice
                     :num="$i"
                     :question="$question"
                     :choices="$question->questionChoices->toArray()"
                     wire:key="question-{{ $question->id }}-{{ $i }}"
                 />
-            @elseif($question->question_type === \App\Enums\QuestionType::ShortAnswer)
+            @elseif($question->question_type === QuestionType::ShortAnswer)
                 <livewire:quiz-teacher.short-answer
                     :num="$i"
                     :question="$question"
                     :choices="$question->questionChoices->toArray()"
                     wire:key="question-{{ $question->id }}-{{ $i }}"
                 />
-            @elseif($question->question_type === \App\Enums\QuestionType::MultiSelect)
+            @elseif($question->question_type === QuestionType::MultiSelect)
                 <livewire:quiz-teacher.multi-select
                     :num="$i"
                     :question="$question"
                     :choices="$question->questionChoices->toArray()"
                     wire:key="question-{{ $question->id  }}-{{ $i }}"
                 />
-            @elseif($question->question_type === \App\Enums\QuestionType::Essay)
+            @elseif($question->question_type === QuestionType::Essay)
                 <livewire:quiz-teacher.essay
                     :num="$i"
                     :question="$question"
@@ -43,17 +44,17 @@
     </section>
 
     <button class="btn btn-outline w-full mt-10" onclick="question_add_modal.showModal()">
-        <x-lucide-plus class="w-4 h-4" />
+        <x-lucide-plus class="w-4 h-4"/>
         Tambah Soal
     </button>
     <dialog id="question_add_modal" class="modal">
         <div class="modal-box">
             <h3 class="text-lg font-medium">Pilih jenis soal</h3>
             <select wire:model="questionType" class="select w-full">
-                <option value="{{ \App\Enums\QuestionType::MultipleChoice }}">Multiple Choice</option>
-                <option value="{{ \App\Enums\QuestionType::ShortAnswer }}">Short Answer</option>
-                <option value="{{ \App\Enums\QuestionType::MultiSelect }}">Multi Select</option>
-                <option value="{{ \App\Enums\QuestionType::Essay }}">Essay</option>
+                <option value="{{ QuestionType::MultipleChoice }}">Multiple Choice</option>
+                <option value="{{ QuestionType::ShortAnswer }}">Short Answer</option>
+                <option value="{{ QuestionType::MultiSelect }}">Multi Select</option>
+                <option value="{{ QuestionType::Essay }}">Essay</option>
             </select>
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
