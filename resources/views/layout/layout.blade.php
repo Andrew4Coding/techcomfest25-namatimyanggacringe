@@ -927,10 +927,12 @@
         @php
             $isAuth = request()->is('login') || request()->is('register') || request()->is('register/teacher') || request()->is('register/student');
         @endphp
-        <main class="w-full overflow-y-scroll overflow-x-hidden {{ $isAuth ? '' : 'px-5 md:px-20 py-20' }} bg-[#F6F5FF]">
+        <main class="w-full overflow-y-scroll overflow-x-hidden {{ $isAuth ? '' : 'px-5 md:px-20 py-10 md:py-20' }} bg-[#F6F5FF]">
             @yield('content')
         </main>
     </div>
+    <div id="toast" class="fixed bottom-10 right-10 z-50 hidden 
+        bg-white border border-gray-200 shadow-lg rounded-lg p-4 w-80 max-w-full" ></div>
     @if ($errors->any())
         <div role="alert" class="alert alert-error fixed bottom-10 right-10 max-w-[250px] overflow-y-scroll max-h-[200px] p-4 rounded-lg shadow-lg bg-red-100 text-red-800 flex flex-col items-start gap-2">
             <div class="flex items-center">
