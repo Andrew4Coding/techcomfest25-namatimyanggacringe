@@ -138,9 +138,6 @@ Route::prefix('attendance')->middleware(['auth'])->group(function () {
     });
 });
 
-// Route::get('/upload-pdf', [UploadFileController::class, 'showFileForm'])->name('pdf.upload.form');
-// Route::post('/upload-pdf', [UploadFileController::class, 'processUpload'])->name('pdf.upload.process');
-
 // FlashCard
 Route::prefix('flashcard')->middleware(['auth'])->group(function () {
     Route::get('/', [FlashCardController::class, 'show'])->name('flashcard.show');
@@ -162,4 +159,10 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
     Route::middleware([TeacherMiddleware::class])->group(function () {
         Route::post('/sendMessage/{studentId}', [DashboardController::class, 'sendStudentMessage'])->name('dashboard.teacher.send');
     });
+});
+
+
+// Forum
+Route::prefix('forum')->middleware(['auth'])->group(function () {
+    Route::get('/{forumId}', [ForumController::class, 'index'])->name('forum.index');
 });

@@ -11,7 +11,7 @@ return [
         'bahasa' => [
             'primary' => '#C4DDF1',
             'secondary' => '#325C7D',
-            'tertiary' => '#FFFFFF',
+            'tertiary' => '#325C7D',
         ],
         'ekonomi' => [
             'primary' => '#C6E4DC',

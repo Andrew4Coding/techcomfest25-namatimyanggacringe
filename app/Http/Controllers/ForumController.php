@@ -9,11 +9,20 @@ use Illuminate\Http\Request;
 
 class ForumController extends Controller
 {
+    public function show_list(Request $request)
+    {
+        // Get All Forum which in the course enrolled by the user
+        $user = $request->user();
+
+        $courses = $user->courses()->get();
+
+        return view('forum.list', compact('course'));
+    }
     public function index(string $forumId)
     {
         $forum = Forum::findOrFail($forumId);
 
-        $forum_discussions = $forum->discussions()->get();
+        $forum_discussions = $forum->discussions()->with('forum_replies')->orderBy('updated_at', 'desc')->get();
 
         return view('forum.index', compact('forum', 'forum_discussions'));
     }
@@ -54,7 +63,7 @@ class ForumController extends Controller
     
             $forum_discussions = $forum->discussions()->get();
 
-            return view('forum.index', compact('forum', 'forum_discussions'));
+            return redirect()->route('forum.index', ['forumId' => $forumId]);
         }
         catch (\Exception $e) {
             dd($e);

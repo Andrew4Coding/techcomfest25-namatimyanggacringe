@@ -23,6 +23,7 @@ class ForumReply extends Model
         'forum_discussion_id',
         'sender_id',
         'reply_to_id',
+        'is_ai',
     ];
 
     /**
