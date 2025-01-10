@@ -93,7 +93,6 @@ class RegisterController extends Controller
             Auth::login($newUser->user);
             return redirect('/');
         } catch (\Exception $e) {
-            dd($e);
             return redirect()->back()->withErrors(['error' => 'Registration failed. Please try again.']);
         }
     }

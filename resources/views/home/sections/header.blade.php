@@ -23,7 +23,11 @@
         </div>
         <a href="/dashboard">
             <button class="btn btn-primary px-20">
-                Mulai Sekarang
+                @if (Auth::check())
+                    Lanjutkan Belajar
+                @else
+                    Mulai Sekarang
+                @endif
             </button>
         </a>
     </div>
