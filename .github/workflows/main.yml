@@ -1,0 +1,22 @@
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to VM
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH and Pull Latest Changes
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          proxy_key: ${{ secrets.PROXY_KEY }}
+          script: |
+            cd ~/techcomfest25-namatimyanggacringe
+            git pull origin master
+            npm run build
+            ./vendor/bin/sail up -d
