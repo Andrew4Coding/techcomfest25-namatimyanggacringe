@@ -47,8 +47,7 @@
 
             <div class="z-10">
                 <div class="flex justify-between items-center mb-4 w-full">
-                    <h1 class="text-xl font-bold"
-                        style="color: {{ $theme['tertiary'] }};">{{ $course->name }}</h1>
+                    <h1 class="text-xl font-bold" style="color: {{ $theme['tertiary'] }};">{{ $course->name }}</h1>
                     <div class="flex gap-4 items-center">
                         <span class="badge badge-primary py-2 font-medium text-sm border-none text-white"
                             style="background-color: {{ $theme['secondary'] }};"
@@ -58,12 +57,17 @@
 
                         @if (Auth::user()->userable_type == 'App\Models\Teacher')
                             @if ($isEdit)
-                                <x-lucide-pencil class="min-w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
-                                    onclick="edit_course_modal.showModal()" />
+                                <div class="tooltip tooltip-right" data-tip="Mode Edit">
+                                    <x-lucide-pencil class="min-w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
+                                        onclick="edit_course_modal.showModal()" />
+                                </div>
                             @else
-                                <a href="{{ route('course.show.edit', ['id' => $course->id]) }}">
-                                    <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
-                                </a>
+                                <div class="tooltip tooltip-right" data-tip="Mode Edit">
+
+                                    <a href="{{ route('course.show.edit', ['id' => $course->id]) }}">
+                                        <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
+                                    </a>
+                                </div>
                             @endif
                         @else
                             <button

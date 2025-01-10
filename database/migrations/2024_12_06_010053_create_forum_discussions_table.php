@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
 
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
 
             $table->uuid('creator_id')->nullable();
             $table->uuid('forum_id');

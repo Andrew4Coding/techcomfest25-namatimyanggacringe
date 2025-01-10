@@ -24,7 +24,12 @@
         <a href="/dashboard">
             <button class="btn btn-primary px-20">
                 @if (Auth::check())
-                    Lanjutkan Belajar
+                    @if (Auth::user()->userable_type === Teacher::class)
+                        Lanjutkan Mengajar
+                    @else
+                        Lanjutkan Belajar
+                    @endif
+
                 @else
                     Mulai Sekarang
                 @endif

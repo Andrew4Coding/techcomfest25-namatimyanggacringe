@@ -5,76 +5,59 @@
 @section('content')
     <div class="w-full flex flex-col items-center justify-center">
         <section class="h-screen flex flex-col items-center justify-center relative w-full">
-            <img src="{{ asset('mascot-nunjuk.png') }}" alt="Login" class="absolute w-[200px] h-auto right-20">
+            <img src="{{ asset('mascot-nunjuk.png') }}" alt="Login" class="w-[150px] py-5">
 
-            <h1 class="text-5xl font-semibold">
-                Welcome to
-                <span class="bg-gradient-to-r gradient-blue bg-clip-text text-transparent">
-                    AI Forum!
-                </span>
-            </h1>
-            <p>
-                Tanyakan apapun disini :D
-            </p>
-            <div class="flex gap-4 items-center">
-                <input type="text" name="" id="" placeholder="Tanyakan pertanyaamu disini ... "
-                    class="input w-full max-w-2xl min-w-[300px]">
-                <button type="button" class="btn btn-primary"
-                    onclick="document.getElementById('add_discussion_modal').showModal();">
-                    Create New Discussion
-                </button>
+            <div class="flex flex-col gap-4 items-center justify-center">
+                <h1 class="text-5xl font-semibold">
+                    Welcome to
+                    <span class="bg-gradient-to-r gradient-blue bg-clip-text text-transparent">
+                        AI Forum!
+                    </span>
+                </h1>
+                <p class="py-3">
+                    Tanyakan apapun disini :D
+                </p>
+                <form class="flex gap-4 items-center" method="POST"
+                    action="{{ route('forum.discussion.create', ['forumId' => $forum->id]) }}">
+                    @csrf
+                    <input type="text" name="title" id="" placeholder="Tanyakan pertanyaamu disini ... "
+                        class="input w-full max-w-2xl min-w-[300px]">
+                    <input type="hidden" name="description" value="s">
+                    <button type="submit" class="btn btn-primary">
+                        Kirim Pertanyaan
+                    </button>
+                </form>
             </div>
         </section>
 
 
-        @foreach ($forum_discussions as $discussion)
-            <a href="{{ route('forum.discussion.index', ['forumId' => $forum->id, 'discussionId' => $discussion->id]) }}" class="w-full">
-                <div class="w-full bg-white shadow-smooth rounded-3xl p-8 mt-4 relative">
-                    <h3 class="font-semibold text-lg">{{ $discussion->title }}</h3>
-                    <p>{{ $discussion->description }}</p>
+        <section class="w-full">
+            <div class="w-full flex items-center justify-between">
+                <h3>Pertanyaan Sebelumnya</h3>
+                <input type="text" name="" id="" placeholder="Cari pertanyaan ..."
+                    class="input max-w-[300px]">
+            </div>
+            @foreach ($forum_discussions as $discussion)
+                <div class="w-full bg-white shadow-smooth rounded-3xl p-8 mt-4 relative flex flex-col gap-2">
+                    <h3 class="font-medium text-sm">{{ $discussion->title }}</h3>
                     <span class="absolute top-8 right-8 text-sm text-gray-500">
                         {{ $discussion->created_at->diffForHumans() }}
                     </span>
+                    <div class="flex flex-col gap-2">
+                        @foreach ($discussion->forum_replies as $reply)
+                            <div class="w-full bg-[#F2F6F8] p-5 rounded-xl">
+                                <h3 class="font-medium">Jawaban</h3>
+                                <p>{{ $reply->content }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="w-full flex justify-end">
+                        <a href="{{ route('forum.discussion.index', ['forumId' => $forum->id, 'discussionId' => $discussion->id]) }}" class="w-full">
+                            <p class="text-gray-300 text-right text-xs">See More</p>
+                        <a>
+                    </div>
                 </div>
-            </a>
-        @endforeach
-
-        @if ($forum_discussions->isEmpty())
-            <div class="mt-20 text-center flex flex-col items-center gap-2">
-                <img src="{{ asset('mindora-mascot.png') }}" alt="Icon" class="w-52 h-auto">
-                <h1 class="text-xl font-medium">
-                    Belum ada forum baru saat ini
-                </h1>
-                <p
-                    class="font-medium bg-gradient-to-r from-[#3A4EC1] via-[#5298ED] to-[#945AC6] text-transparent bg-clip-text">
-                    Belajar menjadi menyenangkan dan praktis.
-                </p>
-            </div>
-        @endif
-
+            @endforeach
+        </section>
     </div>
-    <dialog id="add_discussion_modal" class="modal">
-        <div class="modal-box">
-            <h3 class="font-semibold text-lg">Create New Discussion</h3>
-            <form method="POST" action="{{ route('forum.discussion.create', ['forumId' => $forum->id]) }}">
-                @csrf
-                <div class="mb-4">
-                    <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                    <input type="text" name="title" id="title" class="input input-bordered w-full" required />
-                </div>
-                <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                    <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full" required></textarea>
-                </div>
-                <div class="modal-action">
-                    <button type="button" class="btn"
-                        onclick="document.getElementById('add_discussion_modal').close();">Batalkan</button>
-                    <button type="submit" class="btn btn-primary">+ Buat</button>
-                </div>
-            </form>
-        </div>
-        <form method="dialog" class="modal-backdrop">
-            <button>close</button>
-        </form>
-    </dialog>
 @endsection
