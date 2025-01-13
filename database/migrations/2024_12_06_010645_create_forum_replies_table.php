@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('upvote')->default(0);
             $table->integer('downvote')->default(0);
             $table->boolean('is_ai')->default(false);
+            $table->boolean('is_verified')->default(false);
 
             $table->uuid('forum_discussion_id');
             $table->uuid('sender_id')->nullable();

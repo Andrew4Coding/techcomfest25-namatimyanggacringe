@@ -46,4 +46,15 @@ class ForumDiscussionController extends Controller
             return redirect()->back()->with('error', 'Failed to post reply');
         }
     }
+
+    public function toggleVerified(Request $request, string $forumReplyId)
+    {
+        $forumReply = ForumReply::findOrFail($forumReplyId);
+
+        $forumReply->is_verified = !$forumReply->is_verified;
+        $forumReply->save();
+
+        // Return json
+        return response()->json(['success' => true, 'is_verified' => $forumReply->is_verified, 'message' => 'Verified toggled successfully']);
+    }
 }

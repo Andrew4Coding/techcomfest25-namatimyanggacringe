@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\CourseSection;
 use App\Models\Forum;
+use App\Models\ForumReply;
 use Illuminate\Http\Request;
 use OpenAI\Laravel\Facades\OpenAI;
 
@@ -92,7 +93,6 @@ class ForumController extends Controller
             return redirect()->route('forum.index', ['forumId' => $forumId]);
         }
         catch (\Exception $e) {
-            dd($e);
             return redirect()->back()->withErrors(['error' => 'Failed to create discussion']);
         }
     }

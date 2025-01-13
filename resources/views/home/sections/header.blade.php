@@ -24,7 +24,7 @@
         <a href="/dashboard">
             <button class="btn btn-primary px-20">
                 @if (Auth::check())
-                    @if (Auth::user()->userable_type === Teacher::class)
+                    @if (Auth::user()->userable_type == "App\Models\Teacher")
                         Lanjutkan Mengajar
                     @else
                         Lanjutkan Belajar
