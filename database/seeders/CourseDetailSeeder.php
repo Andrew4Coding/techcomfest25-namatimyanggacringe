@@ -20,27 +20,32 @@ class CourseDetailSeeder extends Seeder
             [
                 'name' => "Week 01",
                 'description' => "Week 01 description",
-                'is_public' => FALSE,
+                'is_public' => TRUE,
+                'created_at' => now(),
             ],
             [
                 'name' => "Week 02",
                 'description' => "Week 02 description",
-                'is_public' => FALSE,
+                'is_public' => TRUE,
+                'created_at' => now()->addDays(7),
             ],
             [
                 'name' => "Week 03",
                 'description' => "Week 03 description",
-                'is_public' => FALSE,
+                'is_public' => TRUE,
+                'created_at' => now()->addDays(14),
             ],
             [
                 'name' => "Week 04",
                 'description' => "Week 04 description",
-                'is_public' => FALSE,
+                'is_public' => TRUE,
+                'created_at' => now()->addDays(21),
             ],
             [
                 'name' => "Week 05",
                 'description' => "Week 05 description",
-                'is_public' => FALSE,
+                'is_public' => TRUE,
+                'created_at' => now()->addDays(28),
             ]
         ];
 

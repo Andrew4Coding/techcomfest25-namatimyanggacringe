@@ -25,13 +25,13 @@ class CourseFactory extends Factory
 
         $subject_data = ['sosiologi', 'ekonomi', 'bahasa', 'geografi', 'matematika', 'sejarah', 'ipa'];
         $subject_name = [
-            'sosiologi' => 'Sosiologi',
-            'ekonomi' => 'Ekonomi',
-            'bahasa' => 'Bahasa',
-            'geografi' => 'Geografi',
+            'sosiologi' => 'Sosiologi Tingkat Lanjut II',
+            'ekonomi' => 'Ekonomi Makro IV',
+            'bahasa' => 'Bahasa Indonesia',
+            'geografi' => 'Geografi Indonesia',
             'matematika' => 'Aljabar Linear',
-            'sejarah' => 'Sejarah',
-            'ipa' => 'IPA',
+            'sejarah' => 'Sejarah Minat',
+            'ipa' => 'Biologi Dasar',
         ];
 
         $subject = $subject_data[$random_id];

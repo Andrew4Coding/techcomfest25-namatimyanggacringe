@@ -87,6 +87,7 @@ class DashboardController extends Controller
                         }
                         // Set corresponding submission 
                         $deadlines[] = [
+                            'id' => $courseItem->courseItemable->id,
                             'course' => $course,
                             'courseItem' => $courseItem,
                             'submission' => $courseItem->courseItemable,
@@ -107,6 +108,10 @@ class DashboardController extends Controller
         $students = [];
         foreach ($courses as $course) {
             foreach ($course->students as $student) {
+                // Prevent Student Duplication
+                if (in_array($student, $students)) {
+                    continue;
+                }
                 $students[] = $student;
             }
         }

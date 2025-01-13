@@ -22,14 +22,14 @@ class CourseItemSeeder extends Seeder
 
         // Create new material, submission, and attendance for each course section
         $course_sections->each(function (CourseSection $course_section) use ($teacher) {
-            $this->createMaterial($course_section->id, "pdf", "https://techcomfest.s3.ap-southeast-2.amazonaws.com/pdfs/675988ca58bfd.pdf");
-            $this->createSubmission($course_section->id, "This is a dummy submission", now(), now()->addDays(7), "pdf,docx", 3);
-            $this->createAttendance($course_section->id, "dummy123", now()->addDays(7));
-            $this->createForum($course_section->id, $teacher->id);
+            $this->createMaterial($course_section->id, "pdf", "https://techcomfest.s3.ap-southeast-2.amazonaws.com/pdfs/675988ca58bfd.pdf", now());
+            $this->createSubmission($course_section->id, "This is a dummy submission", now(), now()->addDays(7), "pdf,docx", 3, now()->addDays(1));
+            $this->createAttendance($course_section->id, "dummy123", now()->addDays(7), now()->addDays(2));
+            $this->createForum($course_section->id, $teacher->id, now()->addDays(3));
         });
     }
 
-    public function createMaterial($course_section_id, $material_type, $file_url) {
+    public function createMaterial($course_section_id, $material_type, $file_url, $created_at) {
         $material = new Material();
         $material->file_url = $file_url;
         $material->material_type = $material_type;
@@ -39,10 +39,11 @@ class CourseItemSeeder extends Seeder
             'name' => "Material Dummy",
             'description' => "This is a dummy material",
             'course_section_id' => $course_section_id,
+            'created_at' => $created_at,
         ]);
     }
 
-    public function createSubmission($course_section_id, $content, $opened_at, $due_date, $file_types, $max_attempts) {
+    public function createSubmission($course_section_id, $content, $opened_at, $due_date, $file_types, $max_attempts, $created_at) {
         $submission = new Submission();
         $submission->content = $content;
         $submission->opened_at = $opened_at;
@@ -55,10 +56,11 @@ class CourseItemSeeder extends Seeder
             'name' => "Submission Dummy",
             'description' => "This is a dummy submission",
             'course_section_id' => $course_section_id,
+            'created_at' => $created_at,
         ]);
     }
 
-    public function createAttendance($course_section_id, $password, $valid_until) {
+    public function createAttendance($course_section_id, $password, $valid_until, $created_at) {
         $attendance = new Attendance();
         $attendance->password = $password;
         $attendance->valid_until = $valid_until;
@@ -68,10 +70,11 @@ class CourseItemSeeder extends Seeder
             'name' => "Attendance Dummy",
             'description' => "This is a dummy attendance",
             'course_section_id' => $course_section_id,
+            'created_at' => $created_at,
         ]);
     }
 
-    public function createForum($course_section_id, $creator_id) {
+    public function createForum($course_section_id, $creator_id, $created_at) {
         $forum = new Forum();
         $forum->creator_id = $creator_id;
         $forum->save();
@@ -80,6 +83,7 @@ class CourseItemSeeder extends Seeder
             'name' => "Forum Dummy",
             'description' => "This is a dummy forum",
             'course_section_id' => $course_section_id,
+            'created_at' => $created_at,
         ]);
     }
 }

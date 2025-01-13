@@ -57,12 +57,12 @@
 
                         @if (Auth::user()->userable_type == 'App\Models\Teacher')
                             @if ($isEdit)
-                                <div class="tooltip tooltip-right" data-tip="Mode Edit">
+                                <div class="tooltip tooltip-bottom" data-tip="Mode Edit">
                                     <x-lucide-pencil class="min-w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
                                         onclick="edit_course_modal.showModal()" />
                                 </div>
                             @else
-                                <div class="tooltip tooltip-right" data-tip="Mode Edit">
+                                <div class="tooltip tooltip-bottom" data-tip="Mode Edit">
 
                                     <a href="{{ route('course.show.edit', ['id' => $course->id]) }}">
                                         <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
@@ -103,7 +103,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="flex justify-between items-center absolute right-4 bottom-4">
+                <div class="flex justify-between items-center absolute right-4 bottom-4 bg-white px-2 rounded-full py-1">
                     <span class="text-sm font-medium" style="color: {{ $theme['tertiary'] }};">
                         {{ $course->teacher->user ? $course->teacher->user->name : 'Teacher' }}
                     </span>

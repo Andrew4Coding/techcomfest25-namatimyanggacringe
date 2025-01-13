@@ -2,7 +2,7 @@
     $PATH = env('AWS_URL');
 @endphp
 
-<div x-data="{ open: false }" class="relative h-screen max-w-[120px]" @click.away="open = false">
+<div x-data="{ open: false }" class="relative h-screen max-w-[120px] hidden sm:block" @click.away="open = false">
     <div
         :class="open ? 'w-[250px]' : 'w-[120px]'" 
         class="z-50 top-0 left-0 h-screen bg-[#F6F9FA] flex flex-col items-center py-5 transform transition-all duration-500 ease-[cubic-bezier(0.4, 0.0, 0.2, 1)] relative">
