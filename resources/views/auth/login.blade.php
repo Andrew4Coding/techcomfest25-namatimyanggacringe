@@ -1,6 +1,6 @@
 @extends('layout.layout')
 @section('content')
-    <div class="h-screen grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
+    <div class="min-h-screen grid grid-cols-1 lg:grid-cols-2 overflow-hidden pb-20 lg:pb-0">
         <section class="relative max-h-[300px] lg:max-h-full">
             <img src="{{ asset('grouped-circle.png') }}" alt="Login" class="hidden lg:block absolute min-w-[1000px] h-auto -bottom-80 -left-80">
             <img src="{{ asset('mindora-mascot.png') }}" alt="Login" class="absolute w-[200px] hidden lg:block lg:w-[500px] h-auto rotate-12 bottom-0 lg:bottom-20 left-1/2 transform -translate-x-1/2">
@@ -24,7 +24,7 @@
         
                     <p 
                         class="text-[#17194C]/75 text-sm"
-                    >Welcome back! please sign in to your account.</p>
+                    >Selamat Datang! Mohon masuk ke akun Anda.</p>
                 </div>
                 <div class="bg-white p-8 rounded-xl shadow-smooth">
                     <!-- Email -->
@@ -42,7 +42,7 @@
                     <!-- Remember Me -->
                     <div class="flex items-center mb-4">
                         <input type="checkbox" name="remember" id="remember" class="mr-2">
-                        <label for="remember" class="text-sm">Remember Me</label>
+                        <label for="remember" class="text-sm">Ingat Saya</label>
                     </div>
         
                     <!-- Submit Button -->
@@ -50,7 +50,7 @@
         
                 </div>
                 {{-- to Register --}}
-                <div class="mt-4 text-[#17194C]/75 text-center">
+                <div class="mt-4 text-[#17194C]/75 text-center text-sm">
                     Don’t have an account?
                     <a href="{{ route('role.select') }}" class="underline hover:text-blue-500 duration-300">Sign Up</a>
                 </div>
