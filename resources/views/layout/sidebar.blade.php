@@ -62,7 +62,7 @@
                     </button>
                 </div>
             </a>
-            <a href="/" class="w-full">
+            <a href="/forum" class="w-full">
                 <div class="tooltip tooltip-right w-full" data-tip="AI Forum">
                     <button
                         class="btn w-full h-14 bg-transparent shadow-none hover:bg-[#E3ECF1] border-none rounded-full flex justify-start">

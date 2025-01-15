@@ -103,6 +103,7 @@ Route::prefix('quiz')->middleware(['auth'])->group(function () {
 
 // Forum
 Route::prefix('forum')->middleware(['auth'])->group(function () {
+    Route::get('/', [ForumController::class, 'show_list_main'])->name('forum.show');
     Route::get('/{forumId}', [ForumController::class, 'index'])->name('forum.index');
     Route::post('/{forumId}/discussion/create', [ForumController::class, 'createNewDiscussion'])->name('forum.discussion.create');
     Route::get('/{forumId}/discussion/{discussionId}', [ForumDiscussionController::class, 'index'])->name('forum.discussion.index');
