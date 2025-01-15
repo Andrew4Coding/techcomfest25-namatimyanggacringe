@@ -24,6 +24,7 @@ class ForumReply extends Model
         'sender_id',
         'reply_to_id',
         'is_ai',
+        'is_verified',
     ];
 
     /**

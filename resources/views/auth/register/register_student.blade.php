@@ -23,31 +23,31 @@
                     <div class="space-y-1">
                         <!-- Name -->
                         <label for="name" class="block text-sm">Name</label>
-                        <input type="text" name="name" id="name" required class="input">
+                        <input type="text" name="name" id="name" required class="input" placeholder="John Doe">
                     </div>
 
                     <div class="space-y-1">
                         <!-- Email -->
                         <label for="email" class="block text-sm">Email</label>
-                        <input type="email" name="email" id="email" required class="input">
+                        <input type="email" name="email" id="email" required class="input" placeholder="mindora@gmail.com">
                     </div>
 
                     <div class="space-y-1">
                         <!-- Phone -->
                         <label for="phone_number" class="block text-sm">Phone</label>
-                        <input type="text" name="phone_number" id="phone_number" required class="input">
+                        <input type="text" name="phone_number" id="phone_number" required class="input" placeholder="081234567890">
                     </div>
 
                     <div class="space-y-1">
                         <!-- Password -->
                         <label for="password" class="block text-sm">Password</label>
-                        <input type="password" name="password" id="password" required class="input">
+                        <input type="password" name="password" id="password" required class="input" placeholder="Password">
                     </div>
 
                     <div class="space-y-1">
                         <!-- Confirm Password -->
                         <label for="password_confirmation" class="block text-sm">Confirm Password</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" required class="input">
+                        <input type="password" name="password_confirmation" id="password_confirmation" required class="input" placeholder="Confirm Password">
                     </div>
 
                     <div class="space-y-1">
@@ -60,7 +60,7 @@
                     <button type="submit" class="btn btn-primary w-full">Sign Up</button>
                 </div>
                 {{-- Direct to Login --}}
-                <div class="mt-4 text-[#17194C]/75 text-center">
+                <div class="mt-4 text-[#17194C]/75 text-center text-sm">
                     Already have an account?
                     <a href="{{ route('login') }}" class="underline hover:text-blue-500 duration-300">Sign In</a>
                 </div>

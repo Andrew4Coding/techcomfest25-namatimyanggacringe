@@ -31,6 +31,7 @@ class AttendanceController extends Controller
 
         $attendanceitem = new Attendance();
         $attendanceitem->password = $request->input('password');
+        $attendanceitem->valid_until = $request->input('valid_until');
         $attendanceitem->save();
 
         $attendanceitem->courseItem()->create([
@@ -74,6 +75,12 @@ class AttendanceController extends Controller
 
         $attendance = Attendance::findOrFail($id);
 
+
+        // Check if the attendance is still valid
+        if ($attendance->valid_until < now()) {
+            return redirect()->back()->withErrors('Attendance is no longer valid.');
+        }
+
         // Check if already attended
         if ($attendance->submissions->contains('student_id', $request->user()->userable->id)) {
             return redirect()->back()->withErrors('You have already submitted your attendance.');
@@ -83,6 +90,7 @@ class AttendanceController extends Controller
         if ($attendance->password !== $request->input('password')) {
             return redirect()->back()->withErrors('Invalid Attendance password.');
         }
+        
 
         // Create new Attendance Submission
         AttendanceSubmission::create([

@@ -22,7 +22,8 @@
 
                     <script>
                         function toggleSection(sectionId) {
-                            fetch(`{{ route('course.section.toggle', ['id' => $section->id]) }}`, {
+                            const rootUrl = window.location.origin;
+                            fetch(`${rootUrl}/courses/sections/toggle/${sectionId}`, {
                                     method: 'POST',
                                     headers: {
                                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -67,7 +68,12 @@
         @endif
     </div>
 
-    @foreach ($section->courseItems as $item)
+    @php
+        // Sort Courseitem by created_at
+        $courseItems = $section->courseItems->sortBy('created_at');
+    @endphp
+
+    @foreach ($courseItems as $item)
         @include('course.components.course_item', ['item' => $item])
 
         <dialog id="delete_courseitem_modal_{{ $item->id }}" class="modal">

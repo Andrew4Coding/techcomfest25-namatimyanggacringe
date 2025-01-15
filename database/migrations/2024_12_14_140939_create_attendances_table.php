@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('password');
+            $table->dateTime('valid_until');
             $table->timestamps();
         });
     }

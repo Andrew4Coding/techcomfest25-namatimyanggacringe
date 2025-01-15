@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\CourseSection;
 use App\Models\Forum;
+use App\Models\ForumReply;
 use Illuminate\Http\Request;
+use OpenAI\Laravel\Facades\OpenAI;
 
 class ForumController extends Controller
 {
@@ -54,19 +56,44 @@ class ForumController extends Controller
         try {
             $forum = Forum::findOrFail($forumId);
     
-    
-            $forum->discussions()->create([
-                'title' => $request->input('title'),
+            $title = $request->input('title');
+
+            $createdForum = $forum->discussions()->create([
+                'title' => $title,
                 'description' => $request->input('description'),
                 'creator_id' => request()->user()->id,
             ]);
-    
-            $forum_discussions = $forum->discussions()->get();
+
+            $response = OpenAI::chat()->create([
+                'model' => 'gpt-4o-mini',
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'You are a helpful assistant.',
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => "
+                                Saya memiliki sebuah pertanyaan, mohon jawab dalam struktur:
+                                - Jawaban Secara Singkat (Overview)
+                                - Jawaban Lengkap serta Penjabaran
+
+                                Pertanyaannya adalah:
+                                $title
+                            ",
+                    ],
+                ],
+            ]);
+
+            // Create new Forum Reply
+            $createdForum->forum_replies()->create([
+                'content' => $response['choices'][0]['message']['content'],
+            ]);
 
             return redirect()->route('forum.index', ['forumId' => $forumId]);
         }
         catch (\Exception $e) {
-            dd($e);
+            return redirect()->back()->withErrors(['error' => 'Failed to create discussion']);
         }
     }
 }

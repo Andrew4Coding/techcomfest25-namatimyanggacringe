@@ -2,6 +2,10 @@
 
 {{-- Show all sections --}}
 <div class="mt-8 flex flex-col gap-10">
+    @php
+        // Sort b created_at
+        $courseSections = $courseSections->sortBy('created_at');
+    @endphp
     @foreach ($courseSections as $section)
         @include('course.components.section', ['section' => $section])
     @endforeach

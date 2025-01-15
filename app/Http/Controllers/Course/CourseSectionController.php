@@ -52,7 +52,7 @@ class CourseSectionController extends Controller
         }
     }
 
-    public function toggleVisibility(Request $request, string $id)
+    public function toggleVisibility(string $id)
     {
         try {
             $courseSection = CourseSection::findOrFail($id);

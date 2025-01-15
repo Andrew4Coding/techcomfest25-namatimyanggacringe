@@ -110,6 +110,7 @@ Route::prefix('forum')->middleware(['auth'])->group(function () {
 
     Route::middleware([TeacherMiddleware::class])->group(function () {
         Route::post('/{courseSectionId}/create', [ForumController::class, 'create'])->name('forum.create');
+        Route::post('/forum-reply/verify/{forumReplyId}', [ForumDiscussionController::class, 'toggleVerified'])->name('forum.reply.verify');
     });
 });
 

@@ -22,7 +22,8 @@ class Attendance extends Model
      * @var string[]
      */
     protected $fillable = [
-        'password'
+        'password',
+        'valid_until',
     ];
 
     // Has Many Attendance submission
