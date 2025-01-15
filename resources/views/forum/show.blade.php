@@ -7,7 +7,7 @@
         <div class="space-y-2 mb-4 md:mb-0">
             <h1 class="text-3xl font-semibold">AI-Powered Forum</h1>
             <p class="font-medium gradient-blue text-transparent bg-clip-text">
-                Belajar menjadi menyenangkan dan praktis bersama.
+                Belajar bersama menjadi menyenangkan dan praktis.
             </p>
         </div>
     </section>

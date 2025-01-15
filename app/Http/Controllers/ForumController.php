@@ -36,9 +36,15 @@ class ForumController extends Controller
 
         return view('forum.list', compact('course'));
     }
+
     public function index(string $forumId)
     {
         $forum = Forum::findOrFail($forumId);
+
+
+        if (!$forum -> courseItem -> is_public) {
+            return redirect()->route('forum.show', ['id' => $forumId])->withErrors(['error' => 'This forum is not public']);
+        }
 
         $forum_discussions = $forum->discussions()->with('forum_replies')->orderBy('updated_at', 'desc')->get();
 
