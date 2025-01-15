@@ -23,6 +23,28 @@
         @endif
     </section>
 
+    <form class="w-full flex items-center gap-4 my-4">
+        <input 
+            value="{{ request('search') }}"
+            type="text" name="search" id="" class="input max-w-[300px]" placeholder="Cari Kelas" />
+
+        <select name="subject" id="" class="select max-w-[200px]">
+            <option value="all" {{ request('subject') == 'all' ? 'selected' : '' }}>Semua</option>
+            <option value="sosiologi" {{ request('subject') == 'sosiologi' ? 'selected' : '' }}>Sosiologi</option>
+            <option value="ekonomi" {{ request('subject') == 'ekonomi' ? 'selected' : '' }}>Ekonomi</option>
+            <option value="bahasa" {{ request('subject') == 'bahasa' ? 'selected' : '' }}>Bahasa</option>
+            <option value="geografi" {{ request('subject') == 'geografi' ? 'selected' : '' }}>Geografi</option>
+            <option value="matematika" {{ request('subject') == 'matematika' ? 'selected' : '' }}>Matematika</option>
+            <option value="sejarah" {{ request('subject') == 'sejarah' ? 'selected' : '' }}>Sejarah</option>
+            <option value="ipa" {{ request('subject') == 'ipa' ? 'selected' : '' }}>IPA</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">
+            <x-lucide-search class="w-4 h-4" />
+            Cari
+        </button>
+    </form>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[70vh] py-4">
         @if ($courses->isEmpty())
             <div class="w-full flex flex-col gap-4 items-center justify-center col-span-1 sm:col-span-2 lg:col-span-3">
