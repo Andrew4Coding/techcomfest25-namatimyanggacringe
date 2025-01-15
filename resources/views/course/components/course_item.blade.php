@@ -79,6 +79,7 @@
                             <p>{{ $item['description'] }}</p>
                         @endif
                     </div>
+
                 </div>
             </div>
         </a>

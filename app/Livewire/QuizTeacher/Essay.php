@@ -35,7 +35,7 @@ class Essay extends Component
     /**
      * Updates the answer when changed
      */
-    public function updateAnswer()
+    public function updatedAnswer()
     {
         $this->question->answer = $this->answer;
         $this->question->save();

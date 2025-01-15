@@ -7,11 +7,9 @@ use App\Models\Question;
 use App\Models\QuestionChoice;
 use App\Models\Quiz as QuizModel;
 use App\Models\Student;
-use App\Models\Teacher;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Reactive;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class QuizTeacher extends Component
@@ -25,6 +23,10 @@ class QuizTeacher extends Component
 
     // actual quiz model
     public QuizModel $quiz;
+
+    public \DateTime $startTime;
+    public \DateTime $endTime;
+    public int $duration;
 
     // QUIZ EDITOR PROPS
     public QuestionType $questionType = QuestionType::MultipleChoice;
@@ -60,6 +62,24 @@ class QuizTeacher extends Component
         $this->questionType = QuestionType::MultipleChoice;
     }
 
+    public function updatedStartTime()
+    {
+        $this->quiz->start = $this->startTime;
+        $this->quiz->save();
+    }
+
+    public function updatedEndTime()
+    {
+        $this->quiz->finish = $this->endTime;
+        $this->quiz->save();
+    }
+
+    public function updatedDuration()
+    {
+        $this->quiz->duration = $this->duration;
+        $this->quiz->save();
+    }
+
 
     // delete question
     public function deleteQuestion($id)
@@ -71,9 +91,9 @@ class QuizTeacher extends Component
             ->first();
     }
 
-    public function back()
+    public function back(): void
     {
-        $this->redirectIntended();
+        redirect()->back();
     }
 
     /**
@@ -101,9 +121,14 @@ class QuizTeacher extends Component
 
             // check if quiz is valid
             $this->isValid = true;
+            dd(\DateTime::createFromFormat('Y-m-d H:i:sT', $this->quiz->start, new \DateTimeZone('UTC')));
+            dd($this->quiz->start);
+            $this->startTime = \DateTime::createFromFormat(\DateTimeInterface::RFC3339, $this->quiz->start);
+            $this->endTime = $this->quiz->finish;
+            $this->duration = $this->quiz->duration;
 
         } catch (ModelNotFoundException $e) {
-            $this->redirectIntended('/');
+            redirect()->back();
         }  // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
     }
 
