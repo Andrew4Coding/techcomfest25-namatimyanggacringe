@@ -1,49 +1,100 @@
 @extends('layout.layout')
 
 @section('content')
-    <div class="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+    <a href="
+        {{ route('forum.index', ['forumId' => $forumDiscussion->forum->id]) }}">
+        <x-lucide-arrow-left class="w-6 h-6 text-gray-600 hover:cursor-pointer hover:scale-105" />
+    </a>
+    <div class="w-full mt-8 p-10 bg-white rounded-3xl shadow-smooth flex flex-col gap-8">
         <!-- Discussion Title -->
-        <h1 class="text-2xl font-bold text-gray-800 mb-4">
+        <div class="w-full flex gap-4 items-center">
+            <img class="object-cover w-12 h-12 rounded-full"
+                src="
+                        @if ($forumDiscussion->creator && $forumDiscussion->creator->profile_picture) {{ $PATH . $forumDiscussion->creator->profile_picture }}
+                        @else
+                            https://ui-avatars.com/api/?name={{ Auth::user()->name }}&color=7F9CF5&background=EBF4FF @endif
+                        ">
+
+            <div>
+                <h3 class="font-medium">
+                    {{ $forumDiscussion->creator->name }}
+                </h3>
+                <p class="text-gray-600 text-xs">
+                    XII MIPA II •
+                    {{ $forumDiscussion->created_at->diffForHumans() }}
+                </p>
+            </div>
+        </div>
+        <h1 class="text-xl font-semibold text-gray-800">
             {{ $forumDiscussion->title }}
         </h1>
 
-        <!-- Discussion Deskripsi -->
-        <p class="text-gray-600 text-lg mb-8">
-            {{ $forumDiscussion->description }}
-        </p>
-
-        <!-- Comments Section -->
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Comments</h2>
-
-        @foreach ($forumReplies as $comment)
-            <div class="flex items-start gap-4 mb-6">
-                <!-- Profile Picture -->
-                <img class="object-cover w-12 h-12 rounded-full"
-                    src="
-                            @if ($comment->sender->profile_picture) {{ $PATH . auth()->user()->profile_picture }}                        
-                            @else
-                                https://ui-avatars.com/api/?name={{ Auth::user()->name }}&color=7F9CF5&background=EBF4FF @endif
-                        ">
-                <!-- Comment Content -->
-                <div class="flex-1 bg-gray-100 p-4 rounded-lg shadow-md">
-                    <p class="font-semibold text-gray-800">{{ $comment->sender->name }}</p>
-                    <p class="text-gray-600">{{ $comment->content }}</p>
-                </div>
-            </div>
-        @endforeach
-
-        <!-- Add Comment Form -->
         <form
             action="{{ route('forum.discussion.reply', ['forumId' => $forumDiscussion->forum->id, 'discussionId' => $forumDiscussion->id]) }}"
-            method="POST" class="mt-8">
+            method="POST" class="w-full flex gap-4 items-center">
             @csrf
-            <textarea name="content"
-                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
-                placeholder="Add a comment..." required></textarea>
-            <button type="submit"
-                class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                Submit
+            <input type="text" name="content" id="" placeholder="Jawab pertanyaan ini ..." class="input">
+            <button type="submit" class="btn btn-primary">
+                <x-lucide-send class="w-4 h-4" />
             </button>
         </form>
     </div>
+
+    @php
+        // Sort by AI First, then verified, then sort by created at in reverse order
+        $forumReplies = $forumReplies
+            ->sortBy(function ($reply) {
+                return $reply->sender ? $reply->sender->is_ai : true;
+            })
+            ->sortBy(function ($reply) {
+                return $reply->sender ? $reply->sender->is_verified : true;
+            })
+            ->sortBy('created_at');
+    @endphp
+
+    @foreach ($forumReplies as $comment)
+        <div class="w-full mt-8 p-10 bg-white rounded-3xl shadow-smooth flex flex-col gap-8">
+            <div class="w-full flex gap-4 items-center">
+                <img class="object-cover w-12 h-12 rounded-full"
+                    src="
+                        @if ($forumDiscussion->sender && $forumDiscussion->sender->profile_picture) {{ $PATH . $forumDiscussion->sender->profile_picture }}
+                        @else
+                            https://ui-avatars.com/api/?name={{ $comment->sender ? $comment->sender->name : 'MA' }}&color=7F9CF5&background=EBF4FF @endif
+                        ">
+
+                <div>
+                    <h3 class="font-medium flex items-center gap-2">
+                        {{ $comment->sender ? $comment->sender->name : 'MindorAI' }}
+                        @if (!$comment->sender)
+                            <x-lucide-sparkles class="w-4 h-4 text-blue-400 animate-pulse" />
+                        @endif
+
+                        @if ($comment->is_verified)
+                            <div class="tooltip tooltip-right font-medium" data-tip="Jawaban Terverifikasi">
+                                <x-lucide-check class="w-4 h-4 text-blue-400" />
+                            </div>
+                        @endif
+                    </h3>
+                    <p class="text-gray-600 text-xs">
+                        Mindora Team •
+                        {{ $comment->created_at->diffForHumans() }}
+                    </p>
+                </div>
+            </div>
+            <!-- Comment Content -->
+            <div class="w-full bg-[#F2F6F8] p-5 rounded-xl">
+                <p id="comment-{{ $comment->id }}" 
+                    class="max-h-[300px] overflow-y-auto text-sm leading-relaxed">
+                    {{ $comment->content }}
+                </p>
+            </div>
+            <script type="module">
+                import {
+                    marked
+                } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+                document.getElementById('comment-{{ $comment->id }}').innerHTML =
+                    marked(document.getElementById('comment-{{ $comment->id }}').innerHTML);
+            </script>
+        </div>
+    @endforeach
 @endsection

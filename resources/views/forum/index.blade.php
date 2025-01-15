@@ -48,6 +48,11 @@
                             </span>
                         </div>
                         <div class="flex flex-col gap-2">
+                            @php
+                                $discussion->forum_replies = $discussion->forum_replies->filter(function ($reply) {
+                                    return $reply->sender ? $reply->sender->is_ai : true;
+                                });
+                            @endphp
                             @foreach ($discussion->forum_replies as $reply)
                                 <div class="w-full bg-[#F2F6F8] p-5 rounded-xl">
                                     <div class="flex flex-col sm:flex-row gap-2 sm:items-center justify-between mb-4">
@@ -56,74 +61,74 @@
                                                 <x-lucide-sparkles class="w-4 h-4 text-blue-400 animate-pulse" />
                                             </div>
                                             @if ($reply->is_verified)
-                                            <div class="tooltip tooltip-right font-medium" data-tip="Jawaban Terverifikasi">
-                                                <x-lucide-check class="w-4 h-4 text-blue-400" />
-                                            </div>
+                                                <div class="tooltip tooltip-right font-medium"
+                                                    data-tip="Jawaban Terverifikasi">
+                                                    <x-lucide-check class="w-4 h-4 text-blue-400" />
+                                                </div>
                                             @endif
                                         </h3>
-                                        <button class="btn btn-primary w-full sm:w-fit"
-                                            onclick="document.getElementById('verify_modal_{{ $reply->id }}').showModal();"
-                                        >
-                                            @if (!$reply->is_verified)
-                                                <x-lucide-check class="w-4 h-4" />
-                                                Verify
-                                            @else
-                                                <x-lucide-x class="w-4 h-4" />
-                                                Unverify
-                                            @endif
-                                        </button>
-                                        <dialog id="verify_modal_{{ $reply->id }}" class="modal text-black">
-                                            <div class="modal-box">
-                                                <h3 class="font-medium text-base">Konfirmasi
-                                                    @if (!$reply->is_verified)
-                                                        Verifikasi Jawaban
-                                                    @else
-                                                        Pembatalan Verifikasi Jawaban
-                                                    @endif
-                                                </h3>
-                                                <p>Apakah 
-                                                    @if (!$reply->is_verified)
-                                                        Anda yakin ingin memverifikasi jawaban ini?
-                                                    @else
-                                                        Anda yakin ingin membatalkan verifikasi jawaban ini?
-                                                    @endif
-                                                </p>
-                                                <div class="modal-action">
-                                                    <button type="button" class="btn"
-                                                        onclick="document.getElementById('verify_modal_{{ $reply->id }}').close();">Batalkan</button>
-                                                    <button class="btn btn-primary"
-                                                        {{-- Fetch On Click --}}
-                                                        onclick="fetch('{{ route('forum.reply.verify', ['forumReplyId' => $reply->id]) }}', {
-                                                            method: 'POST',
-                                                            headers: {
-                                                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                                            }
-                                                        }).then(response => {
-                                                            if (response.ok) {
-                                                                return response.json();
-                                                            }
-                                                            throw new Error('Network response was not ok.');
-                                                        }).then(data => {
-                                                            if (data.success) {
-                                                                document.getElementById('verify_modal_{{ $reply->id }}').close();
-                                                                window.location.reload();
-                                                            }
-                                                        }).catch(error => {
-                                                            console.error('There has been a problem with your fetch operation:', error);
-                                                        });"
-                                                    >
+                                        @if (Auth::user()->userable_type == 'App\Models\Teacher')
+                                            <button class="btn btn-primary w-full sm:w-fit"
+                                                onclick="document.getElementById('verify_modal_{{ $reply->id }}').showModal();">
+                                                @if (!$reply->is_verified)
+                                                    <x-lucide-check class="w-4 h-4" />
+                                                    Verify
+                                                @else
+                                                    <x-lucide-x class="w-4 h-4" />
+                                                    Unverify
+                                                @endif
+                                            </button>
+                                            <dialog id="verify_modal_{{ $reply->id }}" class="modal text-black">
+                                                <div class="modal-box">
+                                                    <h3 class="font-medium text-base">Konfirmasi
                                                         @if (!$reply->is_verified)
-                                                            Verify
+                                                            Verifikasi Jawaban
                                                         @else
-                                                            Unverify
+                                                            Pembatalan Verifikasi Jawaban
                                                         @endif
-                                                    </button>
+                                                    </h3>
+                                                    <p>Apakah
+                                                        @if (!$reply->is_verified)
+                                                            Anda yakin ingin memverifikasi jawaban ini?
+                                                        @else
+                                                            Anda yakin ingin membatalkan verifikasi jawaban ini?
+                                                        @endif
+                                                    </p>
+                                                    <div class="modal-action">
+                                                        <button type="button" class="btn"
+                                                            onclick="document.getElementById('verify_modal_{{ $reply->id }}').close();">Batalkan</button>
+                                                        <button class="btn btn-primary" {{-- Fetch On Click --}}
+                                                            onclick="fetch('{{ route('forum.reply.verify', ['forumReplyId' => $reply->id]) }}', {
+                                                                method: 'POST',
+                                                                headers: {
+                                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                                }
+                                                            }).then(response => {
+                                                                if (response.ok) {
+                                                                    return response.json();
+                                                                }
+                                                                throw new Error('Network response was not ok.');
+                                                            }).then(data => {
+                                                                if (data.success) {
+                                                                    document.getElementById('verify_modal_{{ $reply->id }}').close();
+                                                                    window.location.reload();
+                                                                }
+                                                            }).catch(error => {
+                                                                console.error('There has been a problem with your fetch operation:', error);
+                                                            });">
+                                                            @if (!$reply->is_verified)
+                                                                Verify
+                                                            @else
+                                                                Unverify
+                                                            @endif
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <form method="dialog" class="modal-backdrop">
-                                                <button>close</button>
-                                            </form>
-                                        </dialog>
+                                                <form method="dialog" class="modal-backdrop">
+                                                    <button>close</button>
+                                                </form>
+                                            </dialog>
+                                        @endif
                                     </div>
                                     <p id='reply-{{ $reply->id }}'
                                         class="max-h-[300px] overflow-y-auto text-sm leading-relaxed">{{ $reply->content }}
