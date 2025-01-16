@@ -194,6 +194,7 @@ class DashboardController extends Controller
                         }
                         // Set corresponding submission 
                         $deadlines[] = [
+                            'id' => $courseItem->courseItemable->id,
                             'course' => $course,
                             'courseItem' => $courseItem,
                             'submission' => $courseItem->courseItemable,
