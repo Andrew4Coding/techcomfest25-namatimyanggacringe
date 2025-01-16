@@ -26,6 +26,10 @@ class Student extends Model
         'pivot'
     ];
 
+    protected $fillable = [
+        'class'
+    ];
+
     /**
      * @return MorphOne
      */

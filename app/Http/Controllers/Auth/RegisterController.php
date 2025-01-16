@@ -5,15 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Student;
 use App\Models\Teacher;
-use App\Models\User;
-use Database\Factories\StudentFactory;
-use Database\Factories\TeacherFactory;
-use Illuminate\Foundation\Application;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
@@ -60,6 +54,7 @@ class RegisterController extends Controller
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'phone_number' => ['required', 'string', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'class' => ['required_if:role,student', 'string', 'max:255'],
                 'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             ]);
 
@@ -82,6 +77,7 @@ class RegisterController extends Controller
 
             if ($role == 'student') {
                 $newUser = new Student();
+                $newUser->class = $request->input('class');
                 $newUser->save();
                 $newUser->user()->create($data);
             } else {

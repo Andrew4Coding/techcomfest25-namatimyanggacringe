@@ -23,6 +23,32 @@
         @endif
     </section>
 
+    <form class="w-full flex items-center gap-4 my-4 flex-col md:flex-row" method="GET">
+        <input value="{{ request('search') }}" type="text" name="search" id=""
+            class="input input-white w-full md:max-w-[300px]" placeholder="Cari Kelas" />
+
+        <div class="w-full flex items-center gap-4">
+            <select name="subject" id="" class="select select-white w-full md:max-w-[200px]"
+                onchange="this.form.submit()">
+                <option value="all" {{ request('subject') == 'all' ? 'selected' : '' }}>Semua</option>
+                <option value="sosiologi" {{ request('subject') == 'sosiologi' ? 'selected' : '' }}>Sosiologi</option>
+                <option value="ekonomi" {{ request('subject') == 'ekonomi' ? 'selected' : '' }}>Ekonomi</option>
+                <option value="bahasa" {{ request('subject') == 'bahasa' ? 'selected' : '' }}>Bahasa</option>
+                <option value="geografi" {{ request('subject') == 'geografi' ? 'selected' : '' }}>Geografi</option>
+                <option value="matematika" {{ request('subject') == 'matematika' ? 'selected' : '' }}>Matematika</option>
+                <option value="sejarah" {{ request('subject') == 'sejarah' ? 'selected' : '' }}>Sejarah</option>
+                <option value="ipa" {{ request('subject') == 'ipa' ? 'selected' : '' }}>IPA</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary w-full max-w-[100px]">
+                <x-lucide-search class="w-4 h-4" />
+                Cari
+            </button>
+        </div>
+    </form>
+
+
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[70vh] py-4">
         @if ($courses->isEmpty())
             <div class="w-full flex flex-col gap-4 items-center justify-center col-span-1 sm:col-span-2 lg:col-span-3">
@@ -31,8 +57,7 @@
                     <h1 class="text-xl font-medium">
                         Belum ada Kelas Saat ini
                     </h1>
-                    <p
-                        class="font-medium gradient-blue text-transparent bg-clip-text">
+                    <p class="font-medium gradient-blue text-transparent bg-clip-text">
                         Belajar menjadi menyenangkan dan praktis.
                     </p>
                     @if (Auth::user()->userable_type == 'App\Models\Teacher')
@@ -55,6 +80,12 @@
         @endif
     </div>
 
+    @php
+        $page = request('page') ?? 1;
+    @endphp
+
+    @include('components.pagination', ['page' => $page, 'availablePages' => $availablePages, 'take' => request('take'), 'route' => 'courses'])
+
     <dialog id="add_course_modal" class="modal">
         <div class="modal-box">
             <h3 class="font-semibold text-lg">Buat Kelas Baru</h3>
@@ -69,7 +100,8 @@
                     <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="mb-4">
-                    <label for="class_code" class="block text-sm font-medium text-gray-700">Kode Kelas (5 Digit Huruf / Angka)</label>
+                    <label for="class_code" class="block text-sm font-medium text-gray-700">Kode Kelas (5 Digit Huruf /
+                        Angka)</label>
                     <input name="class_code" id="class_code" class="input input-bordered w-full" required
                         pattern="[A-Za-z0-9]{5}" title="Class code must be 5 letters or numbers" />
                 </div>
@@ -86,7 +118,8 @@
                     </select>
                 </div>
                 <div class="modal-action">
-                    <button type="button" class="btn" onclick="document.getElementById('add_course_modal').close();">Batalkan</button>
+                    <button type="button" class="btn"
+                        onclick="document.getElementById('add_course_modal').close();">Batalkan</button>
                     <button type="submit" class="btn btn-primary">+ Buat</button>
                 </div>
             </form>

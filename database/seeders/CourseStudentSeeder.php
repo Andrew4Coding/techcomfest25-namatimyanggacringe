@@ -24,6 +24,7 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456789',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
+                'class' => 'XII-IPA-1'
             ],
             [
                 'name' => 'Jane Smith',
@@ -32,6 +33,7 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456788',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
+                'class' => 'XII-IPA-2'
             ],
             [
                 'name' => 'Alice Johnson',
@@ -40,6 +42,7 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456787',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
+                'class' => 'XII-IPA-3'
             ],
             [
                 'name' => 'Bob Brown',
@@ -48,6 +51,7 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456786',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
+                'class' => 'XII-IPA-4'
             ],
             [
                 'name' => 'Charlie Davis',
@@ -56,6 +60,7 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456785',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
+                'class' => 'XII-IPA-5'
             ],
             [
                 'name' => 'Eve White',
@@ -64,6 +69,7 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456784',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
+                'class' => 'XII-IPA-6'
             ],
             [
                 'name' => 'Frank Green',
@@ -72,6 +78,7 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456783',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
+                'class' => 'XII-IPA-7'
             ],
             [
                 'name' => 'Grace Lee',
@@ -80,6 +87,7 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456782',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
+                'class' => 'XII-IPA-8'
             ],
             [
                 'name' => 'Hank Miller',
@@ -88,6 +96,7 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456781',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
+                'class' => 'XII-IPA-9'
             ],
             [
                 'name' => 'Ivy Wilson',
@@ -96,15 +105,24 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456780',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
+                'class' => 'XII-IPA-10'
             ]
         ];
 
         // For Each Student
         foreach($students as $student) {
             $newStudent = new Student();
+            $newStudent->class = $student['class'];
             $newStudent->save();
 
-            $newStudent->user()->create($student);
+            $newStudent->user()->create([
+                'name' => $student['name'],
+                'email' => $student['email'],
+                'verified' => $student['verified'],
+                'phone_number' => $student['phone_number'],
+                'password' => $student['password'],
+                'profile_picture' => $student['profile_picture']
+            ]);
         }
 
         $students = Student::all();

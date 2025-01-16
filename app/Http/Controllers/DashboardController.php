@@ -38,6 +38,10 @@ class DashboardController extends Controller
 
             foreach ($course->courseSections as $courseSection) {
                 foreach ($courseSection->courseItems as $courseItem) {
+                    if ($courseItem->is_public === false) {
+                        continue;
+                    }
+                    
                     $totalCourseItem += 1;
                     $courseItemProgressCount += $courseItem->courseItemProgress ? 1 : 0;
 

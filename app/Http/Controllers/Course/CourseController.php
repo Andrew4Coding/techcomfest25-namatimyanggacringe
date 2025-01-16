@@ -38,7 +38,7 @@ class CourseController extends Controller
             $user->userable->courses()->attach($course);
     
             $courses = $user->userable->courses;
-    
+        
             return redirect()->route('courses', compact('courses'));
         }
         catch (\Exception $e) {
@@ -71,7 +71,29 @@ class CourseController extends Controller
         // Get courses by teacher id
         $courses = Course::where('teacher_id', $user->userable->id)->orderBy('created_at', 'desc')->get();
 
-        return view('course.courses', compact('courses'));
+        // Paginate
+        $search = $request->input('search');
+        $subject = $request->input('subject');
+        $page = $request->input('page') ?? 1;
+        $take = $request->input('take') ?? 10;
+        $availablePages = ceil($courses->count() / $take);
+        $skip = ($page - 1) * $take;
+
+        if ($search) {
+            $courses = $courses->filter(function ($course) use ($search) {
+                return strpos($course->name, $search) !== false;
+            });
+        }
+
+        if ($subject && $subject != 'all') {
+            $courses = $courses->filter(function ($course) use ($subject) {
+                return $course->subject == $subject;
+            });
+        }
+
+        $courses = $courses->slice($skip)->take($take);
+
+        return view('course.courses', compact('courses', 'availablePages', 'page', 'take', 'search', 'subject'));
     }
 
     public function showCourse(

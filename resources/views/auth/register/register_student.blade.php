@@ -39,6 +39,12 @@
                     </div>
 
                     <div class="space-y-1">
+                        <!-- Class -->
+                        <label for="class" class="block text-sm">Class</label>
+                        <input type="text" name="class" id="class" required class="input" placeholder="XII MIPA 1">
+                    </div>
+
+                    <div class="space-y-1">
                         <!-- Password -->
                         <label for="password" class="block text-sm">Password</label>
                         <input type="password" name="password" id="password" required class="input" placeholder="Password">

@@ -2,15 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
 use App\Models\CourseSection;
 use App\Models\Forum;
-use App\Models\ForumReply;
 use Illuminate\Http\Request;
 use OpenAI\Laravel\Facades\OpenAI;
 
 class ForumController extends Controller
 {
+    public function show_list_main() {
+        $user = request()->user();
+        $courses = $user->userable->courses()->get();
+
+        // Get All Forum which in the course enrolled by the user
+        $forums = [];
+        
+        $allForums = Forum::all();
+
+        foreach ($allForums as $forum) {
+            if ($courses && $courses->contains($forum->courseItem->courseSection->course)) {
+                $forums[] = $forum;
+            }
+        }
+
+        return view('forum.show', compact('forums'));
+    }
+
     public function show_list(Request $request)
     {
         // Get All Forum which in the course enrolled by the user
@@ -20,9 +36,15 @@ class ForumController extends Controller
 
         return view('forum.list', compact('course'));
     }
+
     public function index(string $forumId)
     {
         $forum = Forum::findOrFail($forumId);
+
+
+        if (!$forum -> courseItem -> is_public) {
+            return redirect()->route('forum.show', ['id' => $forumId])->withErrors(['error' => 'This forum is not public']);
+        }
 
         $forum_discussions = $forum->discussions()->with('forum_replies')->orderBy('updated_at', 'desc')->get();
 
