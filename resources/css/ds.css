@@ -52,6 +52,10 @@
 
 }
 
+.input-white, .select-white {
+    @apply bg-white
+}
+
 label {
     @apply text-[#17194C]/75 px-0
 }

@@ -76,6 +76,7 @@ class CourseController extends Controller
         $subject = $request->input('subject');
         $page = $request->input('page') ?? 1;
         $take = $request->input('take') ?? 10;
+        $availablePages = ceil($courses->count() / $take);
         $skip = ($page - 1) * $take;
 
         if ($search) {
@@ -92,7 +93,7 @@ class CourseController extends Controller
 
         $courses = $courses->slice($skip)->take($take);
 
-        return view('course.courses', compact('courses'));
+        return view('course.courses', compact('courses', 'availablePages', 'page', 'take', 'search', 'subject'));
     }
 
     public function showCourse(
