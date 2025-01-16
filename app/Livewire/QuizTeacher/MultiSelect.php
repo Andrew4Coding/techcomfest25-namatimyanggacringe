@@ -4,6 +4,7 @@ namespace App\Livewire\QuizTeacher;
 
 use App\Models\Question;
 use App\Models\QuestionChoice;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class MultiSelect extends Component
@@ -16,7 +17,7 @@ class MultiSelect extends Component
     public array $choices = [];
 
     public string $content;
-
+    public int $weight;
 
     public array $answers;
 
@@ -25,18 +26,13 @@ class MultiSelect extends Component
         'answer' => 'required|exists:question_choices,id',
     ];
 
-    public function updatedContent()
+    public function updateQuestionInfo()
     {
         $this->question->content = $this->content;
+        $this->question->weight = $this->weight;
         $this->question->save();
     }
 
-    public function mount()
-    {
-        // Initialize the answer if it's set
-        $this->answers = explode(',', $this->question->answer);
-        $this->content = $this->question->content;
-    }
 
     /**
      * Converts index to corresponding letter (A, B, C, ...)
@@ -122,12 +118,28 @@ class MultiSelect extends Component
 
         $choice = QuestionChoice::find($choiceId);
         if ($choice) {
+            // check for answers
+            for ($i = 0; $i < count($this->answers); $i++) {
+                if ($this->answers[$i]['id'] === $choiceId) {
+                    unset($this->answers[$i]);
+                }
+                $this->question->answers = implode(',', $this->answers[$i]);
+                $this->question->save();
+            }
             $choice->delete();
             array_splice($this->choices, $choiceIndex, 1);
             session()->flash('message', 'Choice deleted successfully.');
         } else {
             session()->flash('error', 'Choice not found in the database.');
         }
+    }
+
+    public function mount()
+    {
+        // Initialize the answer if it's set
+        $this->answers = explode(',', $this->question->answer);
+        $this->content = $this->question->content;
+        $this->weight = $this->question->weight;
     }
 
     public function render()

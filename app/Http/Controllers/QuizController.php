@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\CheckSubmission;
+use App\Models\Course;
 use App\Models\CourseSection;
 use App\Models\Quiz;
 use App\Models\Student;
@@ -27,6 +28,12 @@ class QuizController extends Controller
     public function showQuiz()
     {
         return view('quiz.quiz');
+    }
+
+    public function showQuizSummary(string $id)
+    {
+        $quiz = Quiz::where("id", $id)->withCount('quizSubmissions')->first();
+        return view('quiz.quiz_summary', compact('quiz'));
     }
 
     public function showQuizSession(string $id, Request $request)
@@ -138,7 +145,7 @@ class QuizController extends Controller
             ]);
 
             $newQuizItem = new Quiz();
-            $newQuizItem->id  = (string) Str::uuid();
+            $newQuizItem->id = (string)Str::uuid();
             $newQuizItem->start = $request->input('start');
             $newQuizItem->duration = $request->input('duration');
 
@@ -156,8 +163,7 @@ class QuizController extends Controller
             $courseId = $courseSection->course_id;
 
             return redirect()->route('course.show.edit', ['id' => $courseId]);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             dd($e);
             return back()->withErrors(['error' => 'Failed to create quiz: ' . $e->getMessage()]);
         }
@@ -184,7 +190,8 @@ class QuizController extends Controller
         return redirect()->route('course.show.edit', ['id' => $quiz->courseItem->course_section_id]);
     }
 
-    public function getTextFromPDF($file) {
+    public function getTextFromPDF($file)
+    {
         $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
 
         // Sanitize the file name

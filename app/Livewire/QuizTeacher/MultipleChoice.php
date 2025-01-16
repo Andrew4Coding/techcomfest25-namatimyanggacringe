@@ -18,23 +18,9 @@ class MultipleChoice extends Component
     public string $answer;
 
     public string $content;
-
-    public function mount()
-    {
-        // Initialize the choices array with existing question choices
-        $this->choices = $this->question->questionChoices->map(function ($choice) {
-            return [
-                'id' => $choice->id,
-                'content' => $choice->content,
-            ];
-        })->toArray();
+    public int $weight;
 
 
-        // Initialize the answer if it's set
-        $this->answer = $this->question->answer;
-
-        $this->content = $this->question->content;
-    }
 
     /**
      * Converts index to corresponding letter (A, B, C, ...)
@@ -80,9 +66,10 @@ class MultipleChoice extends Component
         $this->question->save();
     }
 
-    public function updatedContent()
+    public function updateQuestionInfo()
     {
         $this->question->content = $this->content;
+        $this->question->weight = $this->weight;
         $this->question->save();
     }
 
@@ -131,13 +118,29 @@ class MultipleChoice extends Component
 
             // If the deleted choice was the answer, reset the answer
             if ($this->answer === $choiceId) {
-                $this->answer = null;
-                $this->question->answer = null;
+                $this->answer = $this->choices[0]['id'];
+                $this->question->answer = $this->choices[0]['id'];
                 $this->question->save();
             }
         } else {
             session()->flash('error', 'Choice not found in the database.');
         }
+    }
+    public function mount()
+    {
+        // Initialize the choices array with existing question choices
+        $this->choices = $this->question->questionChoices->map(function ($choice) {
+            return [
+                'id' => $choice->id,
+                'content' => $choice->content,
+            ];
+        })->toArray();
+
+
+        // Initialize the answer if it's set
+        $this->answer = $this->question->answer;
+        $this->content = $this->question->content;
+        $this->weight = $this->question->weight;
     }
 
     public function render()

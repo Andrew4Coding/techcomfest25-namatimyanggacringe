@@ -57,7 +57,7 @@ class CourseItemController extends Controller
                 $newCourseItem = new Quiz([
                     'start' => $request->input('start'),
                     'finish' => $request->input('finish'),
-                    'duration' => 3600,
+                    'duration' => $request->input('duration'),
                 ]);
 
                 $newCourseItem->save();
