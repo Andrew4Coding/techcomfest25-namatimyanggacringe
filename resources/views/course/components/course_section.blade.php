@@ -11,12 +11,12 @@
                             @if ($section->is_public)
                                 <div class="tooltip tooltip-top flex items-center" data-tip="Hide from students">
                                     <x-lucide-eye
-                                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12"/>
+                                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:rotate-12"/>
                                 </div>
                             @else
                                 <div class="tooltip tooltip-right" data-tip="Show to students">
                                     <x-lucide-eye-off
-                                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12"/>
+                                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:rotate-12"/>
                                 </div>
                             @endif
                         </button>

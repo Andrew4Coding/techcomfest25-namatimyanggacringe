@@ -49,7 +49,6 @@ class CourseItemController extends Controller
             } else if ($type == "quiz") {
                 $request->validate([
                     'name' => ['required', 'string'],
-                    'description' => ['required', 'string'],
                     'start' => ['required', 'string'],
                     'finish' => ['required', 'string'],
                 ]);

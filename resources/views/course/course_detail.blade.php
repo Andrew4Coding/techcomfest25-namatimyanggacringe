@@ -7,6 +7,11 @@
 @extends('layout.layout')
 @section('content')
     <main class="w-full">
+        @if ($isEdit)
+            <a href="{{ route('course.show', ['id' => $course->id]) }}">
+                <x-lucide-arrow-left class="w-4 h-4" />
+            </a>
+        @endif
         <div class="breadcrumbs text-sm">
             <ul>
                 <li><a href="/courses">Courses</a></li>
@@ -114,7 +119,7 @@
         </div>
 
         @if ($tab == 'overview' || $tab == '')
-            @include('course.sections.course_list', [
+            @include('course.components.course_list', [
                 'course' => $course,
                 'courseSections' => $courseSections,
             ])

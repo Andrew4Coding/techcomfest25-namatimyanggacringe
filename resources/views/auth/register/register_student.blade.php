@@ -17,7 +17,7 @@
             </div>
         </section>
         <section class="flex items-start lg:items-center justify-center mb-20 lg:mb-0">
-            <form action="/register/student?role=student" method="POST" class="w-full max-w-sm" enctype="multipart/form-data">
+            <form action="/register/student?role=student" method="POST" class="w-full max-w-sm mx-10" enctype="multipart/form-data">
                 @csrf
                 <div class="bg-white p-8 rounded-xl shadow-smooth flex flex-col gap-2">
                     <div class="space-y-1">

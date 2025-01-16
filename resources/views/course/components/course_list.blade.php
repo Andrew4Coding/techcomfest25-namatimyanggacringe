@@ -7,7 +7,7 @@
         $courseSections = $courseSections->sortBy('created_at');
     @endphp
     @foreach ($courseSections as $section)
-        @include('course.components.section', ['section' => $section])
+        @include('course.components.course_section', ['section' => $section])
     @endforeach
     @if ($courseSections->isEmpty())
         @if ($isEdit)

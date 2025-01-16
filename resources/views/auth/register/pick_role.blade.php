@@ -18,7 +18,7 @@
             </div>
         </section>
         <section class="flex flex-col items-center justify-center mb-20 lg:mb-0">
-            <div class="w-96">
+            <div class="w-96 px-10 md:px-0">
                 <div class="mb-8 text-center lg:text-left">
                     <h1 class="mt-10 lg:mt-0 text-xl lg:text-3xl font-semibold mb-2">Apa peran anda??</h1>
 
