@@ -1,11 +1,57 @@
-@php use App\Enums\QuestionType; @endphp
-<main class="p-8 py-6 flex flex-col gap-6">
-    <div class="flex justify-between items-center">
-        <div>
-            <h1 class="text-2xl font-bold">{{ $quiz->courseItem->name }}</h1>
-            <p class="text-gray-600">{{ $quiz->courseItem->description }}</p>
+@php use App\Enums\QuestionType;use Illuminate\Support\Facades\Session; @endphp
+<main class="px-8 py-6 flex flex-col gap-6 bg-base-200 rounded-xl">
+    <h1 class="mb-4">
+        Mindora Quiz Editor
+    </h1>
+    <!-- Alert -->
+    <div class="flex justify-between items-start">
+        <div class="card w-3/4 bg-base-100 shadow-xl">
+            <div class="card-body flex-row justify-between">
+                <div class="flex flex-col gap-5">
+                    @if(!$isInfoEditable)
+                        <div>
+                            <span class="text-sm text-gray-700">Judul</span>
+                            <h2 class="card-title text-2xl">{{ $quiz->courseItem->name }}</h2>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-700">Deskripsi</span>
+                            <p>{{ $quiz->courseItem->description }}</p>
+                        </div>
+                    @else
+                        <div>
+                            <label for="nama_quiz" class="text-sm text-gray-700">Judul</label>
+                            <input type="text" id="nama_quiz" wire:model.defer="name" required
+                                   placeholder="Masukkan Judul..."
+                                   class="input input-ghost !text-2xl !font-semibold"/>
+                        </div>
+                        <div>
+                            <label for="desc_quiz" class="text-sm text-gray-700">Deskripsi</label>
+                            <textarea type="text" id="desc_quiz" wire:model.defer="description" rows="5"
+                                      placeholder="Masukkan Deskripsi..."
+                                      class="textarea textarea-ghost resize-y"> </textarea>
+                        </div>
+                    @endif
+                </div>
+                <div class="flex items-start gap-2">
+                    @if($isInfoEditable)
+                        <button class="btn btn-sm btn-error"
+                                wire:click="$toggle('isInfoEditable')">
+                            <x-lucide-x class="w-4 h-4"/>
+                        </button>
+                        <button class="btn btn-sm btn-success"
+                                wire:click="saveInfo">
+                            <x-lucide-check class="w-4 h-4"/>
+                        </button>
+                    @else
+                        <button class="btn btn-sm"
+                                wire:click="$toggle('isInfoEditable')">
+                            <x-lucide-pencil class="w-4 h-4"/>
+                        </button>
+                    @endif
+                </div>
+            </div>
         </div>
-        <button wire:click="back" class="btn btn-primary flex items-center gap-2">
+        <button  class="btn btn-primary flex items-center gap-2">
             <x-lucide-save class="w-5 h-5"/>
             <span>Simpan</span>
         </button>
@@ -18,16 +64,19 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="flex flex-col gap-2">
                 <label for="start_time" class="text-sm font-medium">Waktu Mulai</label>
-                <input wire:model.live="startTime" type="datetime-local" id="start_time" class="input input-bordered w-full" />
+                <input wire:model.live="startTime" type="datetime-local" id="start_time"
+                       class="input input-bordered w-full"/>
             </div>
             <div class="flex flex-col gap-2">
                 <label for="start_time" class="text-sm font-medium">Waktu Mulai</label>
-                <input wire:model.live="endTime" type="datetime-local" id="start_time" class="input input-bordered w-full" />
+                <input wire:model.live="endTime" type="datetime-local" id="start_time"
+                       class="input input-bordered w-full"/>
             </div>
 
             <div class="flex flex-col gap-2">
                 <label for="duration" class="text-sm font-medium">Durasi (dalam menit)</label>
-                <input wire:model.live="duration" type="number" id="duration" class="input input-bordered w-full" min="1" />
+                <input wire:model.live="duration" type="number" id="duration" class="input input-bordered w-full"
+                       min="1"/>
             </div>
         </div>
     </section>
@@ -70,7 +119,8 @@
         </div>
     </section>
 
-    <button class="btn btn-outline w-full flex items-center justify-center gap-2 mt-6" onclick="question_add_modal.showModal()">
+    <button class="btn btn-outline w-full flex items-center justify-center gap-2 mt-6"
+            onclick="question_add_modal.showModal()">
         <x-lucide-plus class="w-5 h-5"/>
         <span>Tambah Soal</span>
     </button>

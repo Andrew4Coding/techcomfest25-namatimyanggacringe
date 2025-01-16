@@ -3,34 +3,42 @@
         <span class="px-4 py-2 mr-2 mt-1 bg-black/10 rounded">{{ $num }}</span>
         <div class="w-full">
             {{-- Pertanyaan dan nomor --}}
-            <div class="flex items-center gap-2">
+            <div class="flex justify-between items-center gap-2">
                 {{-- Pertanyaan dan nomor --}}
                 <div>
                     <small>Multiselect</small>
-                    <h2 class="card-title mb-6">
+                    <h2 class="card-title">
                         {{ $question->content }}
                     </h2>
+                    <span class="text-sm text-gray-700">
+                        ({{ $weight }} poin)
+                    </span>
                 </div>
-                <button
-                    onclick="edit_choice_{{ str_replace('-', '_', $question->id) }}.showModal()"
-                >
-                    <x-lucide-pencil class="w-4 h-4 hover:text-red-500 duration-300 hover:rotate-12"/>
-                </button>
-                <dialog id="edit_choice_{{ str_replace('-', '_', $question->id) }}" class="modal">
-                    <div class="modal-box">
-                        <input type="text" wire:model.blur="content" placeholder="Pertanyaan..."
-                               class="input input-bordered w-full max-w-xs" required>
-                        <div class="modal-action">
-                            <form method="dialog">
-                                <!-- if there is a button in form, it will close the modal -->
-                                <button class="btn">Selesai</button>
-                            </form>
+                <div class="flex gap-2">
+                    <button class="btn btn-square"
+                            onclick="edit_choice_{{ str_replace('-', '_', $question->id) }}.showModal()"
+                    >
+                        <x-lucide-pencil class="w-4 h-4 hover:text-red-500 duration-300 hover:rotate-12"/>
+                    </button>
+                    <dialog id="edit_choice_{{ str_replace('-', '_', $question->id) }}" class="modal">
+                        <div class="modal-box flex flex-col gap-3">
+                            <input type="text" wire:model="content" placeholder="Pertanyaan..."
+                                   class="input input-bordered w-full" required>
+                            <span class="text-sm text-gray-700">Bobot</span>
+                            <input type="number" wire:model="weight" placeholder="Poin..."
+                                   class="input input-bordered w-full" required>
+                            <div class="modal-action">
+                                <form method="dialog">
+                                    <!-- if there is a button in form, it will close the modal -->
+                                    <button class="btn" wire:click="updateQuestionInfo">Selesai</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                </dialog>
-                <button wire:click="$parent.deleteQuestion('{{ $question->id }}')">
-                    <x-lucide-trash class="w-4 h-4 hover:text-red-500 duration-300 hover:rotate-12"/>
-                </button>
+                    </dialog>
+                    <button class="btn btn-square" wire:click="$parent.deleteQuestion('{{ $question->id }}')">
+                        <x-lucide-trash class="w-4 h-4 hover:text-red-500 duration-300 hover:rotate-12"/>
+                    </button>
+                </div>
             </div>
 
             {{--Aksi--}}
@@ -68,29 +76,24 @@
                                     placeholder="aku adalah..."
                                     class="textarea textarea-bordered w-full p-2 py-4"
                                 ></textarea>
-                                <div class="modal-action">
-                                    <form method="dialog">
-                                        <!-- if there is a button in form, it will close the modal -->
-                                        <button wire:click="updateChoice('{{ $question->questionChoices[$i]->id }}')"
-                                                class="btn">Simpan
-                                        </button>
-                                    </form>
-                                </div>
                             </div>
                         </dialog>
 
-                        <div class="flex items-center gap-2 mt-2 md:mt-0">
+                        <div class="flex justify-end items-center gap-2 mt-2 md:mt-0">
                             {{-- Edit Button --}}
-                            <button wire:key="button-edit-{{ $question->questionChoices[$i]->id }}" class="btn self-center"
+                            <button wire:key="button-edit-{{ $question->questionChoices[$i]->id }}"
+                                    class="btn self-center"
                                     onclick="my_modal_{{ str_replace('-', '_', $question->questionChoices[$i]->id) }}.showModal()">
-                                <x-lucide-pencil class="w-4 h-4" />
+                                <x-lucide-pencil class="w-4 h-4"/>
                             </button>
                             {{-- Delete Button --}}
-                            <button wire:key="button-del-{{ $question->questionChoices[$i]->id }}"
-                                    wire:click="deleteChoice('{{ $question->questionChoices[$i]->id }}')"
-                                    class="btn btn-error self-center">
-                                <x-lucide-trash class="w-4 h-4" />
-                            </button>
+                            @if(count($choices) !== 1)
+                                <button wire:key="button-del-{{ $question->questionChoices[$i]->id }}"
+                                        wire:click="deleteChoice('{{ $question->questionChoices[$i]->id }}')"
+                                        class="btn btn-error self-center">
+                                    <x-lucide-trash class="w-4 h-4"/>
+                                </button>
+                            @endif
                         </div>
                     </div>
                 @endfor

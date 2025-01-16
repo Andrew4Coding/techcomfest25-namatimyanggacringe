@@ -16,19 +16,12 @@ class Essay extends Component
     public string $answer;
 
     public string $content;
+    public int $weight;
 
-
-    public function mount()
-    {
-        // Initialize the answer if it's set
-        $this->answer = $this->question->answer;
-        $this->content = $this->question->content;
-
-    }
-
-    public function updatedContent()
+    public function updateQuestionInfo()
     {
         $this->question->content = $this->content;
+        $this->question->weight = $this->weight;
         $this->question->save();
     }
 
@@ -39,6 +32,14 @@ class Essay extends Component
     {
         $this->question->answer = $this->answer;
         $this->question->save();
+    }
+
+    public function mount()
+    {
+        // Initialize the answer if it's set
+        $this->answer = $this->question->answer;
+        $this->content = $this->question->content;
+        $this->weight = $this->question->weight;
     }
 
     public function render()
