@@ -6,24 +6,25 @@
             <h1 class="text-2xl font-semibold rounded">{{ $section->name }}</h1>
             <div class="flex gap-2">
                 @if ($isEdit)
-                    <button type="button" onclick="toggleSection('{{ $section->id }}')">
-                        @if ($section->is_public)
-                            <div class="tooltip tooltip-top" data-tip="Hide from students">
-                                <x-lucide-eye
-                                    class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12" />
-                            </div>
-                        @else
-                            <div class="tooltip tooltip-right" data-tip="Show to students">
-                                <x-lucide-eye-off
-                                    class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12" />
-                            </div>
-                        @endif
-                    </button>
+                    <div class="px-4 py-2 text-white flex items-center gap-3 rounded-full bg-primary">
+                        <button type="button" onclick="toggleSection('{{ $section->id }}')">
+                            @if ($section->is_public)
+                                <div class="tooltip tooltip-top flex items-center" data-tip="Hide from students">
+                                    <x-lucide-eye
+                                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12"/>
+                                </div>
+                            @else
+                                <div class="tooltip tooltip-right" data-tip="Show to students">
+                                    <x-lucide-eye-off
+                                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12"/>
+                                </div>
+                            @endif
+                        </button>
 
-                    <script>
-                        function toggleSection(sectionId) {
-                            const rootUrl = window.location.origin;
-                            fetch(`${rootUrl}/courses/sections/toggle/${sectionId}`, {
+                        <script>
+                            function toggleSection(sectionId) {
+                                const rootUrl = window.location.origin;
+                                fetch(`${rootUrl}/courses/sections/toggle/${sectionId}`, {
                                     method: 'POST',
                                     headers: {
                                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -32,32 +33,33 @@
                                     },
                                     body: JSON.stringify({})
                                 })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        location.reload();
-                                    } else {
-                                        alert('Failed to toggle section visibility.');
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error:', error);
-                                    alert('An error occurred. Please try again.');
-                                });
-                        }
-                    </script>
-                    <div class="tooltip tooltip-top" data-tip="Edit Section">
-                        <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
-                            onclick="document.getElementById('edit_section_modal_{{ $section->id }}').showModal();" />
-                    </div>
-                    <div class="tooltip tooltip-top" data-tip="Tambah Course Item">
-                        <x-lucide-plus class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
-                            onclick="document.getElementById('add_course_item_modal_{{ $section->id }}').showModal();" />
-                    </div>
-                    <div class="tooltip tooltip-top" data-tip="Hapus Section">
-                        <x-lucide-trash
-                            class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12"
-                            onclick="document.getElementById('delete_section_modal_{{ $section->id }}').showModal();" />
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            location.reload();
+                                        } else {
+                                            alert('Failed to toggle section visibility.');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        alert('An error occurred. Please try again.');
+                                    });
+                            }
+                        </script>
+                        <div class="tooltip tooltip-top" data-tip="Edit Section">
+                            <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
+                                             onclick="document.getElementById('edit_section_modal_{{ $section->id }}').showModal();"/>
+                        </div>
+                        <div class="tooltip tooltip-top" data-tip="Tambah Course Item">
+                            <x-lucide-plus class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
+                                           onclick="document.getElementById('add_course_item_modal_{{ $section->id }}').showModal();"/>
+                        </div>
+                        <div class="tooltip tooltip-top" data-tip="Hapus Section">
+                            <x-lucide-trash
+                                class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-red-500 hover:rotate-12"
+                                onclick="document.getElementById('delete_section_modal_{{ $section->id }}').showModal();"/>
+                        </div>
                     </div>
                 @endif
             </div>
@@ -82,7 +84,9 @@
                 <p>Apakah kamu yakin untuk menghapus Course Item ini?</p>
                 <div class="modal-action">
                     <button type="button" class="btn"
-                        onclick="document.getElementById('delete_courseitem_modal_{{ $item->id }}').close();">Batalkan</button>
+                            onclick="document.getElementById('delete_courseitem_modal_{{ $item->id }}').close();">
+                        Batalkan
+                    </button>
                     <form method="POST" action="{{ route('course.item.delete', ['id' => $item->id]) }}">
                         @csrf
                         @method('DELETE')
@@ -114,24 +118,25 @@
 
         <div id="material_fields" class="">
             <form method="POST"
-                action="{{ route('course.item.create', ['course_section_id' => $section->id, 'type' => 'material']) }}"
-                enctype="multipart/form-data">
+                  action="{{ route('course.item.create', ['course_section_id' => $section->id, 'type' => 'material']) }}"
+                  enctype="multipart/form-data">
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Material</label>
-                    <input type="text" name="name" id="name" class="input input-bordered w-full" required />
+                    <input type="text" name="name" id="name" class="input input-bordered w-full" required/>
                 </div>
                 <div class="mb-4">
                     <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi
                         (Opsional)</label>
-                    <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
+                    <textarea name="description" id="description" rows="3"
+                              class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="mb-4">
                     <label for="file" class="block text-sm font-medium text-gray-700">Upload File</label>
                     <input type="file" name="file" id="file" class="file-input file-input-primary w-full"
-                        required accept=".pdf,.txt,.xlsx,.docx,.pptx" />
+                           required accept=".pdf,.txt,.xlsx,.docx,.pptx"/>
                     <small class="text-gray-500">Max file size: 2MB</small>
-                    <input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
+                    <input type="hidden" name="MAX_FILE_SIZE" value="2097152"/>
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn" onclick="add_section_modal.close()">Batalkan</button>
@@ -145,43 +150,46 @@
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Item</label>
                     <input type="text" name="name" id="name" class="input input-bordered w-full"
-                        required />
+                           required/>
                 </div>
                 <div class="mb-4">
                     <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi
                         (Opsional)</label>
-                    <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
+                    <textarea name="description" id="description" rows="3"
+                              class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="mb-4">
                     <label for="content" class="block text-sm font-medium text-gray-700">Konten</label>
                     <input type="text" name="content" id="content" class="input input-bordered w-full"
-                        required />
+                           required/>
                 </div>
                 <div class="mb-4">
                     <label for="opened_at" class="block text-sm font-medium text-gray-700">Dibuka Pada</label>
                     <input type="datetime-local" name="opened_at" id="opened_at" class="input input-bordered w-full"
-                        required />
+                           required/>
                 </div>
                 <div class="mb-4">
                     <label for="due_date" class="block text-sm font-medium text-gray-700">Ditutup Pada</label>
                     <input type="datetime-local" name="due_date" id="due_date" class="input input-bordered w-full"
-                        required />
+                           required/>
                 </div>
                 {{-- Max attemps --}}
                 <div class="mb-4">
                     <label for="attempts" class="block text-sm font-medium text-gray-700">Attempts</label>
                     <input type="number" name="max_attempts" id="attempts" class="input input-bordered w-full"
-                        required min="0" />
+                           required min="0"/>
                 </div>
                 <div class="mb-4">
                     <label for="file_types" class="block text-sm font-medium text-gray-700">Accepted File
                         Types</label>
                     <input type="text" name="file_types" id="file_types" class="input input-bordered w-full"
-                        required />
+                           required/>
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn"
-                        onclick="document.getElementById('add_submission_modal_{{ $section->id }}').close();">Batalkan</button>
+                            onclick="document.getElementById('add_submission_modal_{{ $section->id }}').close();">
+                        Batalkan
+                    </button>
                     <button type="submit" class="btn btn-primary">+ Buat</button>
                 </div>
             </form>
@@ -192,39 +200,42 @@
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Item</label>
                     <input type="text" name="name" id="name" class="input input-bordered w-full"
-                        required />
+                           required/>
                 </div>
                 <div class="mb-4">
                     <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi
                         (Opsional)</label>
-                    <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
+                    <textarea name="description" id="description" rows="3"
+                              class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn"
-                        onclick="document.getElementById('add_forum_modal_{{ $section->id }}').close();">Batalkan</button>
+                            onclick="document.getElementById('add_forum_modal_{{ $section->id }}').close();">Batalkan
+                    </button>
                     <button type="submit" class="btn btn-primary">+ Buat</button>
                 </div>
             </form>
         </div>
         <div id="attendance_fields" class="hidden">
             <form method="POST"
-                action="{{ route('attendance.store', ['courseSectionId' => $section->id, 'type' => 'attendance']) }}"
-                enctype="multipart/form-data">
+                  action="{{ route('attendance.store', ['courseSectionId' => $section->id, 'type' => 'attendance']) }}"
+                  enctype="multipart/form-data">
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Item</label>
                     <input type="text" name="name" id="name" class="input input-bordered w-full"
-                        required />
+                           required/>
                 </div>
                 <div class="mb-4">
                     <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi
                         (Opsional)</label>
-                    <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
+                    <textarea name="description" id="description" rows="3"
+                              class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="mb-4">
                     <label for="password" class="block text-sm font-medium text-gray-700">Password Absensi</label>
                     <input type="text" name="password" id="password" class="input input-bordered w-full"
-                        required />
+                           required/>
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn" onclick="add_section_modal.close()">Batalkan</button>
@@ -242,35 +253,33 @@
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama Item</label>
                     <input type="text" name="name" id="name" class="input input-bordered w-full"
-                        required />
+                           required/>
                 </div>
                 <div class="mb-4">
                     <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi
                         (Opsional)</label>
-                    <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full"></textarea>
-                </div>
-                <div class="mb-4">
-                    <label for="content" class="block text-sm font-medium text-gray-700">Konten</label>
-                    <textarea name="content" id="content" rows="3" class="textarea textarea-bordered w-full"></textarea>
+                    <textarea name="description" id="description" rows="3"
+                              class="textarea textarea-bordered w-full"></textarea>
                 </div>
                 <div class="mb-4">
                     <label for="start" class="block text-sm font-medium text-gray-700">Start</label>
                     <input type="datetime-local" name="start" id="start" class="input input-bordered w-full"
-                        required />
+                           required/>
                 </div>
                 <div class="mb-4">
                     <label for="finish" class="block text-sm font-medium text-gray-700">Start</label>
                     <input type="datetime-local" name="finish" id="finish" class="input input-bordered w-full"
-                           required />
+                           required/>
                 </div>
                 <div class="mb-4">
                     <label for="duration" class="block text-sm font-medium text-gray-700">Durasi (Menit)</label>
                     <input type="number" name="duration" id="duration" class="input input-bordered w-full"
-                        required min="1" />
+                           required min="1"/>
                 </div>
                 <div class="modal-action">
                     <button type="button" class="btn"
-                        onclick="document.getElementById('add_quiz_modal_{{ $section->id }}').close();">Batalkan</button>
+                            onclick="document.getElementById('add_quiz_modal_{{ $section->id }}').close();">Batalkan
+                    </button>
                     <button type="submit" class="btn btn-primary">+ Buat</button>
                 </div>
             </form>
@@ -287,7 +296,8 @@
         <p>Apakah kamu yakin untuk menghapus section ini?</p>
         <div class="modal-action">
             <button type="button" class="btn"
-                onclick="document.getElementById('delete_section_modal_{{ $section->id }}').close();">Batalkan</button>
+                    onclick="document.getElementById('delete_section_modal_{{ $section->id }}').close();">Batalkan
+            </button>
             <form method="POST" action="{{ route('course.section.delete', ['id' => $section->id]) }}">
                 @csrf
                 @method('DELETE')
@@ -309,15 +319,17 @@
             <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700">Nama Item</label>
                 <input type="text" name="name" id="name" class="input input-bordered w-full"
-                    value="{{ $section->name }}" required />
+                       value="{{ $section->name }}" required/>
             </div>
             <div class="mb-4">
                 <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi (Opsional)</label>
-                <textarea name="description" id="description" rows="3" class="textarea textarea-bordered w-full">{{ $section->description }}</textarea>
+                <textarea name="description" id="description" rows="3"
+                          class="textarea textarea-bordered w-full">{{ $section->description }}</textarea>
             </div>
             <div class="modal-action">
                 <button type="button" class="btn"
-                    onclick="document.getElementById('edit_section_modal_{{ $section->id }}').close();">Batalkan</button>
+                        onclick="document.getElementById('edit_section_modal_{{ $section->id }}').close();">Batalkan
+                </button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </form>
@@ -328,7 +340,7 @@
 </dialog>
 
 <script>
-    document.getElementById('item_type').addEventListener('change', function() {
+    document.getElementById('item_type').addEventListener('change', function () {
         const materialFields = document.getElementById('material_fields');
         const submissionFields = document.getElementById('submission_fields');
         const forumFields = document.getElementById('forum_fields');

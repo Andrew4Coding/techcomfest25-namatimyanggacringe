@@ -97,6 +97,7 @@ Route::prefix('quiz')->middleware(['auth'])->group(function () {
 
     Route::middleware([TeacherMiddleware::class])->group(function () {
         Route::get('/edit/{quizId}', QuizTeacher::class)->name('quiz.edit');
+        Route::get('/summary/{quizId}', [QuizController::class, 'showQuizSummary'])->name('quiz.summary');
     });
     Route::post('/{courseSectionId}/store', [QuizController::class, 'store'])->name('quiz.store');
 });

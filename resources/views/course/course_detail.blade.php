@@ -49,7 +49,7 @@
                 <div class="flex justify-between items-center mb-4 w-full">
                     <h1 class="text-xl font-bold" style="color: {{ $theme['tertiary'] }};">{{ $course->name }}</h1>
                     <div class="flex gap-4 items-center">
-                        <span class="badge badge-primary py-2 font-medium text-sm border-none text-white"
+                        <span class="badge badge-primary py-4 font-medium text-sm border-none text-white"
                             style="background-color: {{ $theme['secondary'] }};"
                             onclick="copyToClipboard('{{ $course->class_code }}')">
                             {{ $course->class_code }}
@@ -57,14 +57,16 @@
 
                         @if (Auth::user()->userable_type == 'App\Models\Teacher')
                             @if ($isEdit)
-                                <div class="tooltip tooltip-bottom" data-tip="Mode Edit">
-                                    <x-lucide-pencil class="min-w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
+                                <div class="tooltip tooltip-bottom" data-tip="Pengaturan Course">
+                                    <button class="btn btn-sm">
+                                    <x-lucide-settings class="min-w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
                                         onclick="edit_course_modal.showModal()" />
+                                    </button>
                                 </div>
                             @else
-                                <div class="tooltip tooltip-bottom" data-tip="Mode Edit">
+                                <div class="tooltip tooltip-bottom" data-tip="Edit">
 
-                                    <a href="{{ route('course.show.edit', ['id' => $course->id]) }}">
+                                    <a class="btn btn-sm" href="{{ route('course.show.edit', ['id' => $course->id]) }}">
                                         <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
                                     </a>
                                 </div>

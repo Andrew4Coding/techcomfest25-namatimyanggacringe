@@ -51,7 +51,7 @@
                 </div>
             </div>
         </div>
-        <button  class="btn btn-primary flex items-center gap-2">
+        <button wire:click="simpan"  class="btn btn-primary flex items-center gap-2">
             <x-lucide-save class="w-5 h-5"/>
             <span>Simpan</span>
         </button>

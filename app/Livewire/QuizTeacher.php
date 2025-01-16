@@ -75,9 +75,10 @@ class QuizTeacher extends Component
     }
 
     // FUNCTION
-    public function back(): void
+    public function simpan(): void
     {
-        redirect()->back();
+        $courseId = $this->quiz->courseItem->courseSection->course->id;
+        redirect()->route('course.show', ['id' => $courseId]);
     }
 
     /**
