@@ -926,6 +926,7 @@
                 !request()->is('register/student') &&
                 !request()->is('/'))
             @include('layout.sidebar')
+            @include('layout.sidebar_mobile')
         @endif
 
         @if (request()->is('/'))
