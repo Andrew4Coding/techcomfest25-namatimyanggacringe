@@ -20,10 +20,29 @@
         <div class="p-4 mb-10 rounded-xl relative min-h-52 overflow-hidden"
             style="background-color: {{ $theme['primary'] }}; color: {{ $theme['secondary'] }};">
 
+            @php
+                $selected_theme = $flashcard->subject;
+            @endphp
+
+            @if ($selected_theme == 'sosiologi')
+                <img src="{{ asset('corner/yellow-corner-left.png') }}" alt=""
+                    class="absolute bottom-0 left-0 w-40 h-20 object-contain z-0">
+                <img src="{{ asset('corner/yellow-corner-right.png') }}" alt=""
+                    class="absolute top-0 right-0 w-40 h-20 object-contain z-0">
+            @elseif ($selected_theme == 'ekonomi')
+                <img src="{{ asset('corner/green-corner-left.png') }}" alt=""
+                    class="absolute bottom-0 -left-12 w-40 h-20 object-contain z-0">
+                <img src="{{ asset('corner/green-corner-right.png') }}" alt=""
+                    class="absolute top-0 -right-12 w-40 h-20 object-contain z-0">
+            @elseif ($selected_theme == 'bahasa')
+                <img src="{{ asset('corner/blue-corner.png') }}" alt=""
+                    class="absolute top-0 left-0 object-contain z-0">
+            @endif
+
             <!-- Adjusted Image Styling -->
             <div class="absolute inset-0 pointer-events-none top-10 left-20">
                 <img src="{{ asset('subject-mascots/' . $flashcard->subject . '.png') }}" alt="Icon"
-                    class="w-80 object-contain z-0">
+                    class="w-80 h-52 object-contain z-0">
             </div>
 
             <div class="z-10">
@@ -75,8 +94,7 @@
                                     <div class="mb-4">
                                         <label for="subject" class="block text-sm font-medium text-gray-700">Mata Pelajaran
                                             Terkait</label>
-                                        <select name="subject" id="subject" class="select w-full"
-                                            required>
+                                        <select name="subject" id="subject" class="select w-full" required>
                                             <option value="sosiologi">Sosiologi</option>
                                             <option value="ekonomi">Ekonomi</option>
                                             <option value="bahasa">Bahasa</option>
