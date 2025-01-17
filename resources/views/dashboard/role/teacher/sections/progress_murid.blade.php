@@ -7,8 +7,10 @@
     </div>
     <div class="flex flex-col gap-5 mt-5">
         @if (count($topStudents) == 0 || $topStudents[0]->averageScore == 0)
-            <p class="text-center text-sm text-gray-500">Belum ada murid yang mengikuti kelas ini</p>
-
+            <div class="w-full flex flex-col items-center justify-center gap-5">
+                <img src="{{ asset('mascot-nyari.png') }}" alt="Login" class="w-[100px]">
+                <p class="text-center text-sm text-gray-500">Belum ada murid yang mengikuti kelas ini</p>
+            </div>
         @else
             @foreach ($topStudents as $student)
                 <div class="flex items-center justify-between rounded-xl text-sm text-gray-500">

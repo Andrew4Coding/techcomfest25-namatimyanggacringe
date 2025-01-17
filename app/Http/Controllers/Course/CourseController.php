@@ -87,7 +87,7 @@ class CourseController extends Controller
 
             $courses = $courses->slice($skip)->take($take);
 
-            return view('course.courses', compact('courses', 'availablePages', 'page', 'take', 'search', 'subject'));
+            return view('course.index.index', compact('courses', 'availablePages', 'page', 'take', 'search', 'subject'));
         }
 
         // Get courses by teacher id
@@ -115,7 +115,7 @@ class CourseController extends Controller
 
         $courses = $courses->slice($skip)->take($take);
 
-        return view('course.courses', compact('courses', 'availablePages', 'page', 'take', 'search', 'subject'));
+        return view('course.index.index', compact('courses', 'availablePages', 'page', 'take', 'search', 'subject'));
     }
 
     public function showCourse(
@@ -154,7 +154,7 @@ class CourseController extends Controller
 
         $isEdit = false;
 
-        return view('course.course_detail', compact('course', 'courseSections', 'tab', 'isEdit'));
+        return view('course.show.show', compact('course', 'courseSections', 'tab', 'isEdit'));
     }
 
     public function showCourseEdit(
@@ -169,7 +169,7 @@ class CourseController extends Controller
 
             $isEdit = true && Auth::user()->userable_type == 'App\Models\Teacher';
     
-            return view('course.course_detail', compact('course', 'courseSections', 'tab', 'isEdit'));
+            return view('course.show.show', compact('course', 'courseSections', 'tab', 'isEdit'));
         }
         catch (\Exception $e) {
             dd($e);

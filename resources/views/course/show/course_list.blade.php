@@ -7,7 +7,7 @@
         $courseSections = $courseSections->sortBy('created_at');
     @endphp
     @foreach ($courseSections as $section)
-        @include('course.components.course_section', ['section' => $section])
+        @include('course.show.course_section', ['section' => $section])
     @endforeach
     @if ($courseSections->isEmpty())
         @if ($isEdit)
@@ -41,5 +41,5 @@
         <x-lucide-plus class="w-6 h-6" />
         Tambah Section
     </button>
-    @include('course.components.dialogs')
+    @include('course.show.dialogs')
 @endif
