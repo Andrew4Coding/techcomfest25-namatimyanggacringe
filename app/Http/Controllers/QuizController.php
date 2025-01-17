@@ -6,6 +6,7 @@ use App\Jobs\CheckSubmission;
 use App\Models\Course;
 use App\Models\CourseSection;
 use App\Models\Quiz;
+use App\Models\QuizSubmission;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -33,7 +34,21 @@ class QuizController extends Controller
     public function showQuizSummary(string $id)
     {
         $quiz = Quiz::where("id", $id)->withCount('quizSubmissions')->first();
-        return view('quiz.quiz_summary', compact('quiz'));
+        $siswaCount = $quiz->courseItem->courseSection->course->students->count();
+        return view('quiz.quiz_summary', compact('quiz', 'siswaCount'));
+    }
+
+    public function showQuizSubmissionList(string $id)
+    {
+        $submissions = QuizSubmission::where("quiz_id", $id)->get();
+        return view('quiz.quiz_submission_list', compact('submissions'));
+    }
+
+    public function deleteQuizSubmission(string $id)
+    {
+        $submission = QuizSubmission::where("id", $id)->first();
+        $submission->delete();
+        return redirect()->back();
     }
 
     public function showQuizSession(string $id, Request $request)

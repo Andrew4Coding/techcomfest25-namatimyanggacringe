@@ -16,7 +16,6 @@ use App\Models\Quiz as QuizModel;
 class Quiz extends Component
 {
     // get id from query params
-    #[Url]
     public string $id = '';
 
     // uuid regex for filtering valid uuid
@@ -150,13 +149,15 @@ class Quiz extends Component
      *
      * mount is used for mounting the component when it first loaded.
      */
-    public function mount(): void
+    public function mount(string $quizId): void
     {
         // check whether the regex matched and the id given is valid id
-        if (!preg_match($this->uuidRegex, $this->id)) {
-            $this->redirectIntended("/");
+        if (!preg_match($this->uuidRegex, $quizId)) {
+            $this->redirectRoute('courses')->withErrors('Invalid Quiz ID');
             return;
-        } // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
+        }
+
+        $this->id = $quizId;
 
         // if teacher redirect to edit page
         if (Auth::user()->userable_type === Teacher::class) {
@@ -195,7 +196,7 @@ class Quiz extends Component
 
             // FIXME: BENERIN GUE MALAS :V
             if (
-                $this->submission->done or  // sudah selesai
+                $this->submission->done or // sudah selesai
                 $this->getTimeLeft() < 0    // durasi habis
             ) {
                 echo "Tidak boleh masuk";

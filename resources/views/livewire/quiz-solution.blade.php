@@ -1,15 +1,20 @@
-<main class="px-4 sm:px-6 md:px-8 lg:px-20 flex flex-col py-8 sm:py-10 gap-20 bg-gray-50 min-h-screen">
+<main class="flex flex-col gap-20 min-h-full">
     @if($isValid)
         {{-- Header: Course Name, Progress, and Timer --}}
-        <div class="flex flex-col lg:flex-row items-start lg:items-center w-full gap-8">
+        <div class="flex flex-col items-start w-full gap-4">
             <h3 class="text-xl sm:text-2xl lg:text-2xl font-semibold text-gray-800">
                 {{ $quiz->courseItem->name }}
             </h3>
-            <div class="flex items-center flex-1 gap-4 w-full">
-                <span class="text-xs sm:text-sm text-gray-700">
-                    {{ intdiv($page * 100, $questionCount) }}%
+            <div class="px-4 py-2 rounded-xl bg-base-200 flex">
+            <span class="flex flex-col">
+                <span class="text-sm text-gray-700">Nama Siswa</span>
+                {{ $submission->student->user->name }}
+            </span>
+                <div class="divider lg:divider-horizontal"></div>
+                <span class="flex flex-col">
+                <span class="text-sm text-gray-700">Kelas</span>
+                {{ $submission->student->class }}
                 </span>
-                <progress class="progress progress-primary h-3 flex-1 rounded" value="{{ $page }}" max="{{ $questionCount }}"></progress>
             </div>
         </div>
 

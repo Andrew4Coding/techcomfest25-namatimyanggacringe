@@ -8,13 +8,14 @@ use App\Models\QuizSubmissionItem;
 use App\Models\Teacher;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use App\Models\Quiz as QuizModel;
 
 class QuizSolution extends Component
 {
+    #[Url(as: 'id')]
+    public string $studentId;
 
     // uuid regex for filtering valid uuid
     private string $uuidRegex = "/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/";
@@ -101,12 +102,6 @@ class QuizSolution extends Component
             return;
         } // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
 
-        // if teacher redirect
-        if (Auth::user()->userable_type === Teacher::class) {
-            $this->redirectIntended("/");
-            return;
-        }
-
         // check whether the quiz is found
         try {
             // fetch quiz from database
@@ -123,10 +118,16 @@ class QuizSolution extends Component
             // get question count
             $this->questionCount = $this->quiz->questions_count;
 
+            if (Auth::user()->userable_type === Teacher::class) {
+                $id = $this->studentId;
+            } else {
+                $id = Auth::user()->userable_id;
+            }
+
             // check submission
             $this->submission = QuizSubmission
                 ::where('quiz_id', $quizId)
-                ->where('student_id', Auth::user()->userable_id)
+                ->where('student_id', $id)
                 ->first();
 
 

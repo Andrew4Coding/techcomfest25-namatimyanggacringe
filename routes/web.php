@@ -88,16 +88,15 @@ Route::prefix('courses')->middleware(['auth'])->group(function () {
 
 // Quiz
 Route::prefix('quiz')->middleware(['auth'])->group(function () {
-    Route::get('/', Quiz::class)->name('quiz.show');
-
+    Route::get('/exam/{quizId}', Quiz::class)->name('quiz.show');
     Route::get('/submit/{quizId}', [QuizController::class, 'submitQuiz'])->name('quiz.submit');
-
     Route::get('/check/{quizId}', QuizSolution::class)->name('quiz.solution');
-
 
     Route::middleware([TeacherMiddleware::class])->group(function () {
         Route::get('/edit/{quizId}', QuizTeacher::class)->name('quiz.edit');
         Route::get('/summary/{quizId}', [QuizController::class, 'showQuizSummary'])->name('quiz.summary');
+        Route::get('/list/{quizId}', [QuizController::class, 'showQuizSubmissionList'])->name('quiz.submission.list');
+        Route::get('/delete-submission/{submissionId}', [QuizController::class, 'deleteQuizSubmission'])->name('quiz.submission.delete');
     });
     Route::post('/{courseSectionId}/store', [QuizController::class, 'store'])->name('quiz.store');
 });

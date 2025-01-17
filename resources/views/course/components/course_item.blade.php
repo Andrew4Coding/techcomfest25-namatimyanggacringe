@@ -1,3 +1,4 @@
+@php use App\Models\Teacher;use Illuminate\Support\Facades\Auth; @endphp
 <div class="flex w-full justify-between items-center gap-10 pl-5"
      style="{{
         $item->is_public
@@ -79,7 +80,13 @@
         </a>
     @elseif ($item->course_itemable_type === 'App\Models\Quiz')
         <div class="w-full flex justify-between items-center">
-            <a href="{{ route('quiz.edit', ['quizId' => $item->courseItemable->id]) }}">
+            <a
+                @if(Auth::user()->userable_type === Teacher::class)
+                    href="{{ route('quiz.edit', ['quizId' => $item->courseItemable->id]) }}"
+            @else
+                href="{{ route('quiz.show', ['quizId' => $item->courseItemable->id]) }}"
+                @endif
+            >
                 <div class="w-full flex items-center gap-4 my-5 justify-between">
                     <div class="flex gap-4">
                         <div class="w-10 h-10 flex items-center justify-center">
@@ -95,10 +102,12 @@
                     </div>
                 </div>
             </a>
-            <button class="btn btn-primary">
-                <x-lucide-notebook-text class="w-4 h-4"/>
-                Jawaban
-            </button>
+            @if(Auth::user()->userable_type === Teacher::class)
+                <a href="{{ route('quiz.summary', ['quizId' => $item->courseItemable->id]) }}" class="btn btn-primary">
+                    <x-lucide-notebook-text class="w-4 h-4"/>
+                    Jawaban
+                </a>
+            @endif
         </div>
     @endif
 
