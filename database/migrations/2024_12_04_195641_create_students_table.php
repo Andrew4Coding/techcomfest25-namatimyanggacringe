@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('nisn');
             $table->string('class');
+            $table->string('nisn')->unique();
             $table->timestamps();
         });
     }

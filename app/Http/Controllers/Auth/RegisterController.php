@@ -55,6 +55,7 @@ class RegisterController extends Controller
                 'phone_number' => ['required', 'string', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 'class' => ['required_if:role,student', 'string', 'max:255'],
+                'nisn' => ['required_if:role,student', 'string', 'max:255', 'unique:students'],
                 'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             ]);
 
@@ -78,6 +79,7 @@ class RegisterController extends Controller
             if ($role == 'student') {
                 $newUser = new Student();
                 $newUser->class = $request->input('class');
+                $newUser->nisn = $request->input('nisn');
                 $newUser->save();
                 $newUser->user()->create($data);
             } else {
@@ -89,7 +91,7 @@ class RegisterController extends Controller
             Auth::login($newUser->user);
             return redirect('/');
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Registration failed. Please try again.']);
+            return redirect()->back()->withErrors(['error' => 'Registration failed. Please try again. ' . $e->getMessage()]);
         }
     }
 }

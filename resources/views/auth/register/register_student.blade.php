@@ -27,21 +27,29 @@
                     </div>
 
                     <div class="space-y-1">
+                        <!-- Name -->
+                        <label for="name" class="block text-sm">NISN</label>
+                        <input type="text" name="nisn" id="name" required class="input" placeholder="NISN">
+                    </div>
+
+                    <div class="space-y-1">
                         <!-- Email -->
                         <label for="email" class="block text-sm">Email</label>
                         <input type="email" name="email" id="email" required class="input" placeholder="mindora@gmail.com">
                     </div>
 
-                    <div class="space-y-1">
-                        <!-- Phone -->
-                        <label for="phone_number" class="block text-sm">Phone</label>
-                        <input type="text" name="phone_number" id="phone_number" required class="input" placeholder="081234567890">
-                    </div>
-
-                    <div class="space-y-1">
-                        <!-- Class -->
-                        <label for="class" class="block text-sm">Class</label>
-                        <input type="text" name="class" id="class" required class="input" placeholder="XII MIPA 1">
+                    <div class="flex flex-col lg:flex-row gap-0 lg:gap-4">
+                        <div class="space-y-1">
+                            <!-- Phone -->
+                            <label for="phone_number" class="block text-sm">Phone</label>
+                            <input type="text" name="phone_number" id="phone_number" required class="input" placeholder="081234567890">
+                        </div>
+    
+                        <div class="space-y-1">
+                            <!-- Class -->
+                            <label for="class" class="block text-sm">Class</label>
+                            <input type="text" name="class" id="class" required class="input" placeholder="XII MIPA 1">
+                        </div>
                     </div>
 
                     <div class="space-y-1">

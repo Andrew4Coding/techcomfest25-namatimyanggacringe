@@ -24,7 +24,8 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456789',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
-                'class' => 'XII-IPA-1'
+                'class' => 'XII-IPA-1',
+                'nisn' => '1234567891'
             ],
             [
                 'name' => 'Jane Smith',
@@ -33,7 +34,8 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456788',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
-                'class' => 'XII-IPA-2'
+                'class' => 'XII-IPA-2',
+                'nisn' => '1234567892'
             ],
             [
                 'name' => 'Alice Johnson',
@@ -42,7 +44,8 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456787',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
-                'class' => 'XII-IPA-3'
+                'class' => 'XII-IPA-3',
+                'nisn' => '1234567893'
             ],
             [
                 'name' => 'Bob Brown',
@@ -51,7 +54,8 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456786',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
-                'class' => 'XII-IPA-4'
+                'class' => 'XII-IPA-4',
+                'nisn' => '1234567894'
             ],
             [
                 'name' => 'Charlie Davis',
@@ -60,7 +64,8 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456785',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
-                'class' => 'XII-IPA-5'
+                'class' => 'XII-IPA-5',
+                'nisn' => '1234567895'
             ],
             [
                 'name' => 'Eve White',
@@ -69,7 +74,8 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456784',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
-                'class' => 'XII-IPA-6'
+                'class' => 'XII-IPA-6',
+                'nisn' => '1234567896'
             ],
             [
                 'name' => 'Frank Green',
@@ -78,7 +84,8 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456783',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
-                'class' => 'XII-IPA-7'
+                'class' => 'XII-IPA-7',
+                'nisn' => '1234567897'
             ],
             [
                 'name' => 'Grace Lee',
@@ -87,7 +94,8 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456782',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
-                'class' => 'XII-IPA-8'
+                'class' => 'XII-IPA-8',
+                'nisn' => '1234567898'
             ],
             [
                 'name' => 'Hank Miller',
@@ -96,7 +104,8 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456781',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
-                'class' => 'XII-IPA-9'
+                'class' => 'XII-IPA-9',
+                'nisn' => '1234567899'
             ],
             [
                 'name' => 'Ivy Wilson',
@@ -105,14 +114,16 @@ class CourseStudentSeeder extends Seeder
                 'phone_number' => '08123456780',
                 'password' => Hash::make('dummy123'),
                 'profile_picture' => 'https://techcomfest.s3.ap-southeast-2.amazonaws.com/profile_pictures/mascot-nyari.png',
-                'class' => 'XII-IPA-10'
+                'class' => 'XII-IPA-10',
+                'nisn' => '1234567800'
             ]
         ];
 
         // For Each Student
-        foreach($students as $student) {
+        foreach ($students as $student) {
             $newStudent = new Student();
             $newStudent->class = $student['class'];
+            $newStudent->nisn = $student['nisn'];
             $newStudent->save();
 
             $newStudent->user()->create([
@@ -129,7 +140,7 @@ class CourseStudentSeeder extends Seeder
         $courses = Course::all();
 
         // Apply all student to all courses
-        foreach($courses as $course) {
+        foreach ($courses as $course) {
             $course->students()->attach($students);
         }
     }

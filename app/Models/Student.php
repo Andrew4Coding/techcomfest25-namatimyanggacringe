@@ -27,7 +27,8 @@ class Student extends Model
     ];
 
     protected $fillable = [
-        'class'
+        'class',
+        'nisn'
     ];
 
     /**
