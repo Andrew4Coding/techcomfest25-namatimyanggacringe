@@ -21,11 +21,12 @@ class ProfileController extends Controller
     {
 
         try {
-
             $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255',
                 'phone_number' => 'required|string|max:15',
+                'nisn' => ['required_if:role,student', 'string', 'max:255'],
+                'class' => ['required_if:role,student', 'string', 'max:255'],
             ]);
     
             $user = $request->user();
@@ -34,6 +35,15 @@ class ProfileController extends Controller
             $user->phone_number = $request->phone_number;
     
             $user->save();
+
+
+            // Edit Student
+            if ($user->userable_type == 'App\Models\Student') {
+                $student = $user->userable;
+                $student->nisn = $request->nisn;
+                $student->class = $request->class;
+                $student->save();
+            }
 
             return redirect()->route('profile')->with('success', 'Profile updated successfully');
         }

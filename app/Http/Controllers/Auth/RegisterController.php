@@ -79,6 +79,7 @@ class RegisterController extends Controller
             if ($role == 'student') {
                 $newUser = new Student();
                 $newUser->class = $request->input('class');
+                $newUser->nisn = $request->input('nisn');
                 $newUser->save();
                 $newUser->user()->create($data);
             } else {
@@ -90,7 +91,7 @@ class RegisterController extends Controller
             Auth::login($newUser->user);
             return redirect('/');
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Registration failed. Please try again.']);
+            return redirect()->back()->withErrors(['error' => 'Registration failed. Please try again. ' . $e->getMessage()]);
         }
     }
 }
