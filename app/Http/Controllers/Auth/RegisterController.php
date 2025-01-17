@@ -55,6 +55,7 @@ class RegisterController extends Controller
                 'phone_number' => ['required', 'string', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 'class' => ['required_if:role,student', 'string', 'max:255'],
+                'nisn' => ['required_if:role,student', 'string', 'max:255', 'unique:students'],
                 'profile_picture' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             ]);
 

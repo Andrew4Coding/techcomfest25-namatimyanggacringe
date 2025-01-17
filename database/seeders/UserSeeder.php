@@ -37,6 +37,7 @@ class UserSeeder extends Seeder
 
         $newUser = new Student();
         $newUser->class = 'XII-IPA-1';
+        $newUser->nisn = '9234567890';
         $newUser->save();
         $newUser->user()->create($data);
 
