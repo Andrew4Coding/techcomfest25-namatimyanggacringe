@@ -46,10 +46,16 @@ class DashboardController extends Controller
                 foreach ($course->courseSections as $courseSection) {
                     foreach ($courseSection->courseItems as $courseItem) {
                         if ($courseItem->course_itemable_type === Submission::class) {
-                            foreach ($courseItem->courseItemable->submissionItems as $submissionItem) {
-                                $studentSubmissionSum += $submissionItem->grade ?? 0;
-                                $studentTotalAssignment += 1;
-                            }
+                            // Take last submission item grade for the student
+                            $submissionItem = $courseItem->courseItemable->submissionItems->where('student_id', $student->id)->last();
+
+                            $studentSubmissionSum += $submissionItem ? $submissionItem->grade : 0;
+                            $studentTotalAssignment += 1;
+                        }
+
+                        // TODO QUIZ
+                        else if ($courseItem->course_itemable_type === Quiz::class) {
+                            $studentTotalAssignment += 1;
                         }
                     }
                 }
@@ -69,7 +75,7 @@ class DashboardController extends Controller
                     if ($courseItem->is_public === false) {
                         continue;
                     }
-                    
+
                     $totalCourseItem += 1;
                     $courseItemProgressCount += $courseItem->courseItemProgress ? 1 : 0;
 
@@ -84,9 +90,7 @@ class DashboardController extends Controller
                         foreach ($courseItem->courseItemable->submissionItems as $submissionItem) {
                             $submissionSum += $submissionItem->grade ?? 0;
                         }
-                    }
-
-                    else if ($courseItem->course_itemable_type === Quiz::class) {
+                    } else if ($courseItem->course_itemable_type === Quiz::class) {
                         if ($courseItem->courseItemProgress) {
                             $assignmentProgressCount += 1;
                         }
@@ -95,6 +99,9 @@ class DashboardController extends Controller
                     }
                 }
             }
+
+            $topStudents = array_slice($topStudents, 0, 10);
+            $course->topStudents = $topStudents;
 
             $course->totalCourseItem = $totalCourseItem;
             $course->courseItemProgressCount = $courseItemProgressCount;
@@ -150,9 +157,8 @@ class DashboardController extends Controller
 
         $deadlines = array_slice($deadlines, 0, 4);
 
-        $topStudents = array_slice($topStudents, 0, 10);
 
-        return view('dashboard.dashboard', compact('courses', 'deadlines', 'students', 'topStudents'));
+        return view('dashboard.dashboard', compact('courses', 'deadlines', 'students'));
     }
 
 
@@ -178,7 +184,7 @@ class DashboardController extends Controller
                     if ($courseItem->is_public === false) {
                         continue;
                     }
-                    
+
                     $totalCourseItem += 1;
                     $courseItemProgressCount += $courseItem->courseItemProgress ? 1 : 0;
 
@@ -192,9 +198,7 @@ class DashboardController extends Controller
                         foreach ($courseItem->courseItemable->submissionItems as $submissionItem) {
                             $submissionSum += $submissionItem->grade ?? 0;
                         }
-                    }
-
-                    else if ($courseItem->course_itemable_type === Quiz::class) {
+                    } else if ($courseItem->course_itemable_type === Quiz::class) {
                         if ($courseItem->courseItemProgress) {
                             $assignmentProgressCount += 1;
                         }

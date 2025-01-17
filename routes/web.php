@@ -19,6 +19,7 @@ use App\Http\Controllers\FlashCardController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\StudentProgressController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\SubmissionItemController;
 use App\Http\Controllers\UploadFileController;
@@ -161,6 +162,8 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
 
     Route::middleware([TeacherMiddleware::class])->group(function () {
         Route::post('/sendMessage/{studentId}', [DashboardController::class, 'sendStudentMessage'])->name('dashboard.teacher.send');
+
+        Route::get('/progress', [StudentProgressController::class, 'show'])->name('dashboard.progress');
     });
 });
 
