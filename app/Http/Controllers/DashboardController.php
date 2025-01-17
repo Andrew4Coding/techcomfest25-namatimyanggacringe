@@ -36,6 +36,34 @@ class DashboardController extends Controller
             $totalAssignment = 0;
             $submissionSum = 0;
 
+            // Count average score for each student in course
+            $topStudents = [];
+
+            foreach ($course->students as $student) {
+                $studentTotalAssignment = 0;
+                $studentSubmissionSum = 0;
+
+                foreach ($course->courseSections as $courseSection) {
+                    foreach ($courseSection->courseItems as $courseItem) {
+                        if ($courseItem->course_itemable_type === Submission::class) {
+                            foreach ($courseItem->courseItemable->submissionItems as $submissionItem) {
+                                $studentSubmissionSum += $submissionItem->grade ?? 0;
+                                $studentTotalAssignment += 1;
+                            }
+                        }
+                    }
+                }
+
+                $student->averageScore = $studentTotalAssignment > 0 ? $studentSubmissionSum / $studentTotalAssignment : 0;
+
+                $topStudents[] = $student;
+            }
+
+            // Sort students by average score
+            usort($topStudents, function ($a, $b) {
+                return $a->averageScore - $b->averageScore;
+            });
+
             foreach ($course->courseSections as $courseSection) {
                 foreach ($courseSection->courseItems as $courseItem) {
                     if ($courseItem->is_public === false) {
@@ -120,8 +148,13 @@ class DashboardController extends Controller
             }
         }
 
-        return view('dashboard.dashboard', compact('courses', 'deadlines', 'students'));
+        $deadlines = array_slice($deadlines, 0, 4);
+
+        $topStudents = array_slice($topStudents, 0, 10);
+
+        return view('dashboard.dashboard', compact('courses', 'deadlines', 'students', 'topStudents'));
     }
+
 
     public function showStudentDashboard(Request $request)
     {

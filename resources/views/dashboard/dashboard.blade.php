@@ -1,8 +1,8 @@
 @extends('layout.layout')
 @section('content')
     @if (Auth::user()->userable_type === 'App\Models\Student')
-        @include('dashboard.sections.student')
+        @include('dashboard.role.student.index')
     @else
-        @include('dashboard.sections.teacher')
+        @include('dashboard.role.teacher.index')
     @endif
 @endsection
