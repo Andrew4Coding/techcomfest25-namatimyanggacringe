@@ -9,6 +9,7 @@
 
 <section class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10 h-full max-h-[400px]">
     @include('dashboard.role.teacher.sections.progress_murid')
+    @include('dashboard.role.teacher.sections.rate_absensi', ['attendanceRate' => $courses[0]->attendanceRates])
     @include('dashboard.commons.deadline_terdekat')
     @include('dashboard.role.teacher.sections.pesan_murid')
 </section>
