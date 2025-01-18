@@ -19,6 +19,7 @@ use App\Http\Controllers\FlashCardController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\StudentProgressController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\SubmissionItemController;
 use App\Http\Controllers\UploadFileController;
@@ -142,8 +143,8 @@ Route::prefix('attendance')->middleware(['auth'])->group(function () {
 
 // FlashCard
 Route::prefix('flashcard')->middleware(['auth'])->group(function () {
-    Route::get('/', [FlashCardController::class, 'show'])->name('flashcard.show');
-    Route::get('/{id}', [FlashCardController::class, 'index'])->name('flashcard.index');
+    Route::get('/', [FlashCardController::class, 'index'])->name('flashcard.index');
+    Route::get('/{id}', [FlashCardController::class, 'show'])->name('flashcard.show');
     Route::post('/create', [FlashCardController::class, 'create'])->name('flashcard.create');
     Route::delete('/delete/{id}', [FlashCardController::class, 'delete'])->name('flashcard.delete');
     Route::put('/update/{id}', [FlashCardController::class, 'update'])->name('flashcard.update');
@@ -160,6 +161,8 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function () {
 
     Route::middleware([TeacherMiddleware::class])->group(function () {
         Route::post('/sendMessage/{studentId}', [DashboardController::class, 'sendStudentMessage'])->name('dashboard.teacher.send');
+
+        Route::get('/progress', [StudentProgressController::class, 'show'])->name('dashboard.progress');
     });
 });
 

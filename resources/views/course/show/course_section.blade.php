@@ -76,7 +76,7 @@
     @endphp
 
     @foreach ($courseItems as $item)
-        @include('course.components.course_item', ['item' => $item])
+        @include('course.show.course_item', ['item' => $item])
 
         <dialog id="delete_courseitem_modal_{{ $item->id }}" class="modal">
             <div class="modal-box">

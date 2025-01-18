@@ -75,7 +75,7 @@
             </div>
         @else
             @foreach ($courses as $course)
-                @include('course.components.course_card', ['course' => $course])
+                @include('course.index.course_card', ['course' => $course])
             @endforeach
         @endif
     </div>

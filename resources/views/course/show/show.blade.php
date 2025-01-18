@@ -119,7 +119,7 @@
         </div>
 
         @if ($tab == 'overview' || $tab == '')
-            @include('course.components.course_list', [
+            @include('course.show.course_list', [
                 'course' => $course,
                 'courseSections' => $courseSections,
             ])

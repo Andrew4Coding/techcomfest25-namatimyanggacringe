@@ -10,7 +10,7 @@
             <ul>
                 <li><a href="/flashcard">Flashcard</a></li>
                 <li>
-                    <a href="{{ route('flashcard.show') }}">
+                    <a href="{{ route('flashcard.index') }}">
                         {{ $flashcard->name }}
                     </a>
                 </li>
