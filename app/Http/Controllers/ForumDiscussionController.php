@@ -20,8 +20,7 @@ class ForumDiscussionController extends Controller
             return view('forum.forum_discussion.index', compact('forumDiscussion', 'forumReplies'));
         }
         catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->with('error', 'Discussion not found');
+            return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
 
@@ -56,5 +55,36 @@ class ForumDiscussionController extends Controller
 
         // Return json
         return response()->json(['success' => true, 'is_verified' => $forumReply->is_verified, 'message' => 'Verified toggled successfully']);
+    }
+
+    public function deleteReply(Request $request, string $forumReplyId)
+    {
+        $forumReply = ForumReply::findOrFail($forumReplyId);
+
+        // Make sure the user is the sender of the reply
+        if ($forumReply->sender_id !== $request->user()->id) {
+            return redirect()->back()->withErrors(['You are not allowed to delete this reply']);
+        }
+
+        $forumReply->delete();
+
+        // Return json
+        return redirect()->back()->with('success', 'Reply deleted successfully');
+    }
+
+    public function editReply(Request $request, string $forumReplyId)
+    {
+        $forumReply = ForumReply::findOrFail($forumReplyId);
+
+        // Make sure the user is the sender of the reply
+        if ($forumReply->sender_id !== $request->user()->id) {
+            return redirect()->back()->withErrors(['You are not allowed to edit this reply']);
+        }
+
+        $forumReply->content = $request->input('content');
+        $forumReply->save();
+
+        // Return json
+        return redirect()->back()->with('success', 'Reply edited successfully');
     }
 }

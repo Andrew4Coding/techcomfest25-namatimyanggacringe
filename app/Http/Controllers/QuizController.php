@@ -94,15 +94,11 @@ class QuizController extends Controller
             $data[] = array_combine($header, $row);
         }
 
-        dd($data);
-
         // Close the file
         fclose($fileHandle);
 
         // Convert the array to JSON
         $json = json_encode($data, JSON_PRETTY_PRINT);
-
-        dd($json);
 
         // Return create view with context
         return view('quiz.quiz_create', ['text' => $data]);
@@ -121,9 +117,7 @@ class QuizController extends Controller
         // Convert PDF to text
         try {
             $text = Pdf::getText($pdfPath);
-            dd($text);
         } catch (\Exception $e) {
-            dd($e);
             return back()->withErrors(['error' => 'Failed to convert PDF to text: ' . $e->getMessage()]);
         }
 
@@ -164,7 +158,6 @@ class QuizController extends Controller
 
             return redirect()->route('course.show.edit', ['id' => $courseId]);
         } catch (\Exception $e) {
-            dd($e);
             return back()->withErrors(['error' => 'Failed to create quiz: ' . $e->getMessage()]);
         }
     }

@@ -19,12 +19,12 @@ class FlashCardController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'pdf' => 'required|mimes:pdf|max:2048', // Validate file type and size
-        ]);
-
+        
         try {
+            $request->validate([
+                'name' => 'required',
+                'pdf' => 'required|mimes:pdf|max:2048', // Validate file type and size
+            ]);
             // Upload the file to S3
             if ($request->hasFile('pdf')) {
                 $file = $request->file('pdf');

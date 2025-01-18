@@ -118,4 +118,22 @@ class ForumController extends Controller
             return redirect()->back()->withErrors(['error' => 'Failed to create discussion']);
         }
     }
+
+    public function deleteForumDiscussion(Request $request, string $forumId, string $discussionId)
+    {
+        $forum = Forum::findOrFail($forumId);
+        $forumDiscussion = $forum->discussions()->findOrFail($discussionId);
+
+        // is User teacher of this forum course?
+        $forumCourseTeacher = $forum->courseItem->courseSection->course->teacher_id === $request->user()->id;
+
+        // Make sure the user is the creator of the discussion
+        if ($forumDiscussion->creator_id !== $request->user()->id) {
+            return redirect()->back()->withErrors(['You are not allowed to delete this discussion']);
+        }
+
+        $forumDiscussion->delete();
+
+        return redirect()->back()->with('success', 'Discussion deleted successfully');
+    }
 }

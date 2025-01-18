@@ -38,8 +38,7 @@ class SubmissionController extends Controller
                 return view('submission.show', compact('submission', 'submissionItem', 'canSubmit'));
             }
         } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->withErrors('Submission not found.');
+            return redirect()->back()->withErrors('Something went wrong: ' . $e->getMessage());
         }
     }
 
@@ -78,9 +77,7 @@ class SubmissionController extends Controller
 
             return redirect()->route('course.show.edit', ['id' => $courseId]);
         } catch (\Exception $e) {
-            Log::error('Error creating submission field: ' . $e->getMessage());
-            dd($e);
-            return redirect()->back()->withErrors('Failed to create submission field.');
+            return redirect()->back()->withErrors('Failed to create submission field: ' . $e->getMessage());
         }
     }
 

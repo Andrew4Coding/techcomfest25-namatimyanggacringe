@@ -32,8 +32,7 @@ class CourseSectionController extends Controller
 
             return redirect()->back();
         } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->withErrors(['error' => 'Error deleting course section']);
+            return redirect()->back()->withErrors(['error' => 'Error deleting course section ' . $e->getMessage()]);
         }
     }
 
@@ -47,8 +46,7 @@ class CourseSectionController extends Controller
 
             return redirect()->back();
         } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->withErrors(['error' => 'Error updating course section']);
+            return redirect()->back()->withErrors(['error' => 'Error updating course section ' . $e->getMessage()]);
         }
     }
 
