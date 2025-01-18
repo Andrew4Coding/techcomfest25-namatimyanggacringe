@@ -108,11 +108,11 @@ class DashboardController extends Controller
                         $attendance = $courseItem->courseItemable;
                         $attendanceSubmissionCount = $attendance->submissions->count();
 
-                        $attendanceRate = $attendanceSubmissionCount / $studentCount;
+                        $rate = $attendanceSubmissionCount / $studentCount;
 
                         $attendanceRate = new \stdClass();
                         $attendanceRate->date = $attendance->created_at;
-                        $attendanceRate->rate = $attendanceRate;
+                        $attendanceRate->rate = $rate;
                         $attendanceRates[] = $attendanceRate;
                     }
                 }
@@ -128,6 +128,7 @@ class DashboardController extends Controller
 
             $course->averageScore = $totalAssignment > 0 ? $submissionSum / $totalAssignment : 0;
 
+            // Get top 5 latest attendance rates
             $course->attendanceRates = $attendanceRates;
         }
 

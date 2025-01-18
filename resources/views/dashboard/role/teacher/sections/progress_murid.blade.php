@@ -1,9 +1,9 @@
 @php
-    $selectedCourse = request()->input('course-progress', $courses[0]->id);    
+    $selectedCourse = request()->input('course', $courses[0]->id);    
     $topStudents = $courses->find($selectedCourse)->topStudents;
 @endphp
 <div class="p-5 md:p-10 bg-white shadow-smooth rounded-xl h-full">
-    <div class="w-full flex items-center justify-between mb-2">
+    <div class="w-full flex items-center justify-between mb-2 h-16">
         <h3>Progress Murid</h3>
         <a href="/dashboard/progress">
             <button class="btn btn-outline">
@@ -12,7 +12,7 @@
         </a>
     </div>
     <form action="">
-        <select name="course-progress" id="" class="select" onchange="this.form.submit()">
+        <select name="course" id="" class="select" onchange="this.form.submit()">
             @foreach ($courses as $course)
                 <option value="{{$course->id}}"
                     @if ($course->id == $selectedCourse)
