@@ -1,4 +1,4 @@
-@php use App\Models\Teacher;use Illuminate\Support\Facades\Auth; @endphp
+@php use App\Models\Quiz;use App\Models\Student;use App\Models\Teacher;use Illuminate\Support\Facades\Auth; @endphp
 <div class="flex w-full justify-between items-center gap-10 pl-5"
      style="{{
         $item->is_public
@@ -80,11 +80,26 @@
         </a>
     @elseif ($item->course_itemable_type === 'App\Models\Quiz')
         <div class="w-full flex justify-between items-center">
+            <dialog id="quiz_decline_modal_{{ $loop->index }}" class="modal">
+                <div class="modal-box">
+                    <h3 class="text-lg font-bold">Stop!</h3>
+                    <p class="py-4">Anda tidak dapat mengakses kuis ini!</p>
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
             <a
                 @if(Auth::user()->userable_type === Teacher::class)
                     href="{{ route('quiz.edit', ['quizId' => $item->courseItemable->id]) }}"
-            @else
-                href="{{ route('quiz.show', ['quizId' => $item->courseItemable->id]) }}"
+                @else
+                    @if(($item->courseItemProgress && $item->courseItemProgress->is_completed) ||
+                    date_create_from_format('Y-m-d H:i:sT', $item->finish) > date_create())
+                        name="Sudah selesai" class="cursor-pointer"
+                onclick="quiz_decline_modal_{{ $loop->index }}.showModal()"
+                @else
+                    href="{{ route('quiz.show', ['quizId' => $item->courseItemable->id]) }}"
+                @endif
                 @endif
             >
                 <div class="w-full flex items-center gap-4 my-5 justify-between">
@@ -107,6 +122,7 @@
                     <x-lucide-notebook-text class="w-4 h-4"/>
                     Jawaban
                 </a>
+            @else
             @endif
         </div>
     @endif
@@ -159,10 +175,17 @@
     @else
         <div class="tooltip tooltip-top mr-5" data-tip="Tandai Selesai">
             <div class="flex items-center">
-                <input type="checkbox" class="checkbox checkbox-primary h-5 w-5 text-blue-600"
-                       {{ $item->courseItemProgress && $item->courseItemProgress->is_completed ? 'checked' : '' }}
-                       onchange="toggleCompletion('{{ $item->id }}', this.checked)"
-                       id="completion-checkbox-{{ $item->id }}">
+                @if(Auth::user()->userable_type === Student::class && $item->course_itemable_type === Quiz::class)
+                    <input type="checkbox" class="checkbox checkbox-primary h-5 w-5 text-blue-600"
+                           {{ $item->courseItemProgress && $item->courseItemProgress->is_completed ? 'checked' : '' }}
+                           disabled
+                           id="completion-checkbox-{{ $item->id }}">
+                @else
+                    <input type="checkbox" class="checkbox checkbox-primary h-5 w-5 text-blue-600"
+                           {{ $item->courseItemProgress && $item->courseItemProgress->is_completed ? 'checked' : '' }}
+                           onchange="toggleCompletion('{{ $item->id }}', this.checked)"
+                           id="completion-checkbox-{{ $item->id }}">
+                @endif
             </div>
         </div>
         <script>

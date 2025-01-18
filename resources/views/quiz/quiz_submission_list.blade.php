@@ -25,7 +25,7 @@
 
                     <td class="flex gap-2 justify-center items-center">
                         <a href="{{ route('quiz.solution', ['quizId' => $submission->quiz->id]) }}?id={{ $submission->student->id }}"
-                           class="btn btn-sm btn-info">Edit</a>
+                           class="btn btn-sm btn-info">Periksa</a>
                         <button class="btn btn-sm btn-error" onclick="delete_modal_{{ $loop->index }}.showModal()">
                             Delete
                         </button>

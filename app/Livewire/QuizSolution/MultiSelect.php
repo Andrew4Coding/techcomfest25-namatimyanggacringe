@@ -15,8 +15,15 @@ class MultiSelect extends Component
 
     public QuizSubmissionItem $submissionItem;
     public string $submissionId;
+    public string $feedback;
 
     public bool $flagged;
+
+    public function saveFeedback()
+    {
+        $this->submissionItem->feedback = $this->feedback;
+        $this->submissionItem->save();
+    }
 
     public function mount($page, $questionCount, $question, $submissionId)
     {
@@ -30,7 +37,7 @@ class MultiSelect extends Component
             ->where('quiz_submission_id', $submissionId)
             ->first();
 
-        echo $this->question->answer;
+        $this->feedback = $this->submissionItem->feedback;
 
         if ($this->submissionItem->flagged !== null) {
             $this->flagged = $this->submissionItem->flagged;

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\CourseItemProgress;
 use App\Models\Question;
 use App\Models\QuizSubmission;
 use App\Models\QuizSubmissionItem;
@@ -38,6 +39,9 @@ class Quiz extends Component
 
     // actual student's quiz submission
     public QuizSubmission $submission;
+
+    // progress
+    public CourseItemProgress $progress;
 
     // array of flagged question
     public array $flagged = [];
@@ -106,6 +110,8 @@ class Quiz extends Component
         // change submission flag
         $this->submission->done = true;
         $this->submission->save();
+        $this->progress->is_completed = true;
+        $this->progress->save();
 
         // back, if not exists then move to the index page.
         $this->redirect("/quiz/submit/$this->id");
@@ -172,13 +178,11 @@ class Quiz extends Component
                 ::with('questions', 'questions.questionChoices')
                 ->withCount('questions')
                 ->where('id', $this->id)
-                ->firstOrFail();
+                ->firstOrFail(['*']);
 
             // FIXME: LOGIC UNTUK TIDAK BOLEH MASUK
             $curDate = strtotime(date("Y-m-d h:i:sa"));
             if (strtotime($this->quiz['start']) > $curDate or strtotime($this->quiz['finish']) <= $curDate) {
-                echo "Tidak boleh masuk";
-                // ini kalau mau "back"
                 // $this->redirectIntended('/');
             }
 
@@ -191,15 +195,22 @@ class Quiz extends Component
                     'quiz_id' => $this->id,
                     'student_id' => Auth::user()->userable_id,
                 ]);
+            $this->progress = CourseItemProgress
+                ::where('course_item_id', $this->quiz->courseItem->id)
+                ->where('user_id', Auth::user()->id)
+                ->firstOrNew([
+                    'course_item_id' => $this->quiz->courseItem->id,
+                    'user_id' => Auth::user()->id,
+                ]);
 
             $this->submission->save();
+            $this->progress->save();
 
             // FIXME: BENERIN GUE MALAS :V
             if (
                 $this->submission->done or // sudah selesai
                 $this->getTimeLeft() < 0    // durasi habis
             ) {
-                echo "Tidak boleh masuk";
                 // ini kalau mau "back"
                 // $this->redirectIntended('/');
             }
@@ -231,9 +242,6 @@ class Quiz extends Component
 
             // check if quiz is valid
             $this->isValid = true;
-
-            echo $this->submission->quizSubmissionItems()->get();
-
         } catch (ModelNotFoundException $e) {
             $this->redirectIntended('/');
             return;

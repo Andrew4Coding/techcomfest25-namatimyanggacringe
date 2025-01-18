@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\CheckSubmission;
 use App\Models\Course;
+use App\Models\CourseItemProgress;
 use App\Models\CourseSection;
 use App\Models\Quiz;
 use App\Models\QuizSubmission;
@@ -48,6 +49,8 @@ class QuizController extends Controller
     {
         $submission = QuizSubmission::where("id", $id)->first();
         $submission->delete();
+        $progress = CourseItemProgress::where("course_item_id", $submission->quiz->courseItem->id)->where('user_id', $submission->student->user->id)->first();
+        $progress->delete();
         return redirect()->back();
     }
 

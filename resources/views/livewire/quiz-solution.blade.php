@@ -1,3 +1,4 @@
+@php use App\Enums\QuestionType; @endphp
 <main class="flex flex-col gap-20 min-h-full">
     @if($isValid)
         {{-- Header: Course Name, Progress, and Timer --}}
@@ -5,16 +6,21 @@
             <h3 class="text-xl sm:text-2xl lg:text-2xl font-semibold text-gray-800">
                 {{ $quiz->courseItem->name }}
             </h3>
-            <div class="px-4 py-2 rounded-xl bg-base-200 flex">
-            <span class="flex flex-col">
+            <div class="flex w-full justify-between">
+                <div class="px-4 py-2 rounded-xl bg-base-200 flex">
+            <span class="font-bold flex flex-col">
                 <span class="text-sm text-gray-700">Nama Siswa</span>
                 {{ $submission->student->user->name }}
             </span>
-                <div class="divider lg:divider-horizontal"></div>
-                <span class="flex flex-col">
+                    <div class="divider lg:divider-horizontal"></div>
+                    <span class="flex font-bold flex-col">
                 <span class="text-sm text-gray-700">Kelas</span>
                 {{ $submission->student->class }}
                 </span>
+                </div>
+                <a href="{{ route('quiz.submission.list', ['quizId' => $quiz->id]) }}" class="btn btn-primary">
+                    Simpan
+                </a>
             </div>
         </div>
 
@@ -53,7 +59,9 @@
             {{-- Right Section: Current Question --}}
             <section class="flex-1">
                 <div class="bg-white p-4 sm:p-6 lg:p-6 shadow-lg rounded-lg">
-                    @if($curQuestion->question_type === \App\Enums\QuestionType::MultipleChoice)
+                    <span
+                        class="px-4 py-2 text-white font-bold rounded-t-xl bg-primary">{{ $curSubmissionItem->score }} / {{ $curQuestion->weight }}</span>
+                    @if($curQuestion->question_type === QuestionType::MultipleChoice)
                         <livewire:quiz-solution.multiple-choice
                             :page="$page"
                             :questionCount="$questionCount"
@@ -61,7 +69,7 @@
                             :submissionId="$submission->id"
                             wire:key="question-{{ $page }}"
                         />
-                    @elseif($curQuestion->question_type === \App\Enums\QuestionType::ShortAnswer)
+                    @elseif($curQuestion->question_type === QuestionType::ShortAnswer)
                         <livewire:quiz-solution.short-answer
                             :page="$page"
                             :questionCount="$questionCount"
@@ -69,7 +77,7 @@
                             :submissionId="$submission->id"
                             wire:key="question-{{ $page }}"
                         />
-                    @elseif($curQuestion->question_type === \App\Enums\QuestionType::MultiSelect)
+                    @elseif($curQuestion->question_type === QuestionType::MultiSelect)
                         <livewire:quiz-solution.multi-select
                             :page="$page"
                             :questionCount="$questionCount"
@@ -77,7 +85,7 @@
                             :submissionId="$submission->id"
                             wire:key="question-{{ $page }}"
                         />
-                    @elseif($curQuestion->question_type === \App\Enums\QuestionType::Essay)
+                    @elseif($curQuestion->question_type === QuestionType::Essay)
                         <livewire:quiz-solution.essay
                             :page="$page"
                             :questionCount="$questionCount"

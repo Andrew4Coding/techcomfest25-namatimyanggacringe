@@ -38,6 +38,8 @@ class QuizSolution extends Component
     // actual student's quiz submission
     public QuizSubmission $submission;
 
+    public QuizSubmissionItem $curSubmissionItem;
+
     // array of flagged question
     public array $flagged = [];
 
@@ -51,6 +53,7 @@ class QuizSolution extends Component
     {
         $this->page = $page;
         $this->curQuestion = $this->quiz['questions'][$page - 1];
+        $this->curSubmissionItem = $this->submission->quizSubmissionItems[$page - 1];
     }
 
     /**
@@ -63,6 +66,7 @@ class QuizSolution extends Component
         if ($this->page < $this->questionCount) {
             $this->page++;
             $this->curQuestion = $this->quiz['questions'][$this->page - 1];
+            $this->curSubmissionItem = $this->submission->quizSubmissionItems[$this->page - 1];
         }
     }
 
@@ -76,6 +80,7 @@ class QuizSolution extends Component
         if ($this->page > 1) {
             $this->page--;
             $this->curQuestion = $this->quiz['questions'][$this->page - 1];
+            $this->curSubmissionItem = $this->submission->quizSubmissionItems[$this->page - 1];
         }
     }
 
@@ -128,8 +133,10 @@ class QuizSolution extends Component
             $this->submission = QuizSubmission
                 ::where('quiz_id', $quizId)
                 ->where('student_id', $id)
+                ->with('quizSubmissionItems')
                 ->first();
 
+            $this->curSubmissionItem = $this->submission->quizSubmissionItems->first();
 
             // iterate each questions to mark flagged
             foreach ($this->quiz->questions as $question) {

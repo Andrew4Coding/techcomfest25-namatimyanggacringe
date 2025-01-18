@@ -1,4 +1,5 @@
-<section class="bg-white flex-1 p-10 shadow-md rounded-lg relative">
+@php use App\Models\Teacher; @endphp
+<section class="bg-white flex-1 p-10 shadow-md rounded-lg rounded-tl-none elative">
     {{-- Informasi Pertanyaan dan Pagination --}}
     <div class="flex justify-between items-center">
         <h1 id="question-content" class="text-2xl font-bold">{{ $question['content'] }}</h1>
@@ -35,13 +36,16 @@
                 <label for="answer-{{ $choice->id }}" class="text-gray-700 text-lg cursor-pointer flex items-center">
                     {{ $choice['content'] }}
                     @if($isCorrect)
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 ml-2" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
                         <span class="text-green-600 ml-1">Benar</span>
                     @elseif($isSelected && !$isCorrect)
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 ml-2" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M6 18L18 6M6 6l12 12"/>
                         </svg>
                         <span class="text-red-600 ml-1">Salah</span>
                     @endif
@@ -55,7 +59,7 @@
         <div class="w-full flex items-center justify-between">
             <h2 class="text-lg font-semibold">Feedback</h2>
             @if(Auth::user()->userable_type === Teacher::class)
-                <button class="btn btn-sm">
+                <button class="btn btn-sm" onclick="feedback_modal.showModal()">
                     <x-lucide-pencil class="w-4 h-4"/>
                 </button>
             @endif
@@ -68,8 +72,9 @@
     {{-- Aksi: Flag, Back, Next --}}
     <div class="mt-10 flex justify-between items-center">
         {{-- Tombol Flag Pertanyaan --}}
-        <label class="flex items-center gap-2 px-4 py-2 rounded-lg @if($flagged) text-yellow-100 bg-yellow-400 hover:bg-yellow-500 @else text-yellow-500 bg-yellow-100 hover:bg-yellow-200 @endif">
-            <input wire:model.change="flagged" type="checkbox" class="hidden" />
+        <label
+            class="flex items-center gap-2 px-4 py-2 rounded-lg @if($flagged) text-yellow-100 bg-yellow-400 hover:bg-yellow-500 @else text-yellow-500 bg-yellow-100 hover:bg-yellow-200 @endif">
+            <input wire:model.change="flagged" type="checkbox" class="hidden"/>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                  stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -80,8 +85,21 @@
         <button wire:click="$parent.prev" class="btn w-1/4 @if($page <= 1) btn-disabled @else btn-primary @endif">
             Back
         </button>
-        <button wire:click="$parent.next" class="btn w-1/4 @if($page >= $questionCount) btn-disabled @else btn-primary @endif">
+        <button wire:click="$parent.next"
+                class="btn w-1/4 @if($page >= $questionCount) btn-disabled @else btn-primary @endif">
             Next
         </button>
     </div>
+    <dialog id="feedback_modal" class="modal">
+        <div class="modal-box w-11/12 max-w-5xl">
+            <h3 class="text-lg font-bold mb-3">Give Feedback</h3>
+            <textarea wire:model="feedback" class="textarea w-full" rows="4"></textarea>
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button, it will close the modal -->
+                    <button class="btn" wire:click="saveFeedback">Simpan</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
 </section>
