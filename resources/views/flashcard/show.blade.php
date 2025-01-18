@@ -1,119 +1,140 @@
+@php
+    $selected_theme = $flashcard->subject;
+
+    $theme = config('constants.theme')[$selected_theme];
+@endphp
 @extends('layout.layout')
 @section('content')
-    <section class="flex flex-col md:flex-row justify-between items-start space-y-4 md:space-y-0 md:space-x-4">
-        <div class="space-y-2 mb-4 md:mb-0">
-            <h1 class="text-3xl font-semibold">AI-Powered Flash Card</h1>
-            <p class="font-medium gradient-blue text-transparent bg-clip-text">
-                Belajar menjadi menyenangkan dan praktis.
-            </p>
+    <section>
+        <div class="breadcrumbs text-sm">
+            <ul>
+                <li><a href="/flashcard">Flashcard</a></li>
+                <li>
+                    <a href="{{ route('flashcard.index') }}">
+                        {{ $flashcard->name }}
+                    </a>
+                </li>
+            </ul>
         </div>
 
-        @if (!$flashcards->isEmpty())
-            <button class="btn btn-primary" onclick="document.getElementById('add_flashcard_modal').showModal()">
-                <x-lucide-file class="w-4 h-4" />
-                Import Document
-            </button>
-        @endif
+        <div class="p-4 mb-10 rounded-xl relative min-h-52 overflow-hidden"
+            style="background-color: {{ $theme['primary'] }}; color: {{ $theme['secondary'] }};">
 
-
-    </section>
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-10">
-        @foreach ($flashcards as $flashcard)
             @php
                 $selected_theme = $flashcard->subject;
-                $theme = config('constants.theme')[$selected_theme];
             @endphp
 
-            <a href="{{ url('/flashcard/' . $flashcard->id) }}" class="no-underline text-black h-fit">
-                <div class="w-full relative overflow-hidden shadow-lg h-full rounded-xl md:max-h-64 lg:max-h-80 hover:scale-105 duration-300 flashcard-{{ $flashcard->theme }}"
-                    style="background-color: {{ $theme['primary'] }}; color: {{ $theme['secondary'] ?? $theme['secondary'] }}">
-                    @php
-                        $selected_theme = $flashcard->subject;
-                    @endphp
-                    @if ($selected_theme == 'sosiologi')
-                        <img src="{{ asset('corner/yellow-corner-left.png') }}" alt=""
-                            class="absolute bottom-0 left-0 w-40 h-20 object-contain z-0">
-                        <img src="{{ asset('corner/yellow-corner-right.png') }}" alt=""
-                            class="absolute top-0 right-0 w-40 h-20 object-contain z-0">
-                    @elseif ($selected_theme == 'ekonomi')
-                        <img src="{{ asset('corner/green-corner-left.png') }}" alt=""
-                            class="absolute bottom-0 -left-12 w-40 h-20 object-contain z-0">
-                        <img src="{{ asset('corner/green-corner-right.png') }}" alt=""
-                            class="absolute top-0 -right-12 w-40 h-20 object-contain z-0">
-                    @elseif ($selected_theme == 'bahasa')
-                        <img src="{{ asset('corner/blue-corner.png') }}" alt=""
-                            class="absolute top-0 left-0 object-contain z-0">
-                    @endif
-                    <div class="px-6 py-4 flex flex-col justify-between h-full relative grow min-h-52">
-                        <div class="absolute inset-0 flex items-center justify-center -bottom-20">
-                            <img src="{{ asset('subject-mascots/' . $flashcard->subject . '.png') }}" alt="Icon"
-                                class="w-80 h-full object-contain">
-                        </div>
-                        <div class="font-bold text-xl mb-2" style="color: {{ $theme['tertiary'] }}">{{ $flashcard->name }}
-                        </div>
+            @if ($selected_theme == 'sosiologi')
+                <img src="{{ asset('corner/yellow-corner-left.png') }}" alt=""
+                    class="absolute bottom-0 left-0 w-40 h-20 object-contain z-0">
+                <img src="{{ asset('corner/yellow-corner-right.png') }}" alt=""
+                    class="absolute top-0 right-0 w-40 h-20 object-contain z-0">
+            @elseif ($selected_theme == 'ekonomi')
+                <img src="{{ asset('corner/green-corner-left.png') }}" alt=""
+                    class="absolute bottom-0 -left-12 w-40 h-20 object-contain z-0">
+                <img src="{{ asset('corner/green-corner-right.png') }}" alt=""
+                    class="absolute top-0 -right-12 w-40 h-20 object-contain z-0">
+            @elseif ($selected_theme == 'bahasa')
+                <img src="{{ asset('corner/blue-corner.png') }}" alt=""
+                    class="absolute top-0 left-0 object-contain z-0">
+            @endif
+
+            <!-- Adjusted Image Styling -->
+            <div class="absolute inset-0 pointer-events-none top-10 left-20">
+                <img src="{{ asset('subject-mascots/' . $flashcard->subject . '.png') }}" alt="Icon"
+                    class="w-80 h-52 object-contain z-0">
+            </div>
+
+            <div class="z-10">
+                <div class="flex justify-between items-center mb-4 w-full">
+                    <h1 class="text-xl font-bold" style="color: {{$theme['tertiary']}}">{{ $flashcard->name }}</h1>
+                    <div class="flex gap-4 items-center"
+                        style="color: {{$theme['tertiary']}}"
+                    >
+                        <x-lucide-pencil class="min-w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
+                            onclick="document.getElementById('edit_flashcard_modal_{{ $flashcard->id }}').showModal();" />
+                        <button
+                            onclick="document.getElementById('delete_flashcard_modal_{{ $flashcard->id }}').showModal();">
+                            <x-lucide-trash class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
+                        </button>
+                        <dialog id="delete_flashcard_modal_{{ $flashcard->id }}" class="modal text-black">
+                            <div class="modal-box">
+                                <h3 class="font-semibold text-lg">Konfirmasi Penghapusan</h3>
+                                <p>Apakah Anda yakin ingin menghapus Flashcard ini?</p>
+                                <div class="modal-action">
+                                    <button type="button" class="btn"
+                                        onclick="document.getElementById('delete_flashcard_modal_{{ $flashcard->id }}').close();">Batalkan</button>
+                                    <form method="POST"
+                                        action="{{ route('flashcard.delete', ['id' => $flashcard->id]) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-error">Hapus</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <form method="dialog" class="modal-backdrop">
+                                <button>close</button>
+                            </form>
+                        </dialog>
+
+                        <dialog id="edit_flashcard_modal_{{ $flashcard->id }}" class="modal text-black">
+                            <div class="modal-box">
+                                <h3 class="font-semibold text-lg">Edit Flashcard</h3>
+                                <form method="POST" action="{{ route('flashcard.update', ['id' => $flashcard->id]) }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-4">
+                                        <label for="name" class="block text-sm font-medium">Name</label>
+                                        <input type="text" name="name" id="name" value="{{ $flashcard->name }}"
+                                            class="input input-bordered w-full">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="description" class="block text-sm font-medium">Description
+                                            (Optional)</label>
+                                        <textarea name="description" id="description" class="textarea textarea-bordered w-full">{{ $flashcard->description }}</textarea>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="subject" class="block text-sm font-medium text-gray-700">Mata Pelajaran
+                                            Terkait</label>
+                                        <select name="subject" id="subject" class="select w-full" required>
+                                            <option value="sosiologi">Sosiologi</option>
+                                            <option value="ekonomi">Ekonomi</option>
+                                            <option value="bahasa">Bahasa</option>
+                                            <option value="geografi">Geografi</option>
+                                            <option value="matematika">Matematika</option>
+                                            <option value="sejarah">Sejarah</option>
+                                            <option value="ipa">IPA</option>
+                                        </select>
+                                    </div>
+                                    <div class="modal-action">
+                                        <button type="button" class="btn"
+                                            onclick="document.getElementById('edit_flashcard_modal_{{ $flashcard->id }}').close();">Batalkan</button>
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <form method="dialog" class="modal-backdrop">
+                                <button>close</button>
+                            </form>
+                        </dialog>
                     </div>
                 </div>
-            </a>
+            </div>
+        </div>
+
+        {{-- Iterate over flashCardItems --}}
+        @foreach ($flashcardItems as $item)
+            <div class="w-full p-5 bg-white shadow-smooth rounded-xl mb-5">
+                <div class="border-b-2 border-gray-100 pb-5 mb-5">
+                    <h3 class="font-medium text-lg">
+                        {{ $item->question }}
+                    </h3>
+                </div>
+                <p>
+                    {{ $item->answer }}
+                </p>
+            </div>
         @endforeach
 
-        @if ($flashcards->isEmpty())
-            <div class="flex flex-col items-center justify-center space-y-4 h-full min-h-[500px] col-span-3">
-                <img src="{{ asset('mascot-love.png') }}" alt="Icon" class="w-52 h-auto">
-                <h1 class="text-xl font-medium">
-                    Belum ada Flash Card Saat ini
-                </h1>
-                <button class="btn btn-primary" onclick="document.getElementById('add_flashcard_modal').showModal()">
-                    <x-lucide-plus class="w-4 h-4" />
-                    Buat Flash Card
-                </button>
-            </div>
-        @endif
-
     </section>
-    <dialog id="add_flashcard_modal" class="modal">
-        <div class="modal-box">
-            <h3 class="font-semibold text-lg">Buat Flashcard Baru</h3>
-            <form method="POST" action="{{ route('flashcard.create') }}" enctype="multipart/form-data">
-                @csrf
-                <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>
-                    <input type="text" name="name" id="name" class="input w-full" placeholder="Nama Flashcard"
-                        required />
-                </div>
-                <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi
-                        (Opsional)</label>
-                    <textarea name="description" id="description" class="textarea w-full" placeholder="Deskripsi Flashcard"></textarea>
-                </div>
-                <div class="mb-4">
-                    <label for="subject" class="block text-sm font-medium text-gray-700">Mata Pelajaran Terkait</label>
-                    <select name="subject" id="subject" class="select w-full" required>
-                        <option value="sosiologi">Sosiologi</option>
-                        <option value="ekonomi">Ekonomi</option>
-                        <option value="bahasa">Bahasa</option>
-                        <option value="geografi">Geografi</option>
-                        <option value="matematika">Matematika</option>
-                        <option value="sejarah">Sejarah</option>
-                        <option value="ipa">IPA</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label for="pdf" class="block text-sm font-medium text-gray-700">Upload File</label>
-                    <input type="file" name="pdf" id="pdf" accept=".pdf"
-                        class="file-input file-input-primary w-full" required />
-                </div>
-                <div class="modal-action">
-                    <button type="button" class="btn"
-                        onclick="document.getElementById('add_flashcard_modal').close()">Batalkan</button>
-                    <button type="submit" class="btn btn-primary">
-                        <x-lucide-plus class="w-4 h-4" />
-                        Tambahkan
-                    </button>
-                </div>
-            </form>
-        </div>
-        <form method="dialog" class="modal-backdrop">
-            <button>close</button>
-        </form>
-    </dialog>
 @endsection

@@ -11,10 +11,10 @@ use Spatie\PdfToText\Pdf;
 
 class FlashCardController extends Controller
 {
-    public function show()
+    public function index()
     {
         $flashcards = FlashCard::all();
-        return view('flashcard.show', compact('flashcards'));
+        return view('flashcard.index', compact('flashcards'));
     }
 
     public function create(Request $request)
@@ -132,7 +132,7 @@ class FlashCardController extends Controller
                 // Get all flashcards related to current user
                 $flashcards = FlashCard::where('user_id', $request->user()->id)->get();
 
-                return view('flashcard.show', compact('flashcards'));
+                return view('flashcard.index', compact('flashcards'));
             } else {
                 return back()->withErrors(['error' => 'No file uploaded.']);
             }
@@ -142,13 +142,13 @@ class FlashCardController extends Controller
 
     }
 
-    public function index(string $id) {
+    public function show(string $id) {
         $flashcard = FlashCard::find($id);
 
         // Get all FlashCardItems related to the FlashCard
         $flashcardItems = FlashCardItem::where('flash_card_id', $flashcard->id)->get();
         
-        return view('flashcard.index', compact('flashcard', 'flashcardItems'));
+        return view('flashcard.show', compact('flashcard', 'flashcardItems'));
     }
 
     public function delete(string $id) {
@@ -163,7 +163,7 @@ class FlashCardController extends Controller
         // Delete the FlashCard
         $flashcard->delete();
 
-        return redirect()->route('flashcard.show');
+        return redirect()->route('flashcard.index');
     }
 
     public function update(Request $request, string $id) {

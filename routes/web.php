@@ -144,8 +144,8 @@ Route::prefix('attendance')->middleware(['auth'])->group(function () {
 
 // FlashCard
 Route::prefix('flashcard')->middleware(['auth'])->group(function () {
-    Route::get('/', [FlashCardController::class, 'show'])->name('flashcard.show');
-    Route::get('/{id}', [FlashCardController::class, 'index'])->name('flashcard.index');
+    Route::get('/', [FlashCardController::class, 'index'])->name('flashcard.index');
+    Route::get('/{id}', [FlashCardController::class, 'show'])->name('flashcard.show');
     Route::post('/create', [FlashCardController::class, 'create'])->name('flashcard.create');
     Route::delete('/delete/{id}', [FlashCardController::class, 'delete'])->name('flashcard.delete');
     Route::put('/update/{id}', [FlashCardController::class, 'update'])->name('flashcard.update');

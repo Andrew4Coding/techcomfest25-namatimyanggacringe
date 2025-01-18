@@ -917,7 +917,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('logo.png') }}">
 </head>
 
-<body class="font-poppins antialiased bg-white text-black">
+<body class="font-poppins antialiased bg-[#F6F5FF] text-black">
     <div class="flex max-w-[100vw] overflow-hidden max-h-screen">
         @if (
             !request()->is('login') &&
@@ -940,13 +940,9 @@
                 request()->is('register/student');
         @endphp
         <main
-            class="min-h-screen w-full overflow-y-scroll overflow-x-hidden {{ $isAuth ? '' : 'px-5 md:px-20 py-10 md:py-20' }} bg-[#F6F5FF]">
+            class="w-full overflow-y-auto overflow-x-hidden {{ $isAuth ? '' : 'px-5 md:px-20 my-10 md:my-20' }}">
             @yield('content')
         </main>
-    </div>
-    <div id="toast"
-        class="fixed bottom-10 right-10 z-50 hidden 
-        bg-white border border-gray-200 shadow-lg rounded-lg p-4 w-80 max-w-full">
     </div>
 
     @include('layout.error', ['errors' => $errors])
