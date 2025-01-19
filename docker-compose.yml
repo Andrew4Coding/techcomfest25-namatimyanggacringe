@@ -1,13 +1,4 @@
 services:
-    laravel.queue.worker:
-        build:
-            context: .
-        command: php artisan queue:work --daemon
-        volumes:
-            - '.:/var/www/html'
-        depends_on:
-            - laravel.test
-            - postgres
     laravel.test:
         build:
             context: './vendor/laravel/sail/runtimes/8.4'
