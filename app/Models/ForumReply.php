@@ -25,6 +25,7 @@ class ForumReply extends Model
         'reply_to_id',
         'is_ai',
         'is_verified',
+        'is_public'
     ];
 
     /**

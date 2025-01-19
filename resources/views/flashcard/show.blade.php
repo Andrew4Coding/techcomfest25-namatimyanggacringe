@@ -24,6 +24,76 @@
                 $selected_theme = $flashcard->subject;
             @endphp
 
+            <div class="flex justify-between items-center mb-4 w-full z-50 relative">
+                <h1 class="text-xl font-bold" style="color: {{ $theme['tertiary'] }}">{{ $flashcard->name }}</h1>
+                <div class="flex gap-4 items-center" style="color: {{ $theme['tertiary'] }}">
+                    <x-lucide-pencil class="min-w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
+                        onclick="document.getElementById('edit_flashcard_modal_{{ $flashcard->id }}').showModal();" />
+                    <button onclick="document.getElementById('delete_flashcard_modal_{{ $flashcard->id }}').showModal();">
+                        <x-lucide-trash class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
+                    </button>
+                    <dialog id="delete_flashcard_modal_{{ $flashcard->id }}" class="modal text-black">
+                        <div class="modal-box">
+                            <h3 class="font-semibold text-lg">Konfirmasi Penghapusan</h3>
+                            <p>Apakah Anda yakin ingin menghapus Flashcard ini?</p>
+                            <div class="modal-action">
+                                <button type="button" class="btn"
+                                    onclick="document.getElementById('delete_flashcard_modal_{{ $flashcard->id }}').close();">Batalkan</button>
+                                <form method="POST" action="{{ route('flashcard.delete', ['id' => $flashcard->id]) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-error">Hapus</button>
+                                </form>
+                            </div>
+                        </div>
+                        <form method="dialog" class="modal-backdrop">
+                            <button>close</button>
+                        </form>
+                    </dialog>
+
+                    <dialog id="edit_flashcard_modal_{{ $flashcard->id }}" class="modal text-black">
+                        <div class="modal-box">
+                            <h3 class="font-semibold text-lg">Edit Flashcard</h3>
+                            <form method="POST" action="{{ route('flashcard.update', ['id' => $flashcard->id]) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="mb-4">
+                                    <label for="name" class="block text-sm font-medium">Name</label>
+                                    <input type="text" name="name" id="name" value="{{ $flashcard->name }}"
+                                        class="input input-bordered w-full">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="description" class="block text-sm font-medium">Description
+                                        (Optional)</label>
+                                    <textarea name="description" id="description" class="textarea textarea-bordered w-full">{{ $flashcard->description }}</textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="subject" class="block text-sm font-medium text-gray-700">Mata Pelajaran
+                                        Terkait</label>
+                                    <select name="subject" id="subject" class="select w-full" required>
+                                        <option value="sosiologi">Sosiologi</option>
+                                        <option value="ekonomi">Ekonomi</option>
+                                        <option value="bahasa">Bahasa</option>
+                                        <option value="geografi">Geografi</option>
+                                        <option value="matematika">Matematika</option>
+                                        <option value="sejarah">Sejarah</option>
+                                        <option value="ipa">IPA</option>
+                                    </select>
+                                </div>
+                                <div class="modal-action">
+                                    <button type="button" class="btn"
+                                        onclick="document.getElementById('edit_flashcard_modal_{{ $flashcard->id }}').close();">Batalkan</button>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                        <form method="dialog" class="modal-backdrop">
+                            <button>close</button>
+                        </form>
+                    </dialog>
+                </div>
+            </div>
+
             @if ($selected_theme == 'sosiologi')
                 <img src="{{ asset('corner/yellow-corner-left.png') }}" alt=""
                     class="absolute bottom-0 left-0 w-40 h-20 object-contain z-0">
@@ -45,95 +115,53 @@
                     class="w-80 h-52 object-contain z-0">
             </div>
 
-            <div class="z-10">
-                <div class="flex justify-between items-center mb-4 w-full">
-                    <h1 class="text-xl font-bold" style="color: {{$theme['tertiary']}}">{{ $flashcard->name }}</h1>
-                    <div class="flex gap-4 items-center"
-                        style="color: {{$theme['tertiary']}}"
-                    >
-                        <x-lucide-pencil class="min-w-4 h-4 hover:scale-105 duration-150 cursor-pointer"
-                            onclick="document.getElementById('edit_flashcard_modal_{{ $flashcard->id }}').showModal();" />
-                        <button
-                            onclick="document.getElementById('delete_flashcard_modal_{{ $flashcard->id }}').showModal();">
-                            <x-lucide-trash class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
-                        </button>
-                        <dialog id="delete_flashcard_modal_{{ $flashcard->id }}" class="modal text-black">
-                            <div class="modal-box">
-                                <h3 class="font-semibold text-lg">Konfirmasi Penghapusan</h3>
-                                <p>Apakah Anda yakin ingin menghapus Flashcard ini?</p>
-                                <div class="modal-action">
-                                    <button type="button" class="btn"
-                                        onclick="document.getElementById('delete_flashcard_modal_{{ $flashcard->id }}').close();">Batalkan</button>
-                                    <form method="POST"
-                                        action="{{ route('flashcard.delete', ['id' => $flashcard->id]) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-error">Hapus</button>
-                                    </form>
-                                </div>
-                            </div>
-                            <form method="dialog" class="modal-backdrop">
-                                <button>close</button>
-                            </form>
-                        </dialog>
 
-                        <dialog id="edit_flashcard_modal_{{ $flashcard->id }}" class="modal text-black">
-                            <div class="modal-box">
-                                <h3 class="font-semibold text-lg">Edit Flashcard</h3>
-                                <form method="POST" action="{{ route('flashcard.update', ['id' => $flashcard->id]) }}">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="mb-4">
-                                        <label for="name" class="block text-sm font-medium">Name</label>
-                                        <input type="text" name="name" id="name" value="{{ $flashcard->name }}"
-                                            class="input input-bordered w-full">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="description" class="block text-sm font-medium">Description
-                                            (Optional)</label>
-                                        <textarea name="description" id="description" class="textarea textarea-bordered w-full">{{ $flashcard->description }}</textarea>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="subject" class="block text-sm font-medium text-gray-700">Mata Pelajaran
-                                            Terkait</label>
-                                        <select name="subject" id="subject" class="select w-full" required>
-                                            <option value="sosiologi">Sosiologi</option>
-                                            <option value="ekonomi">Ekonomi</option>
-                                            <option value="bahasa">Bahasa</option>
-                                            <option value="geografi">Geografi</option>
-                                            <option value="matematika">Matematika</option>
-                                            <option value="sejarah">Sejarah</option>
-                                            <option value="ipa">IPA</option>
-                                        </select>
-                                    </div>
-                                    <div class="modal-action">
-                                        <button type="button" class="btn"
-                                            onclick="document.getElementById('edit_flashcard_modal_{{ $flashcard->id }}').close();">Batalkan</button>
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <form method="dialog" class="modal-backdrop">
-                                <button>close</button>
-                            </form>
-                        </dialog>
-                    </div>
-                </div>
-            </div>
         </div>
 
         {{-- Iterate over flashCardItems --}}
         @foreach ($flashcardItems as $item)
             <div class="w-full p-5 bg-white shadow-smooth rounded-xl mb-5">
-                <div class="border-b-2 border-gray-100 pb-5 mb-5">
+                <div class="border-b-2 border-gray-100 pb-5 mb-5 flex justify-between items-center">
                     <h3 class="font-medium text-lg">
                         {{ $item->question }}
                     </h3>
+                    <div class="flex gap-2 bg-blue-500 w-fit px-3 py-2 text-white rounded-full">
+                        <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
+                        <x-lucide-eye class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
+                        <x-lucide-trash class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" 
+                            onclick="document.getElementById('delete_flashcard_item_modal_{{ $item->id }}').showModal();"
+                        />
+                    </div>
                 </div>
                 <p>
                     {{ $item->answer }}
                 </p>
             </div>
+
+            <dialog id="delete_flashcard_item_modal_{{ $item->id }}" class="modal">
+                <div class="modal-box">
+                    <h3 class="font-semibold text-lg">Konfirmasi Penghapusan</h3>
+                    <p>Apakah Anda yakin ingin menghapus Flashcard Item ini?</p>
+                    <div class="modal-action">
+                        <button type="button" class="btn"
+                            onclick="document.getElementById('delete_flashcard_item_modal_{{ $item->id }}').close();">Batalkan</button>
+                        <form method="POST" action="{{ route('flashcard.deleteCard', ['id' => $item->id]) }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-error">Hapus</button>
+                        </form>
+                    </div>
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
+
+            <dialog id="edit_flashcard_item_modal_{{$item->id}}" class="modal">
+
+            </dialog>
+
+
         @endforeach
 
     </section>

@@ -940,7 +940,7 @@
                 request()->is('register/student');
         @endphp
         <main
-            class="w-full overflow-y-auto overflow-x-hidden {{ $isAuth ? '' : 'px-5 md:px-20 my-10 md:my-20' }}">
+            class="w-full overflow-y-auto overflow-x-hidden {{ $isAuth ? '' : 'px-5 md:px-20 py-10 mb-10 md:py-20 md:mb-20' }}">
             @yield('content')
         </main>
     </div>

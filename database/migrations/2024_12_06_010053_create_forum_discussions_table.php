@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('forum_discussions', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->string('title');
-            $table->text('description')->nullable();
+            $table->string('content');
+            $table->boolean('is_public')->default(true);
 
             $table->uuid('creator_id')->nullable();
             $table->uuid('forum_id');

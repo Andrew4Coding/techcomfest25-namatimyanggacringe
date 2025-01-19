@@ -20,13 +20,17 @@
                     {{ $forumDiscussion->creator->name }}
                 </h3>
                 <p class="text-gray-600 text-xs">
-                    XII MIPA II •
+                    {{
+                        // If user is student or teacher
+                        $forumDiscussion->creator->isTeacher() ? 'Guru' : 'Siswa Kelas' . $forumDiscussion->creator->userable->class
+                    }}
+                    •
                     {{ $forumDiscussion->created_at->diffForHumans() }}
                 </p>
             </div>
         </div>
         <h1 class="text-xl font-semibold text-gray-800">
-            {{ $forumDiscussion->title }}
+            {{ $forumDiscussion->content }}
         </h1>
 
         <form
@@ -93,7 +97,7 @@
                     marked
                 } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
                 document.getElementById('comment-{{ $comment->id }}').innerHTML =
-                    marked(document.getElementById('comment-{{ $comment->id }}').innerHTML);
+                    marked("‎" + `${document.getElementById('comment-{{ $comment->id }}').innerHTML}`);
             </script>
         </div>
     @endforeach
