@@ -68,10 +68,6 @@ class QuizTeacher extends Component
     public function deleteQuestion($id)
     {
         Question::destroy($id);
-        $this->quiz = QuizModel
-            ::with('questions', 'questions.questionChoices')
-            ->findOrFail($this->quiz->id)
-            ->first();
     }
 
     // FUNCTION
@@ -150,7 +146,7 @@ class QuizTeacher extends Component
             $this->duration = $this->quiz->duration;
 
             $this->name = $this->quiz->courseItem->name;
-            $this->description = $this->quiz->courseItem->description;
+            $this->description = $this->quiz->courseItem->description ?? "";
 
         } catch (ModelNotFoundException $e) {
             redirect()->back();
