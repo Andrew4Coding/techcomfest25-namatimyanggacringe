@@ -8,13 +8,14 @@ use App\Models\QuizSubmissionItem;
 use App\Models\Teacher;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use App\Models\Quiz as QuizModel;
 
 class QuizSolution extends Component
 {
+    #[Url(as: 'id')]
+    public string $studentId;
 
     // uuid regex for filtering valid uuid
     private string $uuidRegex = "/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/";
@@ -34,8 +35,12 @@ class QuizSolution extends Component
     // total question in the quiz
     public int $questionCount;
 
+    public bool $isCheckedByTeacher;
+
     // actual student's quiz submission
     public QuizSubmission $submission;
+
+    public QuizSubmissionItem $curSubmissionItem;
 
     // array of flagged question
     public array $flagged = [];
@@ -50,6 +55,7 @@ class QuizSolution extends Component
     {
         $this->page = $page;
         $this->curQuestion = $this->quiz['questions'][$page - 1];
+        $this->curSubmissionItem = $this->submission->quizSubmissionItems[$page - 1];
     }
 
     /**
@@ -62,6 +68,7 @@ class QuizSolution extends Component
         if ($this->page < $this->questionCount) {
             $this->page++;
             $this->curQuestion = $this->quiz['questions'][$this->page - 1];
+            $this->curSubmissionItem = $this->submission->quizSubmissionItems[$this->page - 1];
         }
     }
 
@@ -75,17 +82,14 @@ class QuizSolution extends Component
         if ($this->page > 1) {
             $this->page--;
             $this->curQuestion = $this->quiz['questions'][$this->page - 1];
+            $this->curSubmissionItem = $this->submission->quizSubmissionItems[$this->page - 1];
         }
     }
 
-    /**
-     * @return int
-     */
-    protected function getTimeLeft(): int
-    {
-        // subtract duration from progress
-        $progress = strtotime(date("Y-m-d h:i:sa") - strtotime($this->submission->getCreatedAtColumn()));
-        return $this->quiz->duration - $progress;
+    public function toggleChecked(): void {
+        $this->isCheckedByTeacher = !$this->isCheckedByTeacher;
+        $this->submission->is_checked_by_teacher = $this->isCheckedByTeacher;
+        $this->submission->save();
     }
 
     /**
@@ -100,12 +104,6 @@ class QuizSolution extends Component
             $this->redirectIntended("/");
             return;
         } // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
-
-        // if teacher redirect
-        if (Auth::user()->userable_type === Teacher::class) {
-            $this->redirectIntended("/");
-            return;
-        }
 
         // check whether the quiz is found
         try {
@@ -123,12 +121,21 @@ class QuizSolution extends Component
             // get question count
             $this->questionCount = $this->quiz->questions_count;
 
+            if (Auth::user()->userable_type === Teacher::class) {
+                $id = $this->studentId;
+            } else {
+                $id = Auth::user()->userable_id;
+            }
+
             // check submission
             $this->submission = QuizSubmission
                 ::where('quiz_id', $quizId)
-                ->where('student_id', Auth::user()->userable_id)
+                ->where('student_id', $id)
+                ->with('quizSubmissionItems')
                 ->first();
 
+            $this->curSubmissionItem = $this->submission->quizSubmissionItems->first();
+            $this->isCheckedByTeacher = $this->submission->is_checked_by_teacher;
 
             // iterate each questions to mark flagged
             foreach ($this->quiz->questions as $question) {

@@ -9,6 +9,9 @@
                     <h2 class="card-title">
                         {{ $question->content }}
                     </h2>
+                    <span class="text-sm text-gray-700">
+                        ({{ $question->weight }} poin)
+                    </span>
                 </div>
                 <div class="flex gap-2">
                     <button class="btn btn-square"
@@ -56,13 +59,19 @@
                         <dialog wire:key="dialog-{{ $question->questionChoices[$i]->id }}"
                                 id="my_modal_{{ str_replace('-', '_', $question->questionChoices[$i]->id) }}"
                                 class="modal">
-                            <div class="modal-box">
+                            <div class="modal-box flex flex-col gap-2">
                                 <form method="dialog">
                                     <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                                 </form>
-                                <h3 class="text-lg font-bold">Ganti Jawaban!</h3>
-                                <textarea wire:model="choices.{{ $i }}.content" placeholder="aku adalah..."
+                                <h3 class="text-lg font-bold">Ganti Jawaban</h3>
+                                <textarea wire:model="choices.{{ $i }}.content" placeholder="Masukkan jawaban..."
                                           class="textarea textarea-bordered w-full p-2 py-4"></textarea>
+                                <form method="dialog">
+                                    <button wire:click="updateChoiceContent({{ $i }})"
+                                            class="w-full btn btn-sm btn-primary">
+                                        Simpan
+                                    </button>
+                                </form>
                             </div>
                         </dialog>
 

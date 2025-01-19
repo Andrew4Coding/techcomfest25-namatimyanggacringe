@@ -17,7 +17,7 @@
             </div>
         </section>
         <section class="flex items-start lg:items-center justify-center">
-            <form action="{{ route('login') }}" method="POST" class="w-full max-w-sm">
+            <form action="{{ route('login') }}" method="POST" class="w-full max-w-sm mx-10">
                 @csrf
                 <div class="mb-8 text-center lg:text-left">
                     <h1 class="text-3xl font-semibold mb-2">Sign In</h1>

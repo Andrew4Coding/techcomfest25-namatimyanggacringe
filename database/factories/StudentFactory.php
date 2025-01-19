@@ -20,7 +20,8 @@ class StudentFactory extends Factory
     {
         
         return [
-            'class' => $this->faker->randomElement(['XII-IPA-1', 'XII-IPA-2', 'XII-IPA-3', 'XII-IPA-4'])
+            'class' => $this->faker->randomElement(['XII-IPA-1', 'XII-IPA-2', 'XII-IPA-3', 'XII-IPA-4']),
+            'nisn' => $this->faker->unique()->numerify('##############')
         ];
     }
 }

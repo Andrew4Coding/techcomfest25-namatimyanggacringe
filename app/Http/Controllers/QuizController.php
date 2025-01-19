@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Jobs\CheckSubmission;
 use App\Models\Course;
+use App\Models\CourseItemProgress;
 use App\Models\CourseSection;
 use App\Models\Quiz;
+use App\Models\QuizSubmission;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -14,17 +16,6 @@ use Illuminate\Support\Str;
 
 class QuizController extends Controller
 {
-    public function submitQuiz(Request $request, string $quizId)
-    {
-        if ($request->user()->userable_type !== Student::class) return redirect('/');
-
-        $studentId = $request->user()->userable_id;
-
-        CheckSubmission::dispatch($quizId, $studentId);
-
-        return redirect('/');
-    }
-
     public function showQuiz()
     {
         return view('quiz.quiz');
@@ -33,7 +24,28 @@ class QuizController extends Controller
     public function showQuizSummary(string $id)
     {
         $quiz = Quiz::where("id", $id)->withCount('quizSubmissions')->first();
-        return view('quiz.quiz_summary', compact('quiz'));
+        $siswaCount = $quiz->courseItem->courseSection->course->students->count();
+        return view('quiz.quiz_summary', compact('quiz', 'siswaCount'));
+    }
+
+    public function showQuizSubmissionList(string $id)
+    {
+        $submissions = QuizSubmission::where("quiz_id", $id)->get();
+        return view('quiz.quiz_submission_list', compact('submissions'));
+    }
+
+    public function deleteQuizSubmission(string $id)
+    {
+        $submission = QuizSubmission::where("id", $id)->first();
+        $submission->delete();
+        $progress = CourseItemProgress::where("course_item_id", $submission->quiz->courseItem->id)->where('user_id', $submission->student->user->id)->first();
+        $progress->delete();
+        return redirect()->back();
+    }
+
+    public function createNewQuiz(Request $request, string $courseItemId)
+    {
+
     }
 
     public function showQuizSession(string $id, Request $request)

@@ -73,9 +73,14 @@
                                 <h3 class="text-lg font-bold">Ganti Jawaban!</h3>
                                 <textarea
                                     wire:model="choices.{{$i}}.content"
-                                    placeholder="aku adalah..."
+                                    placeholder="Masukkan jawaban..."
                                     class="textarea textarea-bordered w-full p-2 py-4"
                                 ></textarea>
+                                <form method="dialog">
+                                    <button wire:click="updateChoiceContent({{ $i }})" class="w-full btn btn-sm btn-primary">
+                                        Simpan
+                                    </button>
+                                </form>
                             </div>
                         </dialog>
 

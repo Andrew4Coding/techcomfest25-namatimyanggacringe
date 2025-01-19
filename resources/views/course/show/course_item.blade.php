@@ -1,3 +1,4 @@
+@php use App\Models\Quiz;use App\Models\Student;use App\Models\Teacher;use Illuminate\Support\Facades\Auth; @endphp
 <div class="flex w-full justify-between items-center gap-10 pl-5"
      style="{{
         $item->is_public
@@ -79,7 +80,37 @@
         </a>
     @elseif ($item->course_itemable_type === 'App\Models\Quiz')
         <div class="w-full flex justify-between items-center">
-            <a href="{{ route('quiz.edit', ['quizId' => $item->courseItemable->id]) }}">
+            <dialog id="quiz_decline_modal_{{ $loop->index }}" class="modal">
+                <div class="modal-box">
+                    <h3 class="text-lg font-bold">Stop!</h3>
+                    @if($item->courseItemProgress && $item->courseItemProgress->is_completed)
+                        <p class="py-4">Anda sudah menyelesaikan kuis ini!</p>
+                    @else
+                        <p class="py-4">Anda sudah tidak dapat mengakses kuis ini!</p>
+                    @endif
+                    <form method="dialog" class="mt-2 flex justify-end">
+                        <button class="btn btn-primary">
+                            OK
+                        </button>
+                    </form>
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
+            <a
+                @if(Auth::user()->userable_type === Teacher::class)
+                    href="{{ route('quiz.edit', ['quizId' => $item->courseItemable->id]) }}"
+                @else
+                    @if(($item->courseItemProgress && $item->courseItemProgress->is_completed) ||
+                    date_create_from_format('Y-m-d H:i:sT', $item->finish) > date_create())
+                        name="Sudah selesai" class="cursor-pointer"
+                onclick="quiz_decline_modal_{{ $loop->index }}.showModal()"
+                @else
+                    href="{{ route('quiz.show', ['quizId' => $item->courseItemable->id]) }}"
+                @endif
+                @endif
+            >
                 <div class="w-full flex items-center gap-4 my-5 justify-between">
                     <div class="flex gap-4">
                         <div class="w-10 h-10 flex items-center justify-center">
@@ -95,10 +126,19 @@
                     </div>
                 </div>
             </a>
-            <button class="btn btn-primary">
-                <x-lucide-notebook-text class="w-4 h-4"/>
-                Jawaban
-            </button>
+            @if(Auth::user()->userable_type === Teacher::class)
+                <a href="{{ route('quiz.summary', ['quizId' => $item->courseItemable->id]) }}" class="btn btn-primary">
+                    <x-lucide-notebook-text class="w-4 h-4"/>
+                    Jawaban
+                </a>
+            @else
+                @if($item->courseItemProgress && $item->courseItemProgress->is_completed)
+                    <a href="{{ route('quiz.solution', ['quizId' => $item->courseItemable->id]) }}" class="btn btn-primary">
+                        <x-lucide-notebook-text class="w-4 h-4"/>
+                        Hasil
+                    </a>
+                @endif
+            @endif
         </div>
     @endif
 
@@ -150,10 +190,17 @@
     @else
         <div class="tooltip tooltip-top mr-5" data-tip="Tandai Selesai">
             <div class="flex items-center">
-                <input type="checkbox" class="checkbox checkbox-primary h-5 w-5 text-blue-600"
-                       {{ $item->courseItemProgress && $item->courseItemProgress->is_completed ? 'checked' : '' }}
-                       onchange="toggleCompletion('{{ $item->id }}', this.checked)"
-                       id="completion-checkbox-{{ $item->id }}">
+                @if(Auth::user()->userable_type === Student::class && $item->course_itemable_type === Quiz::class)
+                    <input type="checkbox" class="checkbox checkbox-primary h-5 w-5 text-blue-600"
+                           {{ $item->courseItemProgress && $item->courseItemProgress->is_completed ? 'checked' : '' }}
+                           onclick="return false;"
+                           id="completion-checkbox-{{ $item->id }}">
+                @else
+                    <input type="checkbox" class="checkbox checkbox-primary h-5 w-5 text-blue-600"
+                           {{ $item->courseItemProgress && $item->courseItemProgress->is_completed ? 'checked' : '' }}
+                           onchange="toggleCompletion('{{ $item->id }}', this.checked)"
+                           id="completion-checkbox-{{ $item->id }}">
+                @endif
             </div>
         </div>
         <script>

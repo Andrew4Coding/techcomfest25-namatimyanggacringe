@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Jobs\CheckSubmission;
+use App\Models\CourseItemProgress;
 use App\Models\Question;
 use App\Models\QuizSubmission;
 use App\Models\QuizSubmissionItem;
@@ -16,7 +18,6 @@ use App\Models\Quiz as QuizModel;
 class Quiz extends Component
 {
     // get id from query params
-    #[Url]
     public string $id = '';
 
     // uuid regex for filtering valid uuid
@@ -39,6 +40,9 @@ class Quiz extends Component
 
     // actual student's quiz submission
     public QuizSubmission $submission;
+
+    // progress
+    public CourseItemProgress $progress;
 
     // array of flagged question
     public array $flagged = [];
@@ -107,9 +111,15 @@ class Quiz extends Component
         // change submission flag
         $this->submission->done = true;
         $this->submission->save();
+        $this->progress->is_completed = true;
+        $this->progress->save();
 
         // back, if not exists then move to the index page.
-        $this->redirect("/quiz/submit/$this->id");
+        $quizId = $this->quiz->id;
+        $studentId = Auth::user()->userable_id;
+        CheckSubmission::dispatch($quizId, $studentId);
+
+        $this->redirectRoute('course.show', ['id' => $this->quiz->courseItem->courseSection->course->id]);
     }
 
 
@@ -141,8 +151,7 @@ class Quiz extends Component
 
         // subtract duration from progress
         $progress = strtotime(date("Y-m-d h:i:sa")) - strtotime($this->submission->created_at);
-        return $this->quiz->duration - $progress;
-//        return 3600 - $progress;
+        return $this->quiz->duration * 60 - $progress;
     }
 
     /**
@@ -150,13 +159,15 @@ class Quiz extends Component
      *
      * mount is used for mounting the component when it first loaded.
      */
-    public function mount(): void
+    public function mount(string $quizId): void
     {
         // check whether the regex matched and the id given is valid id
-        if (!preg_match($this->uuidRegex, $this->id)) {
-            $this->redirectIntended("/");
+        if (!preg_match($this->uuidRegex, $quizId)) {
+            $this->redirectRoute('courses')->withErrors('Invalid Quiz ID');
             return;
-        } // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
+        }
+
+        $this->id = $quizId;
 
         // if teacher redirect to edit page
         if (Auth::user()->userable_type === Teacher::class) {
@@ -171,13 +182,11 @@ class Quiz extends Component
                 ::with('questions', 'questions.questionChoices')
                 ->withCount('questions')
                 ->where('id', $this->id)
-                ->firstOrFail();
+                ->firstOrFail(['*']);
 
             // FIXME: LOGIC UNTUK TIDAK BOLEH MASUK
             $curDate = strtotime(date("Y-m-d h:i:sa"));
             if (strtotime($this->quiz['start']) > $curDate or strtotime($this->quiz['finish']) <= $curDate) {
-                echo "Tidak boleh masuk";
-                // ini kalau mau "back"
                 // $this->redirectIntended('/');
             }
 
@@ -190,15 +199,22 @@ class Quiz extends Component
                     'quiz_id' => $this->id,
                     'student_id' => Auth::user()->userable_id,
                 ]);
+            $this->progress = CourseItemProgress
+                ::where('course_item_id', $this->quiz->courseItem->id)
+                ->where('user_id', Auth::user()->id)
+                ->firstOrNew([
+                    'course_item_id' => $this->quiz->courseItem->id,
+                    'user_id' => Auth::user()->id,
+                ]);
 
             $this->submission->save();
+            $this->progress->save();
 
             // FIXME: BENERIN GUE MALAS :V
             if (
-                $this->submission->done or  // sudah selesai
+                $this->submission->done or // sudah selesai
                 $this->getTimeLeft() < 0    // durasi habis
             ) {
-                echo "Tidak boleh masuk";
                 // ini kalau mau "back"
                 // $this->redirectIntended('/');
             }
@@ -230,9 +246,6 @@ class Quiz extends Component
 
             // check if quiz is valid
             $this->isValid = true;
-
-            echo $this->submission->quizSubmissionItems()->get();
-
         } catch (ModelNotFoundException $e) {
             $this->redirectIntended('/');
             return;

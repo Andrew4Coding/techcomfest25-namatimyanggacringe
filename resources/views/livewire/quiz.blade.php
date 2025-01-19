@@ -1,4 +1,5 @@
-<main class="px-4 sm:px-6 md:px-8 lg:px-20 flex flex-col py-8 sm:py-10 gap-20 bg-gray-50 min-h-screen">
+@php use App\Enums\QuestionType; @endphp
+<main class=" flex flex-col gap-20 min-h-full">
     @if($isValid)
         {{-- Header: Course Name, Progress, and Timer --}}
         <div class="flex flex-col lg:flex-row items-start lg:items-center w-full gap-8">
@@ -9,7 +10,8 @@
                 <span class="text-xs sm:text-sm text-gray-700">
                     {{ intdiv($page * 100, $questionCount) }}%
                 </span>
-                <progress class="progress progress-primary h-3 flex-1 rounded" value="{{ $page }}" max="{{ $questionCount }}"></progress>
+                <progress class="progress progress-primary h-3 flex-1 rounded" value="{{ $page }}"
+                          max="{{ $questionCount }}"></progress>
             </div>
             <span wire:poll.500ms id="time-left" class="text-sm sm:text-lg font-medium text-red-600">
                 {{ $timeLeft }}
@@ -51,7 +53,7 @@
             {{-- Right Section: Current Question --}}
             <section class="flex-1">
                 <div class="bg-white p-4 sm:p-6 lg:p-6 shadow-lg rounded-lg">
-                    @if($curQuestion->question_type === \App\Enums\QuestionType::MultipleChoice)
+                    @if($curQuestion->question_type === QuestionType::MultipleChoice)
                         <livewire:quiz.multiple-choice
                             :page="$page"
                             :questionCount="$questionCount"
@@ -59,7 +61,7 @@
                             :submissionId="$submission->id"
                             wire:key="question-{{ $page }}"
                         />
-                    @elseif($curQuestion->question_type === \App\Enums\QuestionType::ShortAnswer)
+                    @elseif($curQuestion->question_type === QuestionType::ShortAnswer)
                         <livewire:quiz.short-answer
                             :page="$page"
                             :questionCount="$questionCount"
@@ -67,7 +69,7 @@
                             :submissionId="$submission->id"
                             wire:key="question-{{ $page }}"
                         />
-                    @elseif($curQuestion->question_type === \App\Enums\QuestionType::MultiSelect)
+                    @elseif($curQuestion->question_type === QuestionType::MultiSelect)
                         <livewire:quiz.multi-select
                             :page="$page"
                             :questionCount="$questionCount"
@@ -75,7 +77,7 @@
                             :submissionId="$submission->id"
                             wire:key="question-{{ $page }}"
                         />
-                    @elseif($curQuestion->question_type === \App\Enums\QuestionType::Essay)
+                    @elseif($curQuestion->question_type === QuestionType::Essay)
                         <livewire:quiz.essay
                             :page="$page"
                             :questionCount="$questionCount"

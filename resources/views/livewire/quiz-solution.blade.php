@@ -1,15 +1,66 @@
-<main class="px-4 sm:px-6 md:px-8 lg:px-20 flex flex-col py-8 sm:py-10 gap-20 bg-gray-50 min-h-screen">
+@php use App\Enums\QuestionType;use App\Models\Teacher;use Illuminate\Support\Facades\Auth; @endphp
+<main class="flex flex-col gap-20 min-h-full">
     @if($isValid)
         {{-- Header: Course Name, Progress, and Timer --}}
-        <div class="flex flex-col lg:flex-row items-start lg:items-center w-full gap-8">
+        <div class="flex flex-col items-start w-full gap-4">
             <h3 class="text-xl sm:text-2xl lg:text-2xl font-semibold text-gray-800">
                 {{ $quiz->courseItem->name }}
             </h3>
-            <div class="flex items-center flex-1 gap-4 w-full">
-                <span class="text-xs sm:text-sm text-gray-700">
-                    {{ intdiv($page * 100, $questionCount) }}%
+            <div class="flex w-full justify-between">
+                <div class="px-4 py-2 rounded-xl bg-base-200 flex">
+            <span class="font-bold flex flex-col">
+                <span class="text-sm text-gray-700">Nama Siswa</span>
+                {{ $submission->student->user->name }}
+            </span>
+                    <div class="divider lg:divider-horizontal"></div>
+                    <span class="flex font-bold flex-col">
+                <span class="text-sm text-gray-700">Kelas</span>
+                {{ $submission->student->class }}
                 </span>
-                <progress class="progress progress-primary h-3 flex-1 rounded" value="{{ $page }}" max="{{ $questionCount }}"></progress>
+                </div>
+                <div class="flex justify-between items-center gap-3">
+                    @if(Auth::user()->userable_type === Teacher::class)
+                        <button
+                            wire:click="toggleChecked"
+                            class="btn shadow-sm transition-colors duration-200
+                                           @if($isCheckedByTeacher)
+                                               bg-green-500
+                                           @else
+                                               bg-white text-gray-700
+                                           @endif
+                                           hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        >
+                            @if($isCheckedByTeacher)
+                                <x-lucide-check class="w-4 h-4"/> Terverifikasi
+                            @else
+                                <x-lucide-x class="w-4 h-4"/> Belum Diverifikasi
+                            @endif
+                        </button>
+                        <a href="{{ route('quiz.submission.list', ['quizId' => $quiz->id]) }}" class="btn btn-primary">
+                            Simpan
+                        </a>
+                    @else
+                        <button
+                            class="btn shadow-sm transition-colors duration-200 cursor-default
+                                           @if($isCheckedByTeacher)
+                                               bg-green-500 hover:bg-green-500
+                                           @else
+                                               bg-white text-gray-700
+                                           @endif
+                                           "
+                        >
+                            @if($isCheckedByTeacher)
+                                <x-lucide-check class="w-4 h-4"/> Terverifikasi
+                            @else
+                                <x-lucide-x class="w-4 h-4"/> Belum Diverifikasi
+                            @endif
+                        </button>
+                        <a href="{{ route('course.show', ['id' => $quiz->courseItem->courseSection->course->id]) }}"
+                           class="btn btn-primary">
+                            Kembali
+                        </a>
+                    @endif
+                </div>
             </div>
         </div>
 
@@ -48,7 +99,9 @@
             {{-- Right Section: Current Question --}}
             <section class="flex-1">
                 <div class="bg-white p-4 sm:p-6 lg:p-6 shadow-lg rounded-lg">
-                    @if($curQuestion->question_type === \App\Enums\QuestionType::MultipleChoice)
+                    <span
+                        class="px-4 py-2 text-white font-bold rounded-t-xl bg-primary">{{ $curSubmissionItem->score }} / {{ $curQuestion->weight }}</span>
+                    @if($curQuestion->question_type === QuestionType::MultipleChoice)
                         <livewire:quiz-solution.multiple-choice
                             :page="$page"
                             :questionCount="$questionCount"
@@ -56,7 +109,7 @@
                             :submissionId="$submission->id"
                             wire:key="question-{{ $page }}"
                         />
-                    @elseif($curQuestion->question_type === \App\Enums\QuestionType::ShortAnswer)
+                    @elseif($curQuestion->question_type === QuestionType::ShortAnswer)
                         <livewire:quiz-solution.short-answer
                             :page="$page"
                             :questionCount="$questionCount"
@@ -64,7 +117,7 @@
                             :submissionId="$submission->id"
                             wire:key="question-{{ $page }}"
                         />
-                    @elseif($curQuestion->question_type === \App\Enums\QuestionType::MultiSelect)
+                    @elseif($curQuestion->question_type === QuestionType::MultiSelect)
                         <livewire:quiz-solution.multi-select
                             :page="$page"
                             :questionCount="$questionCount"
@@ -72,7 +125,7 @@
                             :submissionId="$submission->id"
                             wire:key="question-{{ $page }}"
                         />
-                    @elseif($curQuestion->question_type === \App\Enums\QuestionType::Essay)
+                    @elseif($curQuestion->question_type === QuestionType::Essay)
                         <livewire:quiz-solution.essay
                             :page="$page"
                             :questionCount="$questionCount"

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
 
             $table->boolean('done')->default(false);
+            $table->boolean('is_checked_by_teacher')->default(false);
 
             $table->uuid('quiz_id');
             $table->uuid('student_id');

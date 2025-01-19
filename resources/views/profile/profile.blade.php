@@ -13,14 +13,17 @@
         </div>
     </section>
     <main class="flex items-center justify-center w-full relative">
-        <img src="{{ asset('lanyard-left.png') }}" alt="Mascot" class="absolute w-80 hidden md:block -top-[370px] -translate-x-16 z-0">
+        <img src="{{ asset('lanyard-left.png') }}" alt="Mascot"
+            class="absolute w-80 hidden md:block -top-[370px] -translate-x-16 z-0">
 
         <div class="text-center flex flex-col items-center bg-white rounded-3xl shadow-smooth p-10 relative">
-            <img src="{{ asset('lanyard-right.png') }}" alt="Mascot" class="absolute w-80 hidden md:block -top-[320px] translate-x-20 z-10">
+            <img src="{{ asset('lanyard-right.png') }}" alt="Mascot"
+                class="absolute w-80 hidden md:block -top-[320px] translate-x-20 z-10">
 
             <img src="{{ asset('mindora-icon.png') }}" alt="Mascot" class="absolute w-12 h-auto left-5 top-10">
-            <img src="{{ asset('mindora-mascot.png') }}" alt="Mascot" class="absolute w-32 h-auto right-5 top-40 rotate-12">
-            
+            <img src="{{ asset('mindora-mascot.png') }}" alt="Mascot"
+                class="absolute w-32 h-auto right-5 top-40 rotate-12">
+
             <img class="w-48 h-4w-48 rounded-xl object-cover mb-4"
                 src="
                     @if (auth()->user()->profile_picture) {{ env('AWS_URL') . auth()->user()->profile_picture }}                        
@@ -35,14 +38,23 @@
                 <x-lucide-mail class="w-4 h-4 mr-1 flex gap-2" />
                 {{ Auth::user()->email }}
             </p>
+            @if (Auth::user()->userable_type == 'App\Models\Student')
+                <p class="text-sm text-gray-600 mb-1 flex gap-2">
+                    <x-lucide-school class="w-4 h-4 mr-1" />
+                    {{ Auth::user()->userable->class }}
+                </p>
+                <p class="text-sm text-gray-600 mb-1 flex gap-2">
+                    <x-lucide-user class="w-4 h-4 mr-1" />
+                    {{ Auth::user()->userable->nisn }}
+                </p>
+            @endif
             <p class="text-sm text-gray-600 mb-1 flex gap-2">
                 <x-lucide-phone class="w-4 h-4 mr-1" />
                 {{ Auth::user()->phone_number }}
             </p>
+
             <a href="/profile/edit" class="w-full">
-                <button
-                    class="btn btn-primary w-full mt-4"
-                >
+                <button class="btn btn-primary w-full mt-4">
                     <x-lucide-pencil class="w-4 h-4 mr-1" />
                     Edit Profile
                 </button>

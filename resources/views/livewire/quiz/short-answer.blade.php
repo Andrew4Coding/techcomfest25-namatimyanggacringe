@@ -7,13 +7,15 @@
 
     {{-- Answer Options  --}}
     <div class="my-4">
-        <input type="text" placeholder="Masukkan jawaban..." class="input input-bordered w-full" wire:model.blur="answer">
+        <input type="text" placeholder="Masukkan jawaban..." class="input input-bordered w-full"
+               wire:model.live="answer">
     </div>
 
     {{-- Actions: Flag, Next, Submit --}}
     <div class="mt-10 flex justify-between items-center">
         {{-- Flag Question Button --}}
-        <label class="flex items-center gap-2 px-4 py-2 rounded-lg @if($flagged)  text-yellow-100 bg-yellow-400 hover:bg-yellow-500 @else text-yellow-500 bg-yellow-100 hover:bg-yellow-200 @endif">
+        <label
+            class="flex items-center gap-2 px-4 py-2 rounded-lg @if($flagged)  text-yellow-100 bg-yellow-400 hover:bg-yellow-500 @else text-yellow-500 bg-yellow-100 hover:bg-yellow-200 @endif">
             <input wire:model.change="flagged" type="checkbox" class="hidden"
             />
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"

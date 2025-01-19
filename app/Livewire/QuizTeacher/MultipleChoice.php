@@ -21,7 +21,6 @@ class MultipleChoice extends Component
     public int $weight;
 
 
-
     /**
      * Converts index to corresponding letter (A, B, C, ...)
      */
@@ -71,6 +70,17 @@ class MultipleChoice extends Component
         $this->question->content = $this->content;
         $this->question->weight = $this->weight;
         $this->question->save();
+    }
+
+    public function updateChoiceContent($idx)
+    {
+        foreach ($this->question->questionChoices as $choice) {
+            if ($choice->id == $this->choices[$idx]['id']) {
+                $choice->content = $this->choices[$idx]['content'];
+                $choice->save();
+                break;
+            }
+        }
     }
 
     /**
@@ -126,6 +136,7 @@ class MultipleChoice extends Component
             session()->flash('error', 'Choice not found in the database.');
         }
     }
+
     public function mount()
     {
         // Initialize the choices array with existing question choices

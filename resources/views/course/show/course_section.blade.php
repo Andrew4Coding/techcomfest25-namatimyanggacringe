@@ -11,12 +11,12 @@
                             @if ($section->is_public)
                                 <div class="tooltip tooltip-top flex items-center" data-tip="Hide from students">
                                     <x-lucide-eye
-                                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12"/>
+                                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:rotate-12"/>
                                 </div>
                             @else
                                 <div class="tooltip tooltip-right" data-tip="Show to students">
                                     <x-lucide-eye-off
-                                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:text-blue-500 hover:rotate-12"/>
+                                        class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer hover:rotate-12"/>
                                 </div>
                             @endif
                         </button>
@@ -76,7 +76,7 @@
     @endphp
 
     @foreach ($courseItems as $item)
-        @include('course.components.course_item', ['item' => $item])
+        @include('course.show.course_item', ['item' => $item])
 
         <dialog id="delete_courseitem_modal_{{ $item->id }}" class="modal">
             <div class="modal-box">

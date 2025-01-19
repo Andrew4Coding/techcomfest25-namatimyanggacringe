@@ -12,7 +12,9 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 
     <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
 
@@ -915,41 +917,35 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('logo.png') }}">
 </head>
 
-<body class="font-poppins antialiased bg-white text-black">
+<body class="font-poppins antialiased bg-[#F6F5FF] text-black">
     <div class="flex max-w-[100vw] overflow-hidden max-h-screen">
-        @if (!request()->is('login') && !request()->is('register') && !request()->is('register/teacher') && !request()->is('register/student') && !request()->is('/'))
+        @if (
+            !request()->is('login') &&
+                !request()->is('register') &&
+                !request()->is('register/teacher') &&
+                !request()->is('register/student') &&
+                !request()->is('/'))
             @include('layout.sidebar')
+            @include('layout.sidebar_mobile')
         @endif
 
         @if (request()->is('/'))
             @include('layout.navbar')
         @endif
         @php
-            $isAuth = request()->is('login') || request()->is('register') || request()->is('register/teacher') || request()->is('register/student');
+            $isAuth =
+                request()->is('login') ||
+                request()->is('register') ||
+                request()->is('register/teacher') ||
+                request()->is('register/student');
         @endphp
-        <main class="min-h-screen w-full overflow-y-scroll overflow-x-hidden {{ $isAuth ? '' : 'px-5 md:px-20 py-10 md:py-20' }} bg-[#F6F5FF]">
+        <main
+            class="w-full overflow-y-auto overflow-x-hidden {{ $isAuth ? '' : 'px-5 md:px-20 my-10 md:my-20' }}">
             @yield('content')
         </main>
     </div>
-    <div id="toast" class="fixed bottom-10 right-10 z-50 hidden 
-        bg-white border border-gray-200 shadow-lg rounded-lg p-4 w-80 max-w-full" ></div>
-    @if ($errors->any())
-        <div role="alert" class="alert alert-error fixed bottom-10 right-10 max-w-[250px] overflow-y-scroll max-h-[200px] p-4 rounded-lg shadow-lg bg-red-100 text-red-800 flex flex-col items-start gap-2">
-            <div class="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current mr-2" fill="none"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span class="font-semibold">Error</span>
-            </div>
-            <ul class="mt-2 list-none list-inside w-full">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+
+    @include('layout.error', ['errors' => $errors])
     {{-- {{ var_export(\Illuminate\Support\Facades\App::environment('production'))}} --}}
 </body>
 
