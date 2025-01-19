@@ -16,8 +16,15 @@ class MultipleChoice extends Component
     public QuizSubmissionItem $submissionItem;
     public string $submissionId;
     public string $answer;
+    public string $feedback;
 
     public bool $flagged;
+
+    public function saveFeedback()
+    {
+        $this->submissionItem->feedback = $this->feedback;
+        $this->submissionItem->save();
+    }
 
     public function mount($page, $questionCount, $question, $submissionId)
     {
@@ -30,6 +37,7 @@ class MultipleChoice extends Component
             ::where('question_id', $question->id)
             ->where('quiz_submission_id', $submissionId)
             ->first();
+        $this->feedback = $this->submissionItem->feedback;
 
         if ($this->submissionItem->answer !== null) {
             $this->answer = $this->submissionItem->answer;

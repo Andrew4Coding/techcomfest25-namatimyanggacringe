@@ -15,8 +15,15 @@ class ShortAnswer extends Component
 
     public QuizSubmissionItem $submissionItem;
     public string $submissionId;
+    public string $feedback;
 
     public bool $flagged;
+
+    public function saveFeedback()
+    {
+        $this->submissionItem->feedback = $this->feedback;
+        $this->submissionItem->save();
+    }
 
     public function mount($page, $questionCount, $question, $submissionId)
     {
@@ -29,6 +36,8 @@ class ShortAnswer extends Component
             'question_id' => $this->question->id,
             'quiz_submission_id' => $this->submissionId,
         ]);
+
+        $this->feedback = $this->submissionItem->feedback;
 
         if ($this->submissionItem->answer !== null) {
             $this->answer = $this->submissionItem->answer;

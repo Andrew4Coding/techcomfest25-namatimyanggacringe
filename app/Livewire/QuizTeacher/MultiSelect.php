@@ -79,6 +79,16 @@ class MultiSelect extends Component
         $this->question->save();
     }
 
+    public function updateChoiceContent($idx)
+    {
+        foreach ($this->question->questionChoices as $choice) {
+            if ($choice->id == $this->choices[$idx]['id']) {
+                $choice->content = $this->choices[$idx]['content'];
+                $choice->save();
+            }
+        }
+    }
+
     /**
      * Updates a specific choice by its ID
      */

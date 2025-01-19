@@ -9,6 +9,9 @@
                     <h2 class="card-title">
                         {{ $question->content }}
                     </h2>
+                    <span class="text-sm text-gray-700">
+                        ({{ $question->weight }} poin)
+                    </span>
                 </div>
                 <div class="flex gap-2">
                     <button class="btn btn-square"
@@ -41,7 +44,7 @@
             {{-- Aksi --}}
             <div class="card-actions mt-4 gap-4 flex flex-col">
                 <span class="text-sm text-gray-700">Jawaban</span>
-                <textarea wire:model="answer" class="textarea w-full min-h-40" ></textarea>
+                <textarea wire:model.live="answer" class="textarea w-full min-h-40" ></textarea>
             </div>
         </div>
     </div>
