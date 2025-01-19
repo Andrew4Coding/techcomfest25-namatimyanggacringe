@@ -74,10 +74,10 @@
     </div>
 
     {{-- Aksi: Flag, Back, Next --}}
-    <div class="mt-10 flex justify-between items-center">
+    <div class="mt-10 flex flex-col md:flex-row justify-between items-center">
         {{-- Tombol Flag Pertanyaan --}}
         <label
-            class="flex items-center gap-2 px-4 py-2 rounded-lg @if($flagged) text-yellow-100 bg-yellow-400 hover:bg-yellow-500 @else text-yellow-500 bg-yellow-100 hover:bg-yellow-200 @endif">
+            class="w-full md:max-w-[200px] flex items-center justify-center gap-2 px-4 py-2 rounded-lg @if($flagged) text-yellow-100 bg-yellow-400 hover:bg-yellow-500 @else text-yellow-500 bg-yellow-100 hover:bg-yellow-200 @endif">
             <input wire:model.change="flagged" type="checkbox" class="hidden" onclick="return false;"/>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                  stroke="currentColor" class="w-5 h-5">
@@ -86,13 +86,15 @@
             </svg>
             Flag Question
         </label>
-        <button wire:click="$parent.prev" class="btn w-1/4 @if($page <= 1) btn-disabled @else btn-primary @endif">
-            Back
-        </button>
-        <button wire:click="$parent.next"
-                class="btn w-1/4 @if($page >= $questionCount) btn-disabled @else btn-primary @endif">
-            Next
-        </button>
+        <div class="w-full flex justify-between md:justify-end items-center mt-4 md:mt-0 gap-4">
+            <button wire:click="$parent.prev" class="btn w-1/4 @if($page <= 1) btn-disabled @else btn-primary @endif">
+                Back
+            </button>
+            <button wire:click="$parent.next"
+                    class="btn w-1/4 @if($page >= $questionCount) btn-disabled @else btn-primary @endif">
+                Next
+            </button>
+        </div>
     </div>
     <dialog id="feedback_modal" class="modal">
         <div class="modal-box w-11/12 max-w-5xl">
@@ -101,7 +103,7 @@
             <div class="modal-action">
                 <form method="dialog">
                     <!-- if there is a button, it will close the modal -->
-                    <button class="btn" wire:click="saveFeedback">Simpan</button>
+                    <button class="btn btn-primary" wire:click="saveFeedback">Simpan</button>
                 </form>
             </div>
         </div>

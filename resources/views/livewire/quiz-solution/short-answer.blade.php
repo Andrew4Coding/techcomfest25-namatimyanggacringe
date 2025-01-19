@@ -9,21 +9,21 @@
     {{-- Answer Options  --}}
     <div class="my-4">
         <input type="text" placeholder="Masukkan jawaban..." class="input input-bordered w-full"
-               wire:model.blur="answer">
+            wire:model.blur="answer">
     </div>
 
     <div class="w-full mt-10 flex flex-col gap-4 items-start">
-        <div class="">
+        <div class="w-full">
             <div class="w-full flex items-center justify-between">
                 <h2 class="text-base font-semibold">Feedback</h2>
-                @if(Auth::user()->userable_type === Teacher::class)
+                @if (Auth::user()->userable_type === Teacher::class)
                     <button class="btn btn-sm" onclick="feedback_modal.showModal()">
-                        <x-lucide-pencil class="w-4 h-4"/>
+                        <x-lucide-pencil class="w-4 h-4" />
                     </button>
                 @endif
             </div>
             <p class="block text-sm text-gray-700">
-                @if ($submissionItem->feedback === "")
+                @if ($submissionItem->feedback === '')
                     <span class="text-gray-500">Belum ada feedback</span>
                 @else
                     {{ $submissionItem->feedback }}
@@ -39,26 +39,28 @@
     </div>
 
     {{-- Actions: Flag, Next, Submit --}}
-    <div class="mt-10 flex justify-between items-center">
-        {{-- Flag Question Button --}}
+    <div class="mt-10 flex flex-col md:flex-row justify-between items-center">
+        {{-- Tombol Flag Pertanyaan --}}
         <label
-            class="flex items-center gap-2 px-4 py-2 rounded-lg @if($flagged)  text-yellow-100 bg-yellow-400 hover:bg-yellow-500 @else text-yellow-500 bg-yellow-100 hover:bg-yellow-200 @endif">
-            <input wire:model.change="flagged" type="checkbox" class="hidden"
-            />
+            class="w-full md:max-w-[200px] flex items-center justify-center gap-2 px-4 py-2 rounded-lg @if ($flagged) text-yellow-100 bg-yellow-400 hover:bg-yellow-500 @else text-yellow-500 bg-yellow-100 hover:bg-yellow-200 @endif">
+            <input wire:model.change="flagged" type="checkbox" class="hidden" onclick="return false;" />
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                 stroke="currentColor" class="w-5 h-5">
+                stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M6.75 4.5h10.5a1.5 1.5 0 011.5 1.5v10.5a1.5 1.5 0 01-1.5 1.5H6.75M9 6.75l4.5 4.5L9 15.75"/>
+                    d="M6.75 4.5h10.5a1.5 1.5 0 011.5 1.5v10.5a1.5 1.5 0 01-1.5 1.5H6.75M9 6.75l4.5 4.5L9 15.75" />
             </svg>
             Flag Question
         </label>
-        <button wire:click="$parent.prev" class="btn w-1/4 @if($page <= 1) btn-disabled @else btn-primary @endif">
-            Back
-        </button>
-        <button wire:click="$parent.next"
-                class="btn w-1/4 @if($page >= $questionCount) btn-disabled @else btn-primary @endif">
-            Next
-        </button>
+        <div class="w-full flex justify-between md:justify-end items-center mt-4 md:mt-0 gap-4">
+            <button wire:click="$parent.prev"
+                class="btn w-1/4 @if ($page <= 1) btn-disabled @else btn-primary @endif">
+                Back
+            </button>
+            <button wire:click="$parent.next"
+                class="btn w-1/4 @if ($page >= $questionCount) btn-disabled @else btn-primary @endif">
+                Next
+            </button>
+        </div>
     </div>
     <dialog id="feedback_modal" class="modal">
         <div class="modal-box w-11/12 max-w-5xl">

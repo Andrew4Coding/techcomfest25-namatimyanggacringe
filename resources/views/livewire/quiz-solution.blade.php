@@ -10,14 +10,14 @@
             <h3 class="text-xl sm:text-2xl lg:text-2xl font-semibold text-gray-800">
                 {{ $quiz->courseItem->name }}
             </h3>
-            <div class="flex w-full justify-between">
+            <div class="flex flex-col md:flex-row w-full justify-between gap-4">
                 <div class="px-8 py-5 rounded-xl bg-base-200 flex">
-                    <span class="font-bold flex flex-col">
+                    <span class="font-medium flex flex-col">
                         <span class="text-sm text-gray-700 font-normal">Nama Siswa</span>
                         {{ $submission->student->user->name }}
                     </span>
                     <div class="divider lg:divider-horizontal"></div>
-                    <span class="flex font-bold flex-col">
+                    <span class="flex font-medium flex-col">
                         <span class="text-sm text-gray-700 font-normal">Kelas</span>
                         {{ $submission->student->class }}
                     </span>
@@ -37,6 +37,7 @@
                             @endif
                         </button>
                         <a href="{{ route('quiz.submission.list', ['quizId' => $quiz->id]) }}" class="btn btn-primary">
+                            <x-lucide-save class="w-4 h-4" />
                             Simpan
                         </a>
                     @else
