@@ -30,6 +30,7 @@ class Quiz extends Component
     public QuizModel $quiz;
 
     // page for selecting which question to be displayed
+    #[Url(as: 'page')]
     public int $page = 1;
 
     // current active question
@@ -57,8 +58,9 @@ class Quiz extends Component
      */
     public function moveTo($page): void
     {
-        $this->page = $page;
-        $this->curQuestion = $this->quiz['questions'][$page - 1];
+        $this->redirect(route('quiz.show', ['quizId' => $this->quiz->id]) . '?page=' . $page);
+//        $this->page = $page;
+//        $this->curQuestion = $this->quiz['questions'][$page - 1];
     }
 
     /**
@@ -70,7 +72,7 @@ class Quiz extends Component
     {
         if ($this->page < $this->questionCount) {
             $this->page++;
-            $this->curQuestion = $this->quiz['questions'][$this->page - 1];
+            $this->redirect(route('quiz.show', ['quizid' => $this->quiz->id]) . '?page=' . $page);
         }
     }
 
@@ -83,7 +85,7 @@ class Quiz extends Component
     {
         if ($this->page > 1) {
             $this->page--;
-            $this->curQuestion = $this->quiz['questions'][$this->page - 1];
+            $this->redirect(route('quiz.show', ['quizid' => $this->quiz->id]) . '?page=' . $page);
         }
     }
 
