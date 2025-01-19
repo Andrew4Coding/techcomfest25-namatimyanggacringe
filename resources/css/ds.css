@@ -84,3 +84,7 @@ th {
 #file-upload-button {
     @apply bg-[#017AE4]
 }
+
+.modal {
+    @apply text-black
+}

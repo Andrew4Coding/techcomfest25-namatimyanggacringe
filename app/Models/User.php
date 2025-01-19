@@ -94,4 +94,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(ForumReply::class, 'sender_id');
     }
+
+    public function isStudent(): bool
+    {
+        return $this->userable instanceof Student;
+    }
+
+    public function isTeacher(): bool
+    {
+        return $this->userable instanceof Teacher;
+    }
+
+    public function role(): string
+    {
+        return $this->isStudent() ? 'student' : 'teacher';
+    }
 }

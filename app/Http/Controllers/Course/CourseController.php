@@ -172,8 +172,7 @@ class CourseController extends Controller
             return view('course.show.show', compact('course', 'courseSections', 'tab', 'isEdit'));
         }
         catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->withErrors(['error' => 'Error loading course']);
+            return redirect()->back()->withErrors(['error' => 'Error loading course: ' . $e->getMessage()]);
         }
     }
         
@@ -207,8 +206,7 @@ class CourseController extends Controller
 
             return redirect()->route('courses', compact('courses'));
         } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->withErrors(['error' => 'Error creating course']);
+            return redirect()->back()->withErrors(['error' => 'Error creating course ' . $e->getMessage()]);
         }
     }
 
@@ -245,8 +243,7 @@ class CourseController extends Controller
 
             return redirect()->route('course.show.edit', ['id' => $id]);
         } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->withErrors(['error' => 'Error updating course']);
+            return redirect()->back()->withErrors(['error' => 'Error updating course: ' . $e->getMessage()]);
         }
 
     }

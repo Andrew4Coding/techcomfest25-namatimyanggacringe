@@ -17,9 +17,9 @@ class ForumDiscussion extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'title',
-        'description',
+        'content',
         'creator_id',
+        'is_public',
         'forum_id',
     ];
 

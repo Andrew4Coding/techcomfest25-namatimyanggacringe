@@ -16,6 +16,7 @@ class FlashCardItem extends Model
     protected $fillable = [
         'id',
         'question',
+        'is_public',
         'answer',
     ];
 

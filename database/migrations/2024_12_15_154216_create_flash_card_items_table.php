@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('question');
             $table->string('answer');
+            $table->boolean('is_public')->default(false);
 
             $table->uuid('flash_card_id');
             $table->foreign('flash_card_id')->references('id')

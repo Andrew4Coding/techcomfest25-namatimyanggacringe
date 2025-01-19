@@ -19,12 +19,12 @@ class FlashCardController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'pdf' => 'required|mimes:pdf|max:2048', // Validate file type and size
-        ]);
-
         try {
+            $request->validate([
+                'name' => 'required',
+                'pdf' => 'required|mimes:pdf|max:10240', // Validate file type and size (max 10MB)
+            ]);
+
             // Upload the file to S3
             if ($request->hasFile('pdf')) {
                 $file = $request->file('pdf');
@@ -136,6 +136,8 @@ class FlashCardController extends Controller
             } else {
                 return back()->withErrors(['error' => 'No file uploaded.']);
             }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return back()->withErrors(['error' => 'File size is too large. Maximum allowed size is 2MB.']);
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Unable to process the PDF: ' . $e->getMessage()]);
         }
@@ -171,6 +173,57 @@ class FlashCardController extends Controller
         $flashcard->name = $request->name;
         $flashcard->description = $request->description;
         $flashcard->subject = $request->subject;
+        $flashcard->save();
+
+        return redirect()->back();
+    }
+
+
+    public function deleteCard(string $id) {
+        try {
+            $flashcardItem = FlashCardItem::find($id);
+            $flashcardItem->delete();
+            return redirect()->back();
+        }
+        catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Unable to delete the flashcard item: ' . $e->getMessage()]);
+        }
+
+    }
+
+    public function editCard(Request $request, string $id) {
+        try {
+            $flashcardItem = FlashCardItem::find($id);
+            $flashcardItem->question = $request->question;
+            $flashcardItem->answer = $request->answer;
+            $flashcardItem->save();
+    
+            return redirect()->back();
+        }
+        catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Unable to update the flashcard item: ' . $e->getMessage()]);
+        }
+    }
+
+    public function createCard(Request $request, string $id) {
+        try {
+            $flashcard = FlashCard::find($id);
+            $flashcardItem = new FlashCardItem();
+            $flashcardItem->question = $request->question;
+            $flashcardItem->answer = $request->answer;
+            $flashcardItem->flash_card_id = $flashcard->id;
+            $flashcardItem->save();
+    
+            return redirect()->back();
+        }
+        catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Unable to create the flashcard item: ' . $e->getMessage()]);
+        }
+    }
+
+    public function togglePublic(string $id) {
+        $flashcard = FlashCard::find($id);
+        $flashcard->is_public = !$flashcard->is_public;
         $flashcard->save();
 
         return redirect()->back();

@@ -31,17 +31,17 @@
 
             @if ($selected_theme == 'sosiologi')
                 <img src="{{ asset('corner/yellow-corner-left.png') }}" alt=""
-                    class="absolute bottom-0 left-0 w-52 h-full z-50 object-contain object-bottom">
+                    class="absolute bottom-0 left-0 w-52 h-full z-0 object-contain object-bottom">
                 <img src="{{ asset('corner/yellow-corner-right.png') }}" alt=""
-                    class="absolute top-0 -right-4 w-52 h-full z-50 object-contain object-top">
+                    class="absolute top-0 -right-4 w-52 h-full z-0 object-contain object-top">
             @elseif ($selected_theme == 'ekonomi')
                 <img src="{{ asset('corner/green-corner-left.png') }}" alt=""
-                    class="absolute bottom-0 -left-12 w-52 h-full z-50 object-contain">
+                    class="absolute bottom-0 -left-12 w-52 h-full z-0 object-contain">
                 <img src="{{ asset('corner/green-corner-right.png') }}" alt=""
-                    class="absolute top-0 -right-12 w-52 h-full z-50 object-contain">
+                    class="absolute top-0 -right-12 w-52 h-full z-0 object-contain">
             @elseif ($selected_theme == 'bahasa')
                 <img src="{{ asset('corner/blue-corner.png') }}" alt=""
-                    class="absolute top-0 left-0 z-50 object-contain">
+                    class="absolute top-0 left-0 z-0 object-contain">
             @endif
 
             <!-- Adjusted Image Styling -->
@@ -50,7 +50,7 @@
                     class="w-80 h-52 object-contain z-0">
             </div>
 
-            <div class="z-10">
+            <div class="z-50">
                 <div class="flex justify-between items-center mb-4 w-full">
                     <h1 class="text-xl font-bold" style="color: {{ $theme['tertiary'] }};">{{ $course->name }}</h1>
                     <div class="flex gap-4 items-center">
