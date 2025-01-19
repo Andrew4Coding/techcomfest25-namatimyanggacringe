@@ -1,12 +1,11 @@
 @php use App\Enums\QuestionType;use Illuminate\Support\Facades\Session; @endphp
-<main class="px-8 py-6 flex flex-col gap-6 bg-base-200 rounded-xl">
-    <h1 class="mb-4">
+<main class="flex flex-col gap-6">
+    <h2 class="mb-4">
         Mindora Quiz Editor
-    </h1>
-    <!-- Alert -->
+    </h2>
     <div class="flex justify-between items-start">
-        <div class="card w-3/4 bg-base-100 shadow-xl">
-            <div class="card-body flex-row justify-between">
+        <div class="w-3/4">
+            <div class="flex flex-row gap-10">
                 <div class="flex flex-col gap-5">
                     @if(!$isInfoEditable)
                         <div>
@@ -22,7 +21,7 @@
                             <label for="nama_quiz" class="text-sm text-gray-700">Judul</label>
                             <input type="text" id="nama_quiz" wire:model.defer="name" required
                                    placeholder="Masukkan Judul..."
-                                   class="input input-ghost !text-2xl !font-semibold"/>
+                                   class="input input-ghost !font-semibold"/>
                         </div>
                         <div>
                             <label for="desc_quiz" class="text-sm text-gray-700">Deskripsi</label>
@@ -57,32 +56,47 @@
         </button>
     </div>
 
+    <section>
+        <h2 class="text-lg font-medium mb-4">Total Poin</h2>
+        @php
+            $total = 0;
+            foreach ($quiz->questions as $question) {
+                $total += $question->weight;
+            }
+        @endphp
+        <p class="text-gray-500">
+            {{$total}}
+        </p>
+    </section>
+
     <!-- Section untuk pengaturan waktu quiz -->
-    <section class="bg-white shadow rounded-lg p-6">
+    <section>
         <h2 class="text-lg font-medium mb-4">Pengaturan Waktu</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="flex flex-col gap-2">
-                <label for="start_time" class="text-sm font-medium">Waktu Mulai</label>
+                <label for="start_time" class="text-sm font-normal text-gray-500">Waktu Mulai</label>
                 <input wire:model.live="startTime" type="datetime-local" id="start_time"
                        class="input input-bordered w-full"/>
             </div>
             <div class="flex flex-col gap-2">
-                <label for="start_time" class="text-sm font-medium">Waktu Mulai</label>
+                <label for="start_time" class="text-sm font-normal text-gray-500">Waktu Selesai</label>
                 <input wire:model.live="endTime" type="datetime-local" id="start_time"
                        class="input input-bordered w-full"/>
             </div>
 
             <div class="flex flex-col gap-2">
-                <label for="duration" class="text-sm font-medium">Durasi (dalam menit)</label>
+                <label for="duration" class="text-sm font-normal text-gray-500">Durasi (dalam menit)</label>
                 <input wire:model.live="duration" type="number" id="duration" class="input input-bordered w-full"
                        min="1"/>
             </div>
         </div>
     </section>
 
-    <section class="bg-white shadow rounded-lg p-6">
-        <h2 class="text-lg font-medium mb-4">Daftar Soal</h2>
+    <section>
+        @if (!$quiz->questions->isEmpty())
+            <h2 class="text-lg font-medium mb-4">Daftar Soal</h2>
+        @endif
         <div class="flex flex-col gap-6">
             @foreach($quiz->questions as $index => $question)
                 @php $i = $index + 1; @endphp
@@ -119,7 +133,7 @@
         </div>
     </section>
 
-    <button class="btn btn-outline w-full flex items-center justify-center gap-2 mt-6"
+    <button class="btn btn-outline w-full flex items-center justify-center gap-2"
             onclick="question_add_modal.showModal()">
         <x-lucide-plus class="w-5 h-5"/>
         <span>Tambah Soal</span>

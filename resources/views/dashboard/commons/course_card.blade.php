@@ -21,7 +21,7 @@
                     {{ $course->name }}</div>
                 <span class="badge badge-primary text-white min-w-[80px]"
                     style="background-color: {{ $theme['secondary'] }};">Score:
-                    {{ $course->averageScore }}</span>
+                    {{ round($course->averageScore) }}</span>
             </div>
             <div class="w-full bg-white rounded-xl p-3 text-sm">
                 <div class="flex justify-between">

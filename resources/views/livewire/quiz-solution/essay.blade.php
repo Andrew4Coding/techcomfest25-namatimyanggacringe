@@ -14,17 +14,22 @@
     </div>
 
 
-    <div class="w-full mt-10 flex flex-col items-start bg-black/10 p-4 rounded">
+    {{-- Feedback --}}
+    <div class="w-full mt-10 flex flex-col items-start ">
         <div class="w-full flex items-center justify-between">
-            <h2 class="text-lg font-semibold">Feedback</h2>
-            @if(Auth::user()->userable_type === Teacher::class)
+            <h2 class="text-base font-semibold">Feedback</h2>
+            @if (Auth::user()->userable_type === Teacher::class)
                 <button class="btn btn-sm" onclick="feedback_modal.showModal()">
-                    <x-lucide-pencil class="w-4 h-4"/>
+                    <x-lucide-pencil class="w-4 h-4" />
                 </button>
             @endif
         </div>
-        <p class="block mt-4">
-            {{ $submissionItem->feedback }}
+        <p class="block mt-4 text-sm text-gray-700">
+            @if ($submissionItem->feedback === '')
+                <span class="text-gray-500">Belum ada feedback</span>
+            @else
+                {{ $submissionItem->feedback }}
+            @endif
         </p>
     </div>
 
