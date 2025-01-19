@@ -114,9 +114,9 @@ Route::middleware([HandleErrorsMiddleware::class])->group(function () {
         Route::post('/forum-reply/{discussionId}/reply', [ForumReplyController::class, 'replyToDiscussion'])->name('forum.discussion.reply');
     
         // Crud Forum Discussion
-        Route::delete('/forum-discussion/delete/{discussionId}', [ForumDiscussionController::class, 'delete'])->name('forum.delete');
-        Route::put('/forum-discussion/update/{discussionId}', [ForumDiscussionController::class, 'update'])->name('forum.update');
-        Route::put('/forum-discussion/toggle/{discussionId}', [ForumDiscussionController::class, 'toggleVisibility'])->name('forum.toggle');
+        Route::delete('/forum-discussion/delete/{discussionId}', [ForumDiscussionController::class, 'delete'])->name('forum.discussion.delete');
+        Route::put('/forum-discussion/update/{discussionId}', [ForumDiscussionController::class, 'edit'])->name('forum.discussion.edit');
+        Route::post('/forum-discussion/toggle/{discussionId}', [ForumDiscussionController::class, 'toggleVisibility'])->name('forum.discussion.public');
     
         // CRUD Forum Reply
         Route::post('/forum-reply/verify/{forumReplyId}', [ForumReplyController::class, 'toggleVerified'])->name('forum.reply.verify');
