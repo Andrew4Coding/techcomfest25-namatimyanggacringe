@@ -65,7 +65,7 @@
         <div class="flex flex-col lg:flex-row gap-12">
             {{-- Left Section: Question Navigation --}}
             <section class="w-full lg:w-1/4">
-                <div class="bg-base-200 p-4 sm:p-6 lg:p-6 rounded-lg space-y-4">
+                <div class="space-y-4">
                     <h2 class="text-lg font-semibold text-gray-800">Question Navigator</h2>
                     <div class="">
                         <div class="grid grid-cols-5 gap-2">
