@@ -18,7 +18,7 @@
 
     <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
 
-    <script src="//unpkg.com/alpinejs" defer></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
