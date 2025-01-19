@@ -90,7 +90,6 @@ Route::prefix('courses')->middleware(['auth'])->group(function () {
 // Quiz
 Route::prefix('quiz')->middleware(['auth'])->group(function () {
     Route::get('/exam/{quizId}', Quiz::class)->name('quiz.show');
-    Route::get('/submit/{quizId}', [QuizController::class, 'submitQuiz'])->name('quiz.submit');
     Route::get('/check/{quizId}', QuizSolution::class)->name('quiz.solution');
 
     Route::middleware([TeacherMiddleware::class])->group(function () {

@@ -35,6 +35,8 @@ class QuizSolution extends Component
     // total question in the quiz
     public int $questionCount;
 
+    public bool $isCheckedByTeacher;
+
     // actual student's quiz submission
     public QuizSubmission $submission;
 
@@ -84,14 +86,10 @@ class QuizSolution extends Component
         }
     }
 
-    /**
-     * @return int
-     */
-    protected function getTimeLeft(): int
-    {
-        // subtract duration from progress
-        $progress = strtotime(date("Y-m-d h:i:sa") - strtotime($this->submission->getCreatedAtColumn()));
-        return $this->quiz->duration - $progress;
+    public function toggleChecked(): void {
+        $this->isCheckedByTeacher = !$this->isCheckedByTeacher;
+        $this->submission->is_checked_by_teacher = $this->isCheckedByTeacher;
+        $this->submission->save();
     }
 
     /**
@@ -137,6 +135,7 @@ class QuizSolution extends Component
                 ->first();
 
             $this->curSubmissionItem = $this->submission->quizSubmissionItems->first();
+            $this->isCheckedByTeacher = $this->submission->is_checked_by_teacher;
 
             // iterate each questions to mark flagged
             foreach ($this->quiz->questions as $question) {

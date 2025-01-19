@@ -16,17 +16,6 @@ use Illuminate\Support\Str;
 
 class QuizController extends Controller
 {
-    public function submitQuiz(Request $request, string $quizId)
-    {
-        if ($request->user()->userable_type !== Student::class) return redirect('/');
-
-        $studentId = $request->user()->userable_id;
-
-        CheckSubmission::dispatch($quizId, $studentId);
-
-        return redirect('/');
-    }
-
     public function showQuiz()
     {
         return view('quiz.quiz');
@@ -52,6 +41,11 @@ class QuizController extends Controller
         $progress = CourseItemProgress::where("course_item_id", $submission->quiz->courseItem->id)->where('user_id', $submission->student->user->id)->first();
         $progress->delete();
         return redirect()->back();
+    }
+
+    public function createNewQuiz(Request $request, string $courseItemId)
+    {
+
     }
 
     public function showQuizSession(string $id, Request $request)

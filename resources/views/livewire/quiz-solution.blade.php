@@ -1,4 +1,4 @@
-@php use App\Enums\QuestionType; @endphp
+@php use App\Enums\QuestionType;use App\Models\Teacher;use Illuminate\Support\Facades\Auth; @endphp
 <main class="flex flex-col gap-20 min-h-full">
     @if($isValid)
         {{-- Header: Course Name, Progress, and Timer --}}
@@ -18,9 +18,49 @@
                 {{ $submission->student->class }}
                 </span>
                 </div>
-                <a href="{{ route('quiz.submission.list', ['quizId' => $quiz->id]) }}" class="btn btn-primary">
-                    Simpan
-                </a>
+                <div class="flex justify-between items-center gap-3">
+                    @if(Auth::user()->userable_type === Teacher::class)
+                        <button
+                            wire:click="toggleChecked"
+                            class="btn shadow-sm transition-colors duration-200
+                                           @if($isCheckedByTeacher)
+                                               bg-green-500
+                                           @else
+                                               bg-white text-gray-700
+                                           @endif
+                                           hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        >
+                            @if($isCheckedByTeacher)
+                                <x-lucide-check class="w-4 h-4"/> Terverifikasi
+                            @else
+                                <x-lucide-x class="w-4 h-4"/> Belum Diverifikasi
+                            @endif
+                        </button>
+                        <a href="{{ route('quiz.submission.list', ['quizId' => $quiz->id]) }}" class="btn btn-primary">
+                            Simpan
+                        </a>
+                    @else
+                        <button
+                            class="btn shadow-sm transition-colors duration-200 cursor-default
+                                           @if($isCheckedByTeacher)
+                                               bg-green-500 hover:bg-green-500
+                                           @else
+                                               bg-white text-gray-700
+                                           @endif
+                                           "
+                        >
+                            @if($isCheckedByTeacher)
+                                <x-lucide-check class="w-4 h-4"/> Terverifikasi
+                            @else
+                                <x-lucide-x class="w-4 h-4"/> Belum Diverifikasi
+                            @endif
+                        </button>
+                        <a href="{{ route('course.show', ['id' => $quiz->courseItem->courseSection->course->id]) }}"
+                           class="btn btn-primary">
+                            Kembali
+                        </a>
+                    @endif
+                </div>
             </div>
         </div>
 

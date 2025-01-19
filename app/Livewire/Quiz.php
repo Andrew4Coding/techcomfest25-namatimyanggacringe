@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Jobs\CheckSubmission;
 use App\Models\CourseItemProgress;
 use App\Models\Question;
 use App\Models\QuizSubmission;
@@ -114,7 +115,11 @@ class Quiz extends Component
         $this->progress->save();
 
         // back, if not exists then move to the index page.
-        $this->redirect("/quiz/submit/$this->id");
+        $quizId = $this->quiz->id;
+        $studentId = Auth::user()->userable_id;
+        CheckSubmission::dispatch($quizId, $studentId);
+
+        $this->redirectRoute('course.show', ['id' => $this->quiz->courseItem->courseSection->course->id]);
     }
 
 
@@ -146,8 +151,7 @@ class Quiz extends Component
 
         // subtract duration from progress
         $progress = strtotime(date("Y-m-d h:i:sa")) - strtotime($this->submission->created_at);
-        return $this->quiz->duration - $progress;
-//        return 3600 - $progress;
+        return $this->quiz->duration * 60 - $progress;
     }
 
     /**

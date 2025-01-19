@@ -10,7 +10,7 @@
                         {{ $question->content }}
                     </h2>
                     <span class="text-sm text-gray-700">
-                        (1 poin)
+                        ({{ $question->weight }} poin)
                     </span>
                 </div>
                 <div class="flex gap-2">
@@ -44,7 +44,7 @@
             {{-- Aksi --}}
             <div class="card-actions mt-4 gap-4 flex flex-col">
                 <span class="text-sm text-gray-700">Jawaban</span>
-                <input wire:model="answer" class="input input-bordered w-full"/>
+                <input wire:model.live="answer" class="input input-bordered w-full"/>
             </div>
         </div>
     </div>

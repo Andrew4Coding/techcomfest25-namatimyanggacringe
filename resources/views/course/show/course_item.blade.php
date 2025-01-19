@@ -83,7 +83,16 @@
             <dialog id="quiz_decline_modal_{{ $loop->index }}" class="modal">
                 <div class="modal-box">
                     <h3 class="text-lg font-bold">Stop!</h3>
-                    <p class="py-4">Anda tidak dapat mengakses kuis ini!</p>
+                    @if($item->courseItemProgress && $item->courseItemProgress->is_completed)
+                        <p class="py-4">Anda sudah menyelesaikan kuis ini!</p>
+                    @else
+                        <p class="py-4">Anda sudah tidak dapat mengakses kuis ini!</p>
+                    @endif
+                    <form method="dialog" class="mt-2 flex justify-end">
+                        <button class="btn btn-primary">
+                            OK
+                        </button>
+                    </form>
                 </div>
                 <form method="dialog" class="modal-backdrop">
                     <button>close</button>
@@ -123,6 +132,12 @@
                     Jawaban
                 </a>
             @else
+                @if($item->courseItemProgress && $item->courseItemProgress->is_completed)
+                    <a href="{{ route('quiz.solution', ['quizId' => $item->courseItemable->id]) }}" class="btn btn-primary">
+                        <x-lucide-notebook-text class="w-4 h-4"/>
+                        Hasil
+                    </a>
+                @endif
             @endif
         </div>
     @endif
@@ -178,7 +193,7 @@
                 @if(Auth::user()->userable_type === Student::class && $item->course_itemable_type === Quiz::class)
                     <input type="checkbox" class="checkbox checkbox-primary h-5 w-5 text-blue-600"
                            {{ $item->courseItemProgress && $item->courseItemProgress->is_completed ? 'checked' : '' }}
-                           disabled
+                           onclick="return false;"
                            id="completion-checkbox-{{ $item->id }}">
                 @else
                     <input type="checkbox" class="checkbox checkbox-primary h-5 w-5 text-blue-600"
