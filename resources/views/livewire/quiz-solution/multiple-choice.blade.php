@@ -2,7 +2,7 @@
 <section class="bg-white flex-1 p-10 shadow-md rounded-lg rounded-tl-none elative">
     {{-- Informasi Pertanyaan dan Pagination --}}
     <div class="flex justify-between items-center">
-        <h1 id="question-content" class="text-2xl font-bold">{{ $question['content'] }}</h1>
+        <h1 id="question-content" class="text-base font-bold">{{ $question['content'] }}</h1>
         <span class="text-sm text-gray-500">Question {{ $page }} / {{ $questionCount }}</span>
     </div>
 
@@ -33,7 +33,7 @@
                     class="answer-radio h-5 w-5 text-blue-500 focus:ring-blue-400 border-gray-300"
                     @disabled(true) {{-- Menonaktifkan input setelah submit --}}
                 >
-                <label for="answer-{{ $choice->id }}" class="text-gray-700 text-lg cursor-pointer flex items-center">
+                <label for="answer-{{ $choice->id }}" class="text-gray-700 text-sm flex items-center">
                     {{ $choice['content'] }}
                     @if($isCorrect)
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 ml-2" fill="none"
@@ -55,17 +55,21 @@
     @endforeach
 
     {{-- Feedback --}}
-    <div class="w-full mt-10 flex flex-col items-start bg-black/10 p-3 rounded">
+    <div class="w-full mt-10 flex flex-col items-start p-3 rounded">
         <div class="w-full flex items-center justify-between">
-            <h2 class="text-lg font-semibold">Feedback</h2>
+            <h2 class="text-base font-semibold">Feedback</h2>
             @if(Auth::user()->userable_type === Teacher::class)
                 <button class="btn btn-sm" onclick="feedback_modal.showModal()">
                     <x-lucide-pencil class="w-4 h-4"/>
                 </button>
             @endif
         </div>
-        <p class="block mt-4">
-            {{ $submissionItem->feedback }}
+        <p class="block mt-4 text-sm text-gray-700">
+            @if ($submissionItem->feedback === "")
+                <span class="text-gray-500">Belum ada feedback</span>
+            @else
+                {{ $submissionItem->feedback }}
+            @endif
         </p>
     </div>
 
@@ -74,7 +78,7 @@
         {{-- Tombol Flag Pertanyaan --}}
         <label
             class="flex items-center gap-2 px-4 py-2 rounded-lg @if($flagged) text-yellow-100 bg-yellow-400 hover:bg-yellow-500 @else text-yellow-500 bg-yellow-100 hover:bg-yellow-200 @endif">
-            <input wire:model.change="flagged" type="checkbox" class="hidden"/>
+            <input wire:model.change="flagged" type="checkbox" class="hidden" onclick="return false;"/>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                  stroke="currentColor" class="w-5 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round"

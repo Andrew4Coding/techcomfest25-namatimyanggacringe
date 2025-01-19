@@ -1,6 +1,8 @@
 <div class="card bg-base-100 w-full shadow-xl">
     <div class="card-body flex flex-col md:flex-row gap-4 items-start w-full">
-        <span class="min-w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">{{ $num }}</span>
+        <span
+            class="min-w-12 h-12 bg-blue-500 text-white rounded-xl flex items-center justify-center">{{ $num }}</span>
+                    
         <div class="w-full">
             {{-- Pertanyaan dan nomor --}}
             <div class="flex justify-between items-center gap-2">
@@ -30,7 +32,7 @@
                             <div class="modal-action">
                                 <form method="dialog">
                                     <!-- if there is a button in form, it will close the modal -->
-                                    <button class="btn" wire:click="updateQuestionInfo">Selesai</button>
+                                    <button class="btn btn-primary" wire:click="updateQuestionInfo">Selesai</button>
                                 </form>
                             </div>
                         </div>
@@ -43,7 +45,7 @@
 
             {{-- Aksi --}}
             <div class="card-actions mt-4 gap-4 flex flex-col">
-                <span class="text-sm text-gray-700">Jawaban</span>
+                <span class="text-sm text-gray-700">Kunci Jawaban</span>
                 <textarea wire:model.live="answer" class="textarea w-full min-h-40" ></textarea>
             </div>
         </div>

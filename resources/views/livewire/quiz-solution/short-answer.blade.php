@@ -12,22 +12,30 @@
                wire:model.blur="answer">
     </div>
 
-    <div class="w-full mt-10 flex flex-col items-start bg-black/10 p-3 rounded">
-        <div class="w-full flex items-center justify-between">
-            <h2 class="text-lg font-semibold">Feedback</h2>
-            @if(Auth::user()->userable_type === Teacher::class)
-                <button class="btn btn-sm" onclick="feedback_modal.showModal()">
-                    <x-lucide-pencil class="w-4 h-4"/>
-                </button>
-            @endif
+    <div class="w-full mt-10 flex flex-col gap-4 items-start">
+        <div class="">
+            <div class="w-full flex items-center justify-between">
+                <h2 class="text-base font-semibold">Feedback</h2>
+                @if(Auth::user()->userable_type === Teacher::class)
+                    <button class="btn btn-sm" onclick="feedback_modal.showModal()">
+                        <x-lucide-pencil class="w-4 h-4"/>
+                    </button>
+                @endif
+            </div>
+            <p class="block text-sm text-gray-700">
+                @if ($submissionItem->feedback === "")
+                    <span class="text-gray-500">Belum ada feedback</span>
+                @else
+                    {{ $submissionItem->feedback }}
+                @endif
+            </p>
         </div>
-        <p class="block mt-4">
-            {{ $submissionItem->feedback }}
-        </p>
-        <h2 class="text-lg font-semibold">Solusi</h2>
-        <p class="block mt-4">
-            {{ $question->answer }}
-        </p>
+        <div class="">
+            <h2 class="text-base font-semibold">Solusi</h2>
+            <p class="block text-sm text-gray-700">
+                {{ $question->answer }}
+            </p>
+        </div>
     </div>
 
     {{-- Actions: Flag, Next, Submit --}}
