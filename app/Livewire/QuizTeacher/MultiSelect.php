@@ -129,13 +129,14 @@ class MultiSelect extends Component
         $choice = QuestionChoice::find($choiceId);
         if ($choice) {
             // check for answers
-            for ($i = 0; $i < count($this->answers); $i++) {
-                if ($this->answers[$i]['id'] === $choiceId) {
+            for ($i = 1; $i < count($this->answers); $i++) {
+                if ($this->answers[$i] === $choiceId) {
                     unset($this->answers[$i]);
+                    break;
                 }
-                $this->question->answers = implode(',', $this->answers[$i]);
-                $this->question->save();
             }
+            $this->question->answer = implode(',', $this->answers);
+            $this->question->save();
             $choice->delete();
             array_splice($this->choices, $choiceIndex, 1);
             session()->flash('message', 'Choice deleted successfully.');
@@ -147,7 +148,7 @@ class MultiSelect extends Component
     public function mount()
     {
         // Initialize the answer if it's set
-        $this->answers = explode(',', $this->question->answer);
+        $this->answers = explode(',', trim($this->question->answer));
         $this->content = $this->question->content;
         $this->weight = $this->question->weight;
     }
