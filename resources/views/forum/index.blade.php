@@ -32,7 +32,7 @@
 
 
         <form class="w-full flex flex-col md:flex-row items-center justify-between my-10 md:my-5">
-            <h3>Pertanyaan Sebelumnya</h3>
+            <h5>Pertanyaan Sebelumnya</h5>
             <input type="text" name="search" id="" placeholder="Cari pertanyaan ..."
                 value="{{ request()->get('search') }}"
                 class="input w-full md:max-w-[300px]">
@@ -53,7 +53,7 @@
                             @endphp
                             <div class="w-full bg-[#F2F6F8] p-5 rounded-xl {{ $reply->is_public ? '' : 'opacity-50' }}">
                                 <div class="flex flex-row gap-2 sm:items-center justify-between mb-4">
-                                    <h3 class="font-semibold flex items-center gap-2">Jawaban
+                                    <h5 class="font-semibold flex items-center gap-2">Jawaban
                                         <div class="tooltip tooltip-right font-medium" data-tip="Jawaban AI">
                                             <x-lucide-sparkles class="w-4 h-4 text-blue-400 animate-pulse" />
                                         </div>
@@ -63,7 +63,7 @@
                                                 <x-lucide-check class="w-4 h-4 text-blue-400" />
                                             </div>
                                         @endif
-                                    </h3>
+                                    </h5>
                                     @if (Auth::user()->userable_type == 'App\Models\Teacher')
                                         <div
                                             class="flex gap-2 items-center bg-blue-500 text-white px-5 py-2 rounded-full w-fit">
@@ -256,7 +256,7 @@
                                     marked
                                 } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
                                 document.getElementById('reply-{{ $reply->id }}').innerHTML =
-                                    marked(`${"‎" + document.getElementById('reply-{{ $reply->id }}').innerHTML}`);
+                                    marked(`${document.getElementById('reply-{{ $reply->id }}').innerHTML.trim()}`);
                             </script>
                         </div>
                         <div class="w-full flex justify-end">
@@ -271,7 +271,7 @@
         @else 
             <div class="w-full flex flex-col items-center justify-center gap-4">
                 <img src="{{ asset('mascot-nunjuk.png') }}" alt="Login" class="w-[150px] py-5">
-                <h3 class="text-lg text-center">Belum ada pertanyaan yang diajukan</h3>
+                <h3 class="text-sm font-normal text-center">Belum ada pertanyaan yang diajukan</h3>
             </div>
         @endif
     </div>

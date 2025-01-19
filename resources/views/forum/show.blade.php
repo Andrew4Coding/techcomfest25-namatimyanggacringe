@@ -37,7 +37,7 @@
                         <img src="{{ asset('corner/blue-corner.png') }}" alt=""
                             class="absolute top-0 left-0 object-contain z-0">
                     @endif
-                    <div class="px-6 py-4 flex flex-col justify-between h-full relative grow min-h-52">
+                    <div class="px-6 py-4 flex flex-col justify-between h-full relative grow min-h-52 z-50">
                         <div class="absolute inset-0 flex items-center justify-center -bottom-20">
                             <img src="{{ asset('subject-mascots/' . $subject . '.png') }}" alt="Icon"
                                 class="w-80 h-full object-contain">

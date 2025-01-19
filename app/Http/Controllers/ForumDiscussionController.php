@@ -54,8 +54,8 @@ class ForumDiscussionController extends Controller
                                 yang tidak pantas, tolong tulis 'y' jika pertanyaan mengandung kata-kata tidak pantas dan 'n' jika sebaliknya pada awal jawaban anda. Berikut contohnya:
                                 
                                 y,
-                                ## Jawaban Singkat (Overview)
-                                ## Penjelasan
+                                ##### Jawaban Singkat (Overview)
+                                ##### Penjelasan
 
                                 Pertanyaannya adalah:
                                 $content
@@ -76,7 +76,7 @@ class ForumDiscussionController extends Controller
 
             // Create new Forum Reply
             $createdForum->forum_replies()->create([
-                'content' => $response['choices'][0]['message']['content'][strlen($response['choices'][0]['message']['content']) - 1],
+                'content' => substr($response['choices'][0]['message']['content'], 2),
             ]);
 
             return redirect()->route('forum.index', ['forumId' => $forumId]);
