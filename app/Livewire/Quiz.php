@@ -72,7 +72,7 @@ class Quiz extends Component
     {
         if ($this->page < $this->questionCount) {
             $this->page++;
-            $this->redirect(route('quiz.show', ['quizid' => $this->quiz->id]) . '?page=' . $page);
+            $this->redirect(route('quiz.show', ['quizId' => $this->quiz->id]) . '?page=' . $this->page);
         }
     }
 
@@ -85,7 +85,7 @@ class Quiz extends Component
     {
         if ($this->page > 1) {
             $this->page--;
-            $this->redirect(route('quiz.show', ['quizid' => $this->quiz->id]) . '?page=' . $page);
+            $this->redirect(route('quiz.show', ['quizId' => $this->quiz->id]) . '?page=' . $this->page);
         }
     }
 
@@ -184,7 +184,7 @@ class Quiz extends Component
                 ::with('questions', 'questions.questionChoices')
                 ->withCount('questions')
                 ->where('id', $this->id)
-                ->firstOrFail(['*']);
+                ->firstOrFail();
 
             // FIXME: LOGIC UNTUK TIDAK BOLEH MASUK
             $curDate = strtotime(date("Y-m-d h:i:sa"));
@@ -212,13 +212,12 @@ class Quiz extends Component
             $this->submission->save();
             $this->progress->save();
 
-            // FIXME: BENERIN GUE MALAS :V
             if (
                 $this->submission->done or // sudah selesai
                 $this->getTimeLeft() < 0    // durasi habis
             ) {
-                // ini kalau mau "back"
-                // $this->redirectIntended('/');
+                $this->redirectRoute('course.show', ['id' => $this->quiz->courseItem->courseSection->course->id]);
+                return;
             }
 
             // get first question

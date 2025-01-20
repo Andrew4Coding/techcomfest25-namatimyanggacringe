@@ -86,7 +86,8 @@ class QuizSolution extends Component
         }
     }
 
-    public function toggleChecked(): void {
+    public function toggleChecked(): void
+    {
         $this->isCheckedByTeacher = !$this->isCheckedByTeacher;
         $this->submission->is_checked_by_teacher = $this->isCheckedByTeacher;
         $this->submission->save();
@@ -132,7 +133,7 @@ class QuizSolution extends Component
                 ::where('quiz_id', $quizId)
                 ->where('student_id', $id)
                 ->with('quizSubmissionItems')
-                ->first();
+                ->firstOrFail();
 
             $this->curSubmissionItem = $this->submission->quizSubmissionItems->first();
             $this->isCheckedByTeacher = $this->submission->is_checked_by_teacher;
@@ -156,6 +157,8 @@ class QuizSolution extends Component
             $this->isValid = true;
 
         } catch (ModelNotFoundException $e) {
+            dd($e);
+            redirect()->back();
         }  // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
     }
 
