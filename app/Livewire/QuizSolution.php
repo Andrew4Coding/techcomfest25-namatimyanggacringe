@@ -57,7 +57,11 @@ class QuizSolution extends Component
     public function moveTo($page): void
     {
         $this->page = $page;
-        $this->redirect(route('quiz.solution', ['quizId', $this->quiz->id]) . '?page=' . $page);
+        $route = route('quiz.solution', ['quizId', $this->quiz->id]) . '?page=' . $this->page;
+        if (Auth::user()->userable_type === Teacher::class) {
+            $route .= '&id=' . $this->studentId;
+        }
+        $this->redirect($route);
     }
 
     /**
@@ -69,7 +73,11 @@ class QuizSolution extends Component
     {
         if ($this->page < $this->questionCount) {
             $this->page++;
-            $this->redirect(route('quiz.solution', ['quizId', $this->quiz->id]) . '?page=' . $this->page);
+            $route = route('quiz.solution', ['quizId', $this->quiz->id]) . '?page=' . $this->page;
+            if (Auth::user()->userable_type === Teacher::class) {
+                $route .= '&id=' . $this->studentId;
+            }
+            $this->redirect($route);
         }
     }
 
@@ -82,7 +90,11 @@ class QuizSolution extends Component
     {
         if ($this->page > 1) {
             $this->page--;
-            $this->redirect(route('quiz.solution', ['quizId', $this->quiz->id]) . '?page=' . $this->page);
+            $route = route('quiz.solution', ['quizId', $this->quiz->id]) . '?page=' . $this->page;
+            if (Auth::user()->userable_type === Teacher::class) {
+                $route .= '&id=' . $this->studentId;
+            }
+            $this->redirect($route);
         }
     }
 
