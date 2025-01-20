@@ -10,6 +10,7 @@
     <div class="my-4">
         <textarea
             class="textarea textarea-bordered w-full my-2 textarea-lg"
+            rows="4"
             placeholder="..." readonly>{{ $answer }}</textarea>
     </div>
 

@@ -86,7 +86,7 @@
                     @if($item->courseItemProgress && $item->courseItemProgress->is_completed)
                         <p class="py-4">Anda sudah menyelesaikan kuis ini!</p>
                     @else
-                        <p class="py-4">Anda sudah tidak dapat mengakses kuis ini!</p>
+                        <p class="py-4">Anda tidak dapat mengakses kuis ini!</p>
                     @endif
                     <form method="dialog" class="mt-2 flex justify-end">
                         <button class="btn btn-primary">
@@ -103,7 +103,8 @@
                     href="{{ route('quiz.edit', ['quizId' => $item->courseItemable->id]) }}"
                 @else
                     @if(($item->courseItemProgress && $item->courseItemProgress->is_completed) ||
-                    date_create_from_format('Y-m-d H:i:sT', $item->finish) > date_create())
+                    date_create_from_format('Y-m-d H:i:sT', $item->courseItemable->finish) < date_create() ||
+                    date_create_from_format('Y-m-d H:i:sT', $item->courseItemable->start) > date_create())
                         name="Sudah selesai" class="cursor-pointer"
                 onclick="quiz_decline_modal_{{ $loop->index }}.showModal()"
                 @else
@@ -127,13 +128,15 @@
                 </div>
             </a>
             @if(Auth::user()->userable_type === Teacher::class)
-                <a href="{{ route('quiz.summary', ['quizId' => $item->courseItemable->id]) }}" class="btn btn-primary">
+                <a href="{{ route('quiz.summary', ['quizId' => $item->courseItemable->id]) }}"
+                   class="btn btn-primary">
                     <x-lucide-notebook-text class="w-4 h-4"/>
                     Jawaban
                 </a>
             @else
                 @if($item->courseItemProgress && $item->courseItemProgress->is_completed)
-                    <a href="{{ route('quiz.solution', ['quizId' => $item->courseItemable->id]) }}" class="btn btn-primary">
+                    <a href="{{ route('quiz.solution', ['quizId' => $item->courseItemable->id]) }}"
+                       class="btn btn-primary">
                         <x-lucide-notebook-text class="w-4 h-4"/>
                         Hasil
                     </a>
