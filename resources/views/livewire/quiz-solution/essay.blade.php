@@ -2,7 +2,7 @@
 <section class="bg-white flex-1 p-10 shadow-md rounded-lg rounded-tl-none relative">
     {{-- Question and Pagination Info --}}
     <div class="flex justify-between items-center">
-        <h1 id="question-content" class="text-2xl font-bold">{{ $question['content'] }}</h1>
+        <h1 id="question-content" class="text-lg font-medium">{{ $question['content'] }}</h1>
         <span class="text-sm text-gray-500">Question {{ $page }} / {{ $questionCount }}</span>
     </div>
 
@@ -10,21 +10,27 @@
     <div class="my-4">
         <textarea
             class="textarea textarea-bordered w-full my-2 textarea-lg"
+            rows="4"
             placeholder="..." readonly>{{ $answer }}</textarea>
     </div>
 
 
-    <div class="w-full mt-10 flex flex-col items-start bg-black/10 p-4 rounded">
+    {{-- Feedback --}}
+    <div class="w-full mt-10 flex flex-col items-start ">
         <div class="w-full flex items-center justify-between">
-            <h2 class="text-lg font-semibold">Feedback</h2>
-            @if(Auth::user()->userable_type === Teacher::class)
+            <h2 class="text-base font-semibold">Feedback</h2>
+            @if (Auth::user()->userable_type === Teacher::class)
                 <button class="btn btn-sm" onclick="feedback_modal.showModal()">
-                    <x-lucide-pencil class="w-4 h-4"/>
+                    <x-lucide-pencil class="w-4 h-4" />
                 </button>
             @endif
         </div>
-        <p class="block mt-4">
-            {{ $submissionItem->feedback }}
+        <p class="block mt-4 text-sm text-gray-700">
+            @if ($submissionItem->feedback === '')
+                <span class="text-gray-500">Belum ada feedback</span>
+            @else
+                {{ $submissionItem->feedback }}
+            @endif
         </p>
     </div>
 

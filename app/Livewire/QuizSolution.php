@@ -27,7 +27,10 @@ class QuizSolution extends Component
     public QuizModel $quiz;
 
     // page for selecting which question to be displayed
+    #[Url(as: 'page')]
     public int $page = 1;
+
+    public int $score;
 
     // current active question
     public Question $curQuestion;
@@ -54,8 +57,11 @@ class QuizSolution extends Component
     public function moveTo($page): void
     {
         $this->page = $page;
-        $this->curQuestion = $this->quiz['questions'][$page - 1];
-        $this->curSubmissionItem = $this->submission->quizSubmissionItems[$page - 1];
+        $route = route('quiz.solution', ['quizId' => $this->quiz->id]) . '?page=' . $this->page;
+        if (Auth::user()->userable_type === Teacher::class) {
+            $route .= '&id=' . $this->studentId;
+        }
+        $this->redirect($route); 
     }
 
     /**
@@ -67,8 +73,11 @@ class QuizSolution extends Component
     {
         if ($this->page < $this->questionCount) {
             $this->page++;
-            $this->curQuestion = $this->quiz['questions'][$this->page - 1];
-            $this->curSubmissionItem = $this->submission->quizSubmissionItems[$this->page - 1];
+            $route = route('quiz.solution', ['quizId' => $this->quiz->id]) . '?page=' . $this->page;
+            if (Auth::user()->userable_type === Teacher::class) {
+                $route .= '&id=' . $this->studentId;
+            }
+            $this->redirect($route);
         }
     }
 
@@ -81,12 +90,22 @@ class QuizSolution extends Component
     {
         if ($this->page > 1) {
             $this->page--;
-            $this->curQuestion = $this->quiz['questions'][$this->page - 1];
-            $this->curSubmissionItem = $this->submission->quizSubmissionItems[$this->page - 1];
+            $route = route('quiz.solution', ['quizId' => $this->quiz->id]) . '?page=' . $this->page;
+            if (Auth::user()->userable_type === Teacher::class) {
+                $route .= '&id=' . $this->studentId;
+            }
+            $this->redirect($route);
         }
     }
 
-    public function toggleChecked(): void {
+    public function updateScore(): void
+    {
+        $this->curSubmissionItem->score = $this->score;
+        $this->curSubmissionItem->save();
+    }
+
+    public function toggleChecked(): void
+    {
         $this->isCheckedByTeacher = !$this->isCheckedByTeacher;
         $this->submission->is_checked_by_teacher = $this->isCheckedByTeacher;
         $this->submission->save();
@@ -132,10 +151,12 @@ class QuizSolution extends Component
                 ::where('quiz_id', $quizId)
                 ->where('student_id', $id)
                 ->with('quizSubmissionItems')
-                ->first();
+                ->firstOrFail();
 
             $this->curSubmissionItem = $this->submission->quizSubmissionItems->first();
             $this->isCheckedByTeacher = $this->submission->is_checked_by_teacher;
+
+            $this->score = $this->curSubmissionItem->score;
 
             // iterate each questions to mark flagged
             foreach ($this->quiz->questions as $question) {
@@ -156,6 +177,7 @@ class QuizSolution extends Component
             $this->isValid = true;
 
         } catch (ModelNotFoundException $e) {
+            redirect()->back();
         }  // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
     }
 

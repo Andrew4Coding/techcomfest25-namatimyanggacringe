@@ -9,19 +9,12 @@ jobs:
     name: Deployment CI/CD
     runs-on: ubuntu-latest
     steps:
-      - name: Set up SSH private key
-        run: |
-          echo "$SSH_PRIVATE_KEY" > key.pem
-          chmod 400 key.pem
-        env:
-           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
       - name: SSH and Pull Latest Changes
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: key.pem
+          key: ${{ secrets.KEY }}
           port: 22
           script: |
             cd ${{ secrets.PATH_TO_FOLDER }}
@@ -30,3 +23,4 @@ jobs:
             ./vendor/bin/sail build
             ./vendor/bin/sail down
             ./vendor/bin/sail up -d
+

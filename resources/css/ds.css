@@ -22,6 +22,10 @@
     color: white;
 }
 
+.btn-success {
+    @apply bg-green-500 hover:bg-green-600 text-white font-medium border-none;
+}
+
 .btn-outline {
     @apply bg-transparent border-none text-[#017AE4] hover:bg-[#017AE4]/10 hover:text-[#017AE4];
 }
