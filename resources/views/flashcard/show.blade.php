@@ -125,13 +125,6 @@
                     <h3 class="font-medium text-lg">
                         {{ $item->question }}
                     </h3>
-                    <div class="flex gap-2 bg-blue-500 w-fit px-3 py-2 text-white rounded-full">
-                        <x-lucide-pencil class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
-                        <x-lucide-eye class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" />
-                        <x-lucide-trash class="w-4 h-4 hover:scale-105 duration-150 cursor-pointer" 
-                            onclick="document.getElementById('delete_flashcard_item_modal_{{ $item->id }}').showModal();"
-                        />
-                    </div>
                 </div>
                 <p>
                     {{ $item->answer }}

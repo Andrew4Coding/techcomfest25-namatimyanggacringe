@@ -25,19 +25,19 @@
                 <div class="flex justify-between items-center gap-3">
                     @if (Auth::user()->userable_type === Teacher::class)
                         <button wire:click="toggleChecked"
-                            class="btn shadow-sm transition-colors duration-200
+                                class="btn shadow-sm transition-colors duration-200
                                            @if ($isCheckedByTeacher) bg-green-500
                                            @else
                                                bg-white text-gray-700 @endif
                                            hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-blue-400">
                             @if ($isCheckedByTeacher)
-                                <x-lucide-check class="w-4 h-4" /> Terverifikasi
+                                <x-lucide-check class="w-4 h-4"/> Terverifikasi
                             @else
-                                <x-lucide-x class="w-4 h-4" /> Belum Diverifikasi
+                                <x-lucide-x class="w-4 h-4"/> Belum Diverifikasi
                             @endif
                         </button>
                         <a href="{{ route('quiz.submission.list', ['quizId' => $quiz->id]) }}" class="btn btn-primary">
-                            <x-lucide-save class="w-4 h-4" />
+                            <x-lucide-save class="w-4 h-4"/>
                             Simpan
                         </a>
                     @else
@@ -48,13 +48,13 @@
                                                bg-white text-gray-700 @endif
                                            ">
                             @if ($isCheckedByTeacher)
-                                <x-lucide-check class="w-4 h-4" /> Terverifikasi
+                                <x-lucide-check class="w-4 h-4"/> Terverifikasi
                             @else
-                                <x-lucide-x class="w-4 h-4" /> Belum Diverifikasi
+                                <x-lucide-x class="w-4 h-4"/> Belum Diverifikasi
                             @endif
                         </button>
                         <a href="{{ route('course.show', ['id' => $quiz->courseItem->courseSection->course->id]) }}"
-                            class="btn btn-primary">
+                           class="btn btn-primary">
                             Kembali
                         </a>
                     @endif
@@ -71,8 +71,8 @@
                         <div class="grid grid-cols-5 gap-2">
                             @for ($i = 1; $i <= $questionCount; $i++)
                                 <button type="button" wire:key="question-circle-{{ $i }}"
-                                    wire:click="moveTo({{ $i }})" id="question-circle-{{ $i }}"
-                                    class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl border-2 relative
+                                        wire:click="moveTo({{ $i }})" id="question-circle-{{ $i }}"
+                                        class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl border-2 relative
                                            shadow-sm transition-colors duration-200
                                            @if ($page == $i) bg-blue-500 text-white border-blue-500
                                            @elseif($flagged[$quiz->questions[$i - 1]->id])
@@ -83,7 +83,7 @@
 
                                     <x-lucide-flag class="absolute -top-2 -right-2 w-4 h-4 text-yellow-400 {{
                                         $flagged[$quiz->questions[$i - 1]->id] ? 'block' : 'hidden'
-                                    }}" />
+                                    }}"/>
                                     {{ $i }}
                                 </button>
                             @endfor
@@ -94,20 +94,44 @@
 
             {{-- Right Section: Current Question --}}
             <section class="flex-1">
+                <div class="flex gap-2">
                 <span class="px-4 py-2 text-white font-normal rounded-t-xl bg-primary">{{ $curSubmissionItem->score }}
                     / {{ $curQuestion->weight }}</span>
+                    <button onclick="edit_nilai.showModal()" class="btn">
+                        <x-lucide-pencil class="w-4 h-4"/>
+                    </button>
+                    <dialog id="edit_nilai" class="modal">
+                        <div class="modal-box">
+                            <h3 class="text-lg font-bold">Ganti Nilai</h3>
+                            <input class="input " type="number" wire:model="score">
+                            <div class="modal-action">
+                                <form method="dialog">
+                                    <!-- if there is a button in form, it will close the modal -->
+                                    <button wire:click="updateScore" class="btn btn-primary">Simpan</button>
+                                </form>
+                            </div>
+                        </div>
+                    </dialog>
+                </div>
+
                 @if ($curQuestion->question_type === QuestionType::MultipleChoice)
-                    <livewire:quiz-solution.multiple-choice :page="$page" :questionCount="$questionCount" :question="$curQuestion"
-                        :submissionId="$submission->id" wire:key="question-{{ $page }}" />
+                    <livewire:quiz-solution.multiple-choice :page="$page" :questionCount="$questionCount"
+                                                            :question="$curQuestion"
+                                                            :submissionId="$submission->id"
+                                                            wire:key="question-{{ $page }}"/>
                 @elseif($curQuestion->question_type === QuestionType::ShortAnswer)
-                    <livewire:quiz-solution.short-answer :page="$page" :questionCount="$questionCount" :question="$curQuestion"
-                        :submissionId="$submission->id" wire:key="question-{{ $page }}" />
+                    <livewire:quiz-solution.short-answer :page="$page" :questionCount="$questionCount"
+                                                         :question="$curQuestion"
+                                                         :submissionId="$submission->id"
+                                                         wire:key="question-{{ $page }}"/>
                 @elseif($curQuestion->question_type === QuestionType::MultiSelect)
-                    <livewire:quiz-solution.multi-select :page="$page" :questionCount="$questionCount" :question="$curQuestion"
-                        :submissionId="$submission->id" wire:key="question-{{ $page }}" />
+                    <livewire:quiz-solution.multi-select :page="$page" :questionCount="$questionCount"
+                                                         :question="$curQuestion"
+                                                         :submissionId="$submission->id"
+                                                         wire:key="question-{{ $page }}"/>
                 @elseif($curQuestion->question_type === QuestionType::Essay)
                     <livewire:quiz-solution.essay :page="$page" :questionCount="$questionCount" :question="$curQuestion"
-                        :submissionId="$submission->id" wire:key="question-{{ $page }}" />
+                                                  :submissionId="$submission->id" wire:key="question-{{ $page }}"/>
                 @endif
             </section>
         </div>

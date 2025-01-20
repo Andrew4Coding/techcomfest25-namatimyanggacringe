@@ -27,7 +27,10 @@ class QuizSolution extends Component
     public QuizModel $quiz;
 
     // page for selecting which question to be displayed
+    #[Url(as: 'page')]
     public int $page = 1;
+
+    public int $score;
 
     // current active question
     public Question $curQuestion;
@@ -54,8 +57,7 @@ class QuizSolution extends Component
     public function moveTo($page): void
     {
         $this->page = $page;
-        $this->curQuestion = $this->quiz['questions'][$page - 1];
-        $this->curSubmissionItem = $this->submission->quizSubmissionItems[$page - 1];
+        $this->redirect(route('quiz.solution', ['quizId', $this->quiz->id]) . '?page=' . $page);
     }
 
     /**
@@ -67,8 +69,7 @@ class QuizSolution extends Component
     {
         if ($this->page < $this->questionCount) {
             $this->page++;
-            $this->curQuestion = $this->quiz['questions'][$this->page - 1];
-            $this->curSubmissionItem = $this->submission->quizSubmissionItems[$this->page - 1];
+            $this->redirect(route('quiz.solution', ['quizId', $this->quiz->id]) . '?page=' . $this->page);
         }
     }
 
@@ -81,9 +82,14 @@ class QuizSolution extends Component
     {
         if ($this->page > 1) {
             $this->page--;
-            $this->curQuestion = $this->quiz['questions'][$this->page - 1];
-            $this->curSubmissionItem = $this->submission->quizSubmissionItems[$this->page - 1];
+            $this->redirect(route('quiz.solution', ['quizId', $this->quiz->id]) . '?page=' . $this->page);
         }
+    }
+
+    public function updateScore(): void
+    {
+        $this->curSubmissionItem->score = $this->score;
+        $this->curSubmissionItem->save();
     }
 
     public function toggleChecked(): void
@@ -138,6 +144,8 @@ class QuizSolution extends Component
             $this->curSubmissionItem = $this->submission->quizSubmissionItems->first();
             $this->isCheckedByTeacher = $this->submission->is_checked_by_teacher;
 
+            $this->score = $this->curSubmissionItem->score;
+
             // iterate each questions to mark flagged
             foreach ($this->quiz->questions as $question) {
                 // set each flag to false
@@ -157,7 +165,6 @@ class QuizSolution extends Component
             $this->isValid = true;
 
         } catch (ModelNotFoundException $e) {
-            dd($e);
             redirect()->back();
         }  // FIXME: maybe ini bisa ditambahin error handling yang lebih baik
     }

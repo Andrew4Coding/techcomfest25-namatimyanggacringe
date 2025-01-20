@@ -23,3 +23,4 @@ jobs:
             ./vendor/bin/sail build
             ./vendor/bin/sail down
             ./vendor/bin/sail up -d
+

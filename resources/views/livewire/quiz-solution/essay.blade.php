@@ -2,7 +2,7 @@
 <section class="bg-white flex-1 p-10 shadow-md rounded-lg rounded-tl-none relative">
     {{-- Question and Pagination Info --}}
     <div class="flex justify-between items-center">
-        <h1 id="question-content" class="text-2xl font-bold">{{ $question['content'] }}</h1>
+        <h1 id="question-content" class="text-lg font-medium">{{ $question['content'] }}</h1>
         <span class="text-sm text-gray-500">Question {{ $page }} / {{ $questionCount }}</span>
     </div>
 
