@@ -48,6 +48,7 @@ Berikan hasil seperti ini:
 ```json
 [
   {
+    "nomor": "<NOMOR>"
     "nilai": "<NILAI>",
     "feedback": "<FEEDBACK>"
   }
@@ -160,6 +161,7 @@ Berikut merupakan INPUT:
             'essay' => 'Esai',
             'multi_select' => 'Pilihan Ganda - Multi Select',
         );
+
 
         foreach ($this->submission->quizSubmissionItems as $i => $item) {
             $prompt = $prompt . 'No: ' . $i . '\n';

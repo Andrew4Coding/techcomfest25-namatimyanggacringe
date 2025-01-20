@@ -13,8 +13,6 @@
             $isSelected = in_array($choice->id, explode(',', $submissionItem->answer));
         @endphp
 
-        {{ $submissionItem->answer }}
-
         <div wire:key="{{ $choice->id }}" id="answer-box" class="mt-6 space-y-4">
             <div
                 class="flex items-center gap-4

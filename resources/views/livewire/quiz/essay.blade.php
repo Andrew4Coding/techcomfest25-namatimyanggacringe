@@ -7,7 +7,7 @@
 
     {{-- Answer Options  --}}
     <div class="my-4">
-        <textarea wire:model.blur="answer" class="textarea textarea-bordered w-full my-2" placeholder="Masukkan jawaban...">
+        <textarea wire:model.blur="answer" class="textarea textarea-bordered w-full my-2" rows="6" placeholder="Masukkan jawaban...">
             {{ $answer }}
         </textarea>
     </div>
