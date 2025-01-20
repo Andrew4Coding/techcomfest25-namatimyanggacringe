@@ -16,10 +16,10 @@
                 class="absolute top-0 left-0 object-contain z-0">
         @endif
         <div class="px-6 py-4 flex flex-col justify-between h-full relative min-h-32 gap-4">
-            <div class="flex justify-between items-center">
+            <div class="flex flex-col xl:flex-row justify-between items-center">
                 <div class="font-bold text-xl w-full overflow-clip" style="color: {{ $theme['tertiary'] }}">
                     {{ $course->name }}</div>
-                <span class="badge badge-primary text-white min-w-[80px]"
+                <span class="badge badge-primary text-white w-full md:w-[150px]"
                     style="background-color: {{ $theme['secondary'] }};">Score:
                     {{ round($course->averageScore) }}</span>
             </div>

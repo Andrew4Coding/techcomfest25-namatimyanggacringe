@@ -25,10 +25,10 @@
                         <div class="modal-box flex flex-col gap-3">
                             <span class="text-sm text-gray-700">Pertanyaan</span>
                             <input type="text" wire:model="content" placeholder="Pertanyaan..."
-                                   class="input input-bordered w-full" required>
+                                   class="input w-full" required>
                             <span class="text-sm text-gray-700">Bobot</span>
                             <input type="number" wire:model="weight" placeholder="Poin..."
-                                   class="input input-bordered w-full" required>
+                                   class="input w-full" required>
                             <div class="modal-action">
                                 <form method="dialog">
                                     <!-- if there is a button in form, it will close the modal -->

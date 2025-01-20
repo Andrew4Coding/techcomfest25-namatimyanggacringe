@@ -7,8 +7,8 @@
             <x-lucide-arrow-left class="w-4 h-4"/>
         </button>
         <div class="w-full h-full flex justify-center items-center">
-            <div class="px-12 py-6 rounded-xl shadow-xl flex flex-col gap justify-between items-center">
-                <h1>{{ $quiz->courseItem->name }}</h1>
+            <div class="px-12 py-6 rounded-xl shadow-xl flex flex-col gap justify-between items-center bg-white">
+                <h3>{{ $quiz->courseItem->name }}</h3>
                 <div class="p-4 rounded-xl bg-blue-500 flex flex-col text-sm text-white gap-2">
                 <span class="flex gap-2 items-center">
                     <x-lucide-timer class="w-4 h-4"/>

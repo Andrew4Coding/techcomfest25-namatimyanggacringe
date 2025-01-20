@@ -97,9 +97,11 @@
                 <div class="flex gap-2">
                 <span class="px-4 py-2 text-white font-normal rounded-t-xl bg-primary">{{ $curSubmissionItem->score }}
                     / {{ $curQuestion->weight }}</span>
-                    <button onclick="edit_nilai.showModal()" class="btn">
-                        <x-lucide-pencil class="w-4 h-4"/>
-                    </button>
+                    <div class="tooltip tooltip-top" data-tip="Ganti Nilai">
+                        <button onclick="edit_nilai.showModal()" class="btn">
+                            <x-lucide-pencil class="w-4 h-4"/>
+                        </button>
+                    </div>
                     <dialog id="edit_nilai" class="modal">
                         <div class="modal-box">
                             <h3 class="text-lg font-bold">Ganti Nilai</h3>
